@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste</title>
+
+    <script
+        src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous" defer>
+    </script>
+</head>
+<body>
+
+    <div id="teste">
+        <img src="carrinho.png" width="40px">
+    </div>
+
+    <script>
+        window.onload = listar();
+
+        function listar(){
+            $.ajax({
+                method: "GET",
+                url: "pegarImagem",
+                data: "codigo="+1,
+                success: function (dados){
+                    console.log(dados)
+                    criaImagem(dados);
+                }
+            }).fail(function(xhr, status, errorThrown){
+                alert("Erro ao salvar: " +xhr.responseText);
+            });
+        }
+
+        function criaImagem(img){
+            $('#ItemPreview').attr('src', `data:image/png;base64,${img}`);
+        }
+    </script>
+    
+</body>
+</html>

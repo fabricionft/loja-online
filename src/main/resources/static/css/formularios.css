@@ -1,0 +1,310 @@
+/*Universal*/
+.icon-esconder{
+    width: 25px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+/*---------- Container Cadastro ---------*/
+.container-cadastro{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    opacity: 0;
+    z-index: -1;
+}
+
+.container-cadastro.ativo{
+    opacity: 1;
+    z-index: 1;
+}
+
+.form-cadastro{
+    width: 600px;
+    height: 375px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-radius: 7.5px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 25%), 0 8px 16px rgb(0 0 0 / 25%);
+}
+
+.cadastro-titulo, .step, .footer-form-cadastro{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.cadastro-titulo{
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.step{
+    width: 95%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.footer-form-cadastro{
+    width: 95%;
+    height: 20%;
+}
+
+.cadastro-titulo-texto{
+    margin-left: 25px;
+    font: 17.5px calibri;
+    font-weight: bold;
+    color: rgb(57, 57, 57);
+}
+
+.divisor{
+    width: auto;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+}
+
+.label-form-cadastro{
+    font: 15px calibri;
+    margin-bottom: 2.5px;
+    color: rgb(92, 91, 91);
+}
+
+.input-form-cadastro-1, .input-form-cadastro-2, .input-form-cadastro-3,
+.input-form-cadastro-4, .linha-cep{
+    width: 300px;
+    height: 50%;
+    border-radius: 6px;
+    padding-left: 10px;
+    cursor: pointer;
+    color: rgb(108, 108, 108);
+    border: 1px solid rgb(187, 187, 187);
+}
+
+.input-form-cadastro-2{
+    width: 165px;
+}
+
+.input-form-cadastro-3{
+    width: 100px;
+}
+
+.input-form-cadastro-4{
+    height: 100%;
+    width: 175px;
+}
+
+input:hover{
+    border: 1px solid rgb(87, 14, 189);
+}
+
+.linha-cep{
+    display: flex;
+    width: auto;
+    position: relative;
+    padding-left: 0px;
+}
+
+.btn-cadastro{
+    background: green;
+    width: 25%;
+    height: 55%;
+    margin-left: 25px;
+}
+
+.btn-cadastro:hover{background: rgb(2, 95, 2);}
+
+.btn-voltar{
+    width: 20%;
+    height: 55%;
+    margin-left: 25px;
+}
+
+.btn-limpar{
+    width: 30px;
+    height: 30px;
+}
+
+.btn-cep{
+    width: 35%;
+    height: 100%;
+    position: absolute;
+    top: 55%;
+    right:  0;
+    transform: translateY(-50%);
+    border-radius: 0 6px 6px 0;
+}
+
+
+/* ----------- Form Login ------------------ */
+.container-login{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.405);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    opacity: 0;
+    z-index: -1;
+}
+
+.container-login.ativo{
+    opacity: 1;
+    z-index: 1;
+}
+
+.form-login{
+    width: 275px;
+    height: 230px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 30%), 0 8px 16px rgb(0 0 0 / 30%);
+}
+
+.div-form-login, .footer-form-login{
+    width: 85%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.footer-form-login{
+    height: 17.5%;
+}
+
+
+.label-form-login{
+    position: absolute;
+    font: 15px calibri;
+    color: rgb(67, 67, 67);
+    left: 15px;
+    top: 5px;
+}
+
+.linha-login{
+    width: 100%;
+    height: 40%;
+    position: relative;
+}
+
+.input-form-login{
+    width: 95%;
+    height: 100%;
+    padding-left: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: rgb(108, 108, 108);
+    border: 1px solid rgb(187, 187, 187);
+}
+
+.input-form-login:hover{
+    border: 1px solid rgb(123, 0, 238);
+}
+
+.icon-login{
+    width: 25px;
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+    right: 10px;
+    cursor: pointer;
+}
+
+.btn-login{
+    width: 100%;
+    height: 100%;
+    background: green;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font: 17.5px calibri;
+    font-weight: bold;
+}
+
+.btn-login:hover{
+    background: rgb(0, 101, 0);
+}
+
+
+
+@media screen and (max-width: 1000px) {
+    .icon-esconder{
+        margin-bottom: 10px;
+        margin-left: 265px;
+    }
+
+    .container-cadastro, .container-login{
+        flex-direction: column;
+    }
+
+    .form-cadastro{
+        height: 70%;
+        width: 85%;
+    }
+
+    .cadastro-titulo{
+        width: 90%;
+        margin: 0;
+    }
+
+    .cadastro-titulo-texto{margin: 0;}
+    
+    .step{
+        justify-content: space-evenly;
+        width: 100%;
+    }
+
+    .divisor{
+        height: 70px;
+        justify-content: center;
+        margin:  0;
+    }
+
+    .input-form-cadastro-1, .input-form-cadastro-2, 
+    .input-form-cadastro-3, .input-form-cadastro-4{
+        width: 220px;
+        height: 30px;
+    }
+
+    .input-form-cadastro-2, .input-form-cadastro-3, .input-form-cadastro-4{
+        width: 90px;
+    }
+
+    .input-form-cadastro-3{
+        width: 60px;
+    }
+
+    .input-form-cadastro-4{
+        width: 140px;
+    }
+
+    .btn-cadastro, .btn-voltar{
+        width: 60%;
+        height: 50%;
+        margin-left: 8px;
+    }
+
+    .btn-voltar{
+        width: 30%;
+    }
+}

@@ -1,0 +1,196 @@
+/*------------------  Carrinho  --------------------*/
+.cabecalho{
+    width: 90%;
+    height: 70px;
+    background: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+    margin-top: 25px;
+    border-radius: 8px;
+}
+
+.nav-pesquisa{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.linha{
+    width: 30%;
+    height: 60%;
+    position: absolute;
+    left: 30px;
+}
+
+.input-pesquisar{
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    padding-left: 12px;
+    color: rgb(183, 181, 181);
+    border: 1px solid rgb(211, 209, 209);
+}
+
+.btn-pesquisa{
+    height: 80%;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    position: absolute;
+    width: 35px;
+    top: 20%;
+    right: -10px;
+    border: none;
+}
+
+.icon-lupa{
+    width: 28px
+}
+
+.aCarrinho{
+    position: absolute;
+    cursor: pointer;
+    right: 40px;
+}
+
+.quantidade-carrinho{
+    position: absolute;
+    right: 35px;
+    top: -13px;
+    font: 20px impact;
+    color: #00a000;
+    margin: 0;
+}
+
+.margem{
+    height: 10%;
+    width: 100%;
+    background-image: linear-gradient(to right, rgb(79, 48, 179), rgb(23, 210, 235));
+    border-radius: 0 0 8px 8px;
+}
+
+/*------------------  Footer  --------------------*/
+.rodape{
+    width: 100%;
+    height: auto;
+    background: rgb(79, 48, 179);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.div-info, .div-redes{
+    width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 25px 0;
+}
+
+.div-redes{
+    width: 100%;
+    background: rgb(59, 35, 140);
+    height: 40%;
+    margin: 0;
+}
+
+.info{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo, .titulo-1{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    margin: 15px 0;
+}
+
+.titulo-1{
+    text-decoration: none;
+}
+
+.texto, .texto-1{
+    width: auto;
+    height: auto;
+    font-size: 16px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgb(212, 212, 212);
+    margin: 0;
+}
+
+.texto-1{
+    cursor: pointer;
+}
+
+.texto-1:hover{
+    color: rgb(23, 210, 235);
+}
+
+.div-imgs{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.icon{
+    width: 35px;
+    height: 35px;
+    margin: 0px 7.5px;
+}
+
+.btn-menu{
+    position: absolute;
+    left: 0;
+    display: none;
+}
+
+@media screen and (max-width: 1000px) {
+
+    .btn-menu{
+        left: 15px;
+        display: flex;
+    }
+
+    .linha{
+        width: 55%;
+        left: 55px;
+    }
+
+    .input-pesquisar{
+        font-size: 11PX;
+    }
+
+    .aCarrinho{
+        right: 15px
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .info{
+        width: 50%;
+        margin-bottom: 25px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .info{width: 100%;}
+}
