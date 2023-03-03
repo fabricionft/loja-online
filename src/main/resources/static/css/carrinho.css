@@ -209,18 +209,89 @@
     background: rgb(1, 83, 1);
 }
 
+/*Resumo pedido*/
+.esconder-pedido{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    z-index: -1;
+}
+
+.esconder-pedido.ativo{
+    opacity: 1;
+    z-index: 4;
+}
+
+.resumo-pedido{
+    width: 300px;
+    height: auto;
+    background: white;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.margem-pedido{
+    width: 85%;
+    margin: 20px 0;
+}
+
+.divisor-pedido, .divisor-pedido-btn{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.divisor-pedido-btn{align-items: flex-end; margin: 0;}
+
+.subtitulo-pedido, .endereco{
+    margin-bottom: 5px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(86, 86, 86);
+}
+
+.endereco{
+    margin: 0;
+    font-weight:initial;
+}
+
+.select-pedido{
+    width: 100%;
+    height: 40px;
+    border-radius: 6px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border: 1px solid silver;
+}
+
+.btn-confirmar-pedido{
+    height: 40px;
+}
+
+.icon-esconder-pedido{
+    width: 20px;
+    margin-right: 5%;
+}
+
 @media screen and (max-width: 1000px) {
-    .container-carrinho{
-        width: 85%;
-        min-height: 500px;
-        margin: 0;
-    }
+    .container-carrinho{min-height: 750px;}
 
     .div-carrinho{
         width: 100%;
         margin: 50px 0;
     }
+}
 
+@media screen and (max-width: 600px) {
     .icon-carrinho{
         height: 35px;
     }
@@ -259,5 +330,17 @@
 
     .btns-quantidade-carrinho{
         justify-content: center;
+    }
+
+    .esconder-pedido{flex-direction: column;}
+
+    .icon-esconder-pedido{
+        margin-left: 85%;
+        margin-bottom: 10px;
+        margin-top: -100px;
+    }
+
+    .resumo-pedido{
+        width: 85%;
     }
 }

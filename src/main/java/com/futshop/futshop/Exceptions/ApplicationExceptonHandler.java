@@ -11,7 +11,7 @@ import java.rmi.AlreadyBoundException;
 @ControllerAdvice
 public class ApplicationExceptonHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     public ResponseEntity errosGeral(Exception e){
         return new ResponseEntity("Erro", HttpStatus.ALREADY_REPORTED);
     }
@@ -19,7 +19,7 @@ public class ApplicationExceptonHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity erroDeDestino(Exception e){
         return new ResponseEntity("Não é possível concluir tal ação se o usuário alvo não existe!", HttpStatus.ALREADY_REPORTED);
-    }
+    }*/
 
     @ExceptionHandler(AlreadyBoundException.class)
     public ResponseEntity errosDuplicidade(Exception e){

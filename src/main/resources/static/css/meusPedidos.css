@@ -1,0 +1,89 @@
+.container-pedidos{
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    min-height: 500px;
+    height: auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.pedido{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 31%;
+    margin-top: 20px;
+    margin-left: 3.5%;
+    height: 275px;
+    background: white;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 15%), 0 8px 16px rgb(0 0 0 / 15%);
+    border-radius: 6px;
+}
+
+.pedido:nth-child(3n + 1){margin-left: 0;}
+
+.margem-pedidos{
+    width: 85%;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.tit, .tet, .tet-status{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    margin: 0;
+}
+
+.tit{
+    font-weight: bold;
+    color: rgb(70, 0, 128);
+}
+
+.tet{
+    color: rgb(84, 84, 84);
+    margin-bottom: auto;
+}
+
+.tet-status{
+    margin-bottom: auto;
+    font-weight: bold;
+}
+
+.a{
+    width: 100%;
+    margin: 0;
+}
+
+.btn-pedidos{
+    width: 100%;
+    height: 40px;
+}
+
+@media screen and (max-width: 800px) {
+    .container-pedidos{
+        justify-content: space-between;
+    }
+
+    .pedido{
+        margin-right: 0;
+        margin-left: 0px;
+        width: 47.5%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .container-pedidos{
+        justify-content: space-between;
+        min-height: 700px;
+    }
+
+    .pedido{
+        width: 100%;
+        height: 300px;
+    }
+}

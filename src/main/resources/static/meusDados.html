@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+ <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/meusDados.css">
     <link rel="stylesheet" href="css/formularios.css">
+    <link rel="stylesheet" href="css/messageBox.css">
 
     <script
             src="https://code.jquery.com/jquery-3.6.1.min.js"
@@ -20,269 +21,284 @@
     </script>
     <script src="js/formularios.js" defer></script>
     <script src="js/index.js" defer></script>
+     <script src="js/geral.js" defer></script>
     <script src="js/meusDados.js" defer></script>
+ </head>
 
-</head>
-<body>
-<main class="container-conteudo">
-    <!--Tela de dados-->
-    <div class="container-dados">
-        <div class="dados">
-            <div class="info-dados">
-                <header class="titulo-dados">
-                    <label for="abrirMenu">
-                        <img src="icon/iconMenu.png" class="icon-abrir-menu">
-                    </label>
-                    <img src="img/perfil.png" class="icon-perfil">
-                    <p class="nome-usuario" id="nomeUsuarioExibir">Fabrício</p>
-                </header>
+ <body>
+     <!--Barra de menu-->
+     <input type="checkbox" class="input-menu" id="abrirMenu">
+     <div class="sobreposicao-menu"></div>
+     <nav class="container-menu">
+         <div class="menu-login" id="nomeUsuario">
+             <p class="usuario-logado" id="estadoUSuario"></p>
+         </div>
 
-                <div class="info-dados-pessoal">
-                    <div class="tipo-dados">Dados pessoais</div>
-                    <div class="conteudo">
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Nome</p>
-                            <p class="texto-dados" id="nomeExibir"></p>
+         <header class="header-menu">FutShop</header>
+
+         <div class="menu-links">
+             <a class="item-menu" href="index.html">
+                 <div class="img-menu"><img src="icon/iconCasa.png" class="icon-menu"></div>
+                 <div class="texto-menu">Home</div>
+             </a>
+
+             <a class="item-menu" onclick="abrirMeusDados()">
+                 <div class="img-menu"><img src="icon/user-dados.png" class="icon-menu"></div>
+                 <div class="texto-menu">Meus dados</div>
+             </a>
+
+             <a class="item-menu" href="meusPedidos.html">
+                 <div class="img-menu"><img src="icon/pedido.png" class="icon-menu"></div>
+                 <div class="texto-menu">Meus pedidos</div>
+             </a>
+
+             <a class="item-menu" href="carrinho.html">
+                 <div class="img-menu"><img src="icon/carrinho-menu.png" class="icon-menu"></div>
+                 <div class="texto-menu">Carrinho</div>
+             </a>
+         </div>
+
+         <div class="margem-sair">
+             <label for="abrirMenu">
+                 <img src="icon/esconder.png" class="icon-fechar-menu">
+             </label>
+         </div>
+     </nav>
+
+    <main class="container-conteudo">
+        <!--Tela de dados-->
+        <div class="container-dados">
+            <div class="dados">
+                <div class="info-dados">
+                    <header class="titulo-dados">
+                        <label for="abrirMenu">
+                            <img src="icon/iconMenu.png" class="icon-abrir-menu-md">
+                        </label>
+                        <img src="img/perfil.png" class="icon-perfil">
+                        <p class="nome-usuario" id="nomeUsuarioExibir">Nome</p>
+                    </header>
+
+                    <div class="info-dados-pessoal">
+                        <div class="tipo-dados">Dados pessoais</div>
+                        <div class="conteudo">
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Nome</p>
+                                <p class="texto-dados" id="nomeExibir">XXXXXXXX</p>
+                            </div>
+
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Data nascimento</p>
+                                <p class="texto-dados" id="dataExibir">XX/XX/XXXX</p>
+                            </div>
+
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">CPF</p>
+                                <p class="texto-dados" id="cpfExibir">XXX.XXX.XXX-XX</p>
+                            </div>
+
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Email</p>
+                                <p class="texto-dados" id="emailExibir">XXXX@gmail.com</p>
+                            </div>
+
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Celular</p>
+                                <p class="texto-dados" id="celularExibir">(XX) XXXXX-XXXX</p>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Data nascimento</p>
-                            <p class="texto-dados" id="dataExibir">21/08/2004</p>
-                        </div>
+                    <div class="info-dados-endereco">
+                        <div class="tipo-dados">Dados de endereço</div>
+                        <div class="conteudo">
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">CEP</p>
+                                <p class="texto-dados" id="cepExibir">XXXXX-XXX</p>
+                            </div>
 
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">CPF</p>
-                            <p class="texto-dados" id="cpfExibir">353.847.838-65</p>
-                        </div>
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Estado</p>
+                                <p class="texto-dados" id="estadoExibir">XX</p>
+                            </div>
 
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Email</p>
-                            <p class="texto-dados" id="emailExibir">fabriciodozerofz859@gmail.com</p>
-                        </div>
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Cidade</p>
+                                <p class="texto-dados" id="cidadeExibir">XXXXXXXXX</p>
+                            </div>
 
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Senha</p>
-                            <p class="texto-dados" id="senhaExibir">*****</p>
-                        </div>
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Bairro</p>
+                                <p class="texto-dados" id="bairroExibir">XXXXXXX</p>
+                            </div>
 
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Celular</p>
-                            <p class="texto-dados" id="celularExibir">(19) 985697236</p>
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Rua</p>
+                                <p class="texto-dados" id="ruaExibir">XXXXXXX</p>
+                            </div>
+
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Número</p>
+                                <p class="texto-dados" id="numeroExibir">XXX</p>
+                            </div>
+
+                            <div class="linha-dados">
+                                <p class="subtitulo-dados">Complemento</p>
+                                <p class="texto-dados" id="complementoExibir">XXXXXXX</p>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="botoes-dados">
+                        <button class="btn-dados" onclick="preencherEndereco()">Alterar endereço</button>
+                        <button class="btn-dados">Alterar senha</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Footer-->
+        <footer class="rodape">
+            <div class="div-info">
+                <div class="info">
+                    <header class="titulo">FutShop</header>
+                    <p class="texto">Somos uma loja vendedora de camisas tailandesas 1.1, buscando sempre trazer o melhor.
+                        para nossos clientes</p>
+                </div>
+
+                <div class="info">
+                    <header class="titulo">Contatos</header>
+                    <p class="texto">19 982544396</p>
+                    <p class="texto">19 984597236</p>
+                    <p class="texto">fafa@gmail.com</p>
+                </div>
+
+                <div class="info">
+                    <header class="titulo">Seções</header>
+                    <a class="texto-1" href="index.html">Home</a>
+                    <a class="texto-1" class="item-menu" onclick="abrirMeusDados()">Meus dados</a>
+                    <a class="texto-1" href="carrinho.html">Carrinho</a>
+                </div>
+
+                <div class="info">
+                    <header class="titulo">Dúvidas</header>
+                    <p class="texto-1">Como criar conta</p>
+                    <p class="texto-1">Como mudar senha</p>
+                    <p class="texto-1">Como recuperar senha</p>
+                    <p class="texto-1">Como fazer pedido</p>
+                </div>
+            </div>
+            <div class="div-redes">
+                <header class="titulo-1">Redes</header>
+                <div class="div-imgs">
+                    <img src="icon/github-icon.png" class="icon">
+                    <img src="icon/instagram.png" class="icon">
+                    <img src="icon/linkedin.png" class="icon">
+                    <img src="icon/youtube.png" class="icon">
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!--Form cadastro-->
+    <div class="container-cadastro" id="containerCadastro">
+        <img src="icon/esconder.png" class="icon-esconder" onclick="renderizarFormCadastro(2)">
+
+        <div class="form-cadastro">
+            <!--Passo 2-->
+            <form class="step" id="step-2">
+                <div class="cadastro-titulo">
+                    <h1 class="cadastro-titulo-texto">Dados de endereço</h1>
+                    <button type="reset" class="btn-limpar"><img src="icon/lixo.png" width="20px"></button>
+                </div>
+
+                <div class="divisor">
+                    <label class="label-form-cadastro">CEP</label>
+                    <div class="linha-cep">
+                        <input class="input-form-cadastro-4" type="text" height="100%"
+                               id="cep" maxlength="8">
+                        <button class="btn-cep" type="button" onclick="buscarEnderecoPorCEP()">Buscar</button>
                     </div>
                 </div>
 
-                <div class="info-dados-endereco">
-                    <div class="tipo-dados">Dados de endereço</div>
-                    <div class="conteudo">
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">CEP</p>
-                            <p class="texto-dados" id="cepExibir">13145848</p>
-                        </div>
-
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Estado</p>
-                            <p class="texto-dados" id="estadoExibir">SP</p>
-                        </div>
-
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Cidade</p>
-                            <p class="texto-dados" id="cidadeExibir">Paulínia</p>
-                        </div>
-
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Bairro</p>
-                            <p class="texto-dados" id="bairroExibir">São José 2</p>
-                        </div>
-
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Rua</p>
-                            <p class="texto-dados" id="ruaExibir">Rua Agripino Jacinto de Oliveira</p>
-                        </div>
-
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Número</p>
-                            <p class="texto-dados" id="numeroExibir">31</p>
-                        </div>
-
-                        <div class="linha-dados">
-                            <p class="subtitulo-dados">Complemento</p>
-                            <p class="texto-dados" id="complementoExibir">De frente pro mato</p>
-                        </div>
-                    </div>
+                <div class="divisor">
+                    <label class="label-form-cadastro">Estado</label>
+                    <select id="estado" class="input-form-cadastro-3">
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                        <option value="EX">Estrangeiro</option>
+                    </select>
                 </div>
 
-                <div class="botoes-dados">
-                    <button class="btn-dados" onclick="preencherEndereco()">Alterar endereço</button>
-                    <button class="btn-dados">Alterar senha</button>
+                <div class="divisor">
+                    <label class="label-form-cadastro">Cidade</label>
+                    <input class="input-form-cadastro-2" type="text"
+                           id="cidade">
                 </div>
-            </div>
+
+                <div class="divisor">
+                    <label class="label-form-cadastro">Bairro</label>
+                    <input class="input-form-cadastro-2" type="text"
+                           id="bairro">
+                </div>
+
+                <div class="divisor">
+                    <label class="label-form-cadastro">Rua</label>
+                    <input class="input-form-cadastro-1" type="text"
+                           id="rua">
+                </div>
+
+                <div class="divisor-1">
+                    <label class="label-form-cadastro">Número</label>
+                    <input class="input-form-cadastro-3" type="number"
+                           id="numero" placeholder="XXX">
+                </div>
+
+                <div class="divisor-2">
+                    <label class="label-form-cadastro">Complemento</label>
+                    <input class="input-form-cadastro-2" type="text"
+                           id="complemento" placeholder="Ex: Casa B">
+                </div>
+
+                <footer class="footer-form-cadastro">
+                    <button type="button" class="btn-cadastro" onclick="alterarEndereco()">Alterar</button>
+                </footer>
+            </form>
         </div>
     </div>
 
-    <!--Footer-->
-    <footer class="rodape">
-        <div class="div-info">
-            <div class="info">
-                <header class="titulo">FutShop</header>
-                <p class="texto">Somos uma loja vendedora de camisas tailandesas 1.1, buscando sempre trazer o melhor.
-                    para nossos clientes</p>
-            </div>
-
-            <div class="info">
-                <header class="titulo">Contatos</header>
-                <p class="texto">19 982544396</p>
-                <p class="texto">19 984597236</p>
-                <p class="texto">fafa@gmail.com</p>
-            </div>
-
-            <div class="info">
-                <header class="titulo">Seções</header>
-                <a class="texto-1" href="index.html">Home</a>
-                <a class="texto-1" class="item-menu" onclick="abrirMeusDados()">Meus dados</a>
-                <a class="texto-1" href="carrinho.html">Carrinho</a>
-            </div>
-
-            <div class="info">
-                <header class="titulo">Dúvidas</header>
-                <p class="texto-1">Como criar conta</p>
-                <p class="texto-1">Como mudar senha</p>
-                <p class="texto-1">Como recuperar senha</p>
-                <p class="texto-1">Como fazer pedido</p>
-            </div>
-        </div>
-        <div class="div-redes">
-            <header class="titulo-1">Redes</header>
-            <div class="div-imgs">
-                <img src="icon/github-icon.png" class="icon">
-                <img src="icon/instagram.png" class="icon">
-                <img src="icon/linkedin.png" class="icon">
-                <img src="icon/youtube.png" class="icon">
-            </div>
-        </div>
-    </footer>
-</main>
-
-<!--Form cadastro-->
-<div class="container-cadastro" id="containerCadastro">
-    <img src="icon/esconder.png" class="icon-esconder" onclick="renderizarFormCadastro(2)">
-
-    <div class="form-cadastro">
-        <!--Passo 2-->
-        <form class="step" id="step-2">
-            <div class="cadastro-titulo">
-                <h1 class="cadastro-titulo-texto">Dados de endereço</h1>
-                <button type="reset" class="btn-limpar"><img src="icon/lixo.png" width="20px"></button>
-            </div>
-
-            <div class="divisor">
-                <label class="label-form-cadastro">CEP</label>
-                <div class="linha-cep">
-                    <input class="input-form-cadastro-4" type="text" height="100%"
-                           id="cep" maxlength="8">
-                    <button class="btn-cep" type="button" onclick="buscarEnderecoPorCEP()">Buscar</button>
-                </div>
-            </div>
-
-            <div class="divisor">
-                <label class="label-form-cadastro">Estado</label>
-                <select id="estado" class="input-form-cadastro-3">
-                    <option value="AC">Acre</option>
-                    <option value="AL">Alagoas</option>
-                    <option value="AP">Amapá</option>
-                    <option value="AM">Amazonas</option>
-                    <option value="BA">Bahia</option>
-                    <option value="CE">Ceará</option>
-                    <option value="DF">Distrito Federal</option>
-                    <option value="ES">Espírito Santo</option>
-                    <option value="GO">Goiás</option>
-                    <option value="MA">Maranhão</option>
-                    <option value="MT">Mato Grosso</option>
-                    <option value="MS">Mato Grosso do Sul</option>
-                    <option value="MG">Minas Gerais</option>
-                    <option value="PA">Pará</option>
-                    <option value="PB">Paraíba</option>
-                    <option value="PR">Paraná</option>
-                    <option value="PE">Pernambuco</option>
-                    <option value="PI">Piauí</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="RN">Rio Grande do Norte</option>
-                    <option value="RS">Rio Grande do Sul</option>
-                    <option value="RO">Rondônia</option>
-                    <option value="RR">Roraima</option>
-                    <option value="SC">Santa Catarina</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="SE">Sergipe</option>
-                    <option value="TO">Tocantins</option>
-                    <option value="EX">Estrangeiro</option>
-                </select>
-            </div>
-
-            <div class="divisor">
-                <label class="label-form-cadastro">Cidade</label>
-                <input class="input-form-cadastro-2" type="text"
-                       id="cidade">
-            </div>
-
-            <div class="divisor">
-                <label class="label-form-cadastro">Bairro</label>
-                <input class="input-form-cadastro-2" type="text"
-                       id="bairro">
-            </div>
-
-            <div class="divisor">
-                <label class="label-form-cadastro">Rua</label>
-                <input class="input-form-cadastro-1" type="text"
-                       id="rua">
-            </div>
-
-            <div class="divisor">
-                <label class="label-form-cadastro">Número</label>
-                <input class="input-form-cadastro-3" type="number"
-                       id="numero">
-            </div>
-
-            <div class="divisor">
-                <label class="label-form-cadastro">Complemento</label>
-                <input class="input-form-cadastro-2" type="text"
-                       id="complemento">
-            </div>
-
-            <footer class="footer-form-cadastro">
-                <button type="button" class="btn-cadastro" onclick="alterarEndereco()">Alterar</button>
-            </footer>
-        </form>
+    <!--Message Box-->
+    <div class="esconderMessageBox" id="esconder">
+     <div class="message-box" id="mensagem">
+         <div class="texto-message-box" id="textoMensagem"></div>
+         <footer class="footer-message-box" id="btnMensagem">
+             <button class="btn-message-box" id="btnMessage" onclick="fecharMessageBox()">Ok</button>
+         </footer>
+     </div>
     </div>
-</div>
-
-<!--Barra de menu-->
-<input type="checkbox" class="menu" id="abrirMenu">
-<main class="container-menu">
-    <nav class="nav-menu">
-        <div class="menu-login" id="nomeUsuario"></div>
-
-        <header class="header-menu">FutShop</header>
-
-        <div class="menu-links">
-            <a class="item-menu" href="index.html">
-                <div class="img-menu"><img src="icon/iconCasa.png" class="icon-menu"></div>
-                <div class="texto-menu">Home</div>
-            </a>
-
-            <a class="item-menu" onclick="abrirMeusDados()">
-                <div class="img-menu"><img src="icon/user-dados.png" class="icon-menu"></div>
-                <div class="texto-menu">Meus dados</div>
-            </a>
-
-            <a class="item-menu" href="carrinho.html">
-                <div class="img-menu"><img src="icon/carrinho-menu.png" class="icon-menu"></div>
-                <div class="texto-menu">Carrinho</div>
-            </a>
-    </nav>
-
-    <label for="abrirMenu">
-        <img src="icon/esconder.png" class="icon-fechar-menu">
-    </label>
-</main>
-</body>
+ </body>
 </html>

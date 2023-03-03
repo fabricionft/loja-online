@@ -11,22 +11,25 @@ function renderizarFormLogin(acao){
 }
 
 function fazerLogin(){
-    $.ajax({
-        method: "GET",
-        url: "usuario/email/"+$('#email').val()+"/senha/"+$('#senha').val(),
-        success: function (dados){
-            if(dados.codigo != null){
-                localStorage.setItem('logado', 'logado');
-                localStorage.setItem('codigo', dados.codigo);
-                localStorage.setItem('nome', dados.nome.split(" ")[0]);
-                alert("Logado com sucesso");
-                location.reload();
+    if($('#email').val().length == 0 || $('#senha').val().length == 0) gerarMessageBox("rgb(253, 214, 214)", "Por favor preencha os campos corretamente!!", "Tentar novamente");
+    else{
+        $.ajax({
+            method: "POST",
+            url: "usuario/email/"+$('#email').val()+"/senha/"+$('#senha').val(),
+            success: function (dados){
+                if(dados.nome != null){
+                    localStorage.setItem('logado', 'logado');
+                    localStorage.setItem('codigo', dados.codigo);
+                    localStorage.setItem('nome', dados.nome.split(" ")[0]);
+                    localStorage.setItem('quantidadeItens', dados.quantidadeItens);
+                    gerarMessageBox("rgb(214, 253, 226", "Logado com sucesso!!", "Prosseguir", true);
+                }
+                else gerarMessageBox("rgb(253, 214, 214)", "Credenciais incorretas!!", "Tentar novamente");
             }
-            else alert("Credenciais erradas ou inexistentes, tente novamente!")
-        }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
-    });
+        }).fail(function(xhr, status, errorThrown){
+            alert("Erro ao salvar: " +xhr.responseText);
+        });
+    }
 }
 
 function sair(){
@@ -35,18 +38,21 @@ function sair(){
 }
 
 function buscarEnderecoPorCEP(){
-    $.ajax({
-        method: "GET",
-        url: "https://viacep.com.br/ws/"+$('#cep').val()+"/json/",
-        success: function (dados){
-            $('#estado').val(dados.uf);
-            $('#cidade').val(dados.localidade);
-            $('#bairro').val(dados.bairro);
-            $('#rua').val(dados.logradouro);
-        }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
-    });
+    if($('#cep').val() == "") gerarMessageBox("rgb(253, 214, 214)", "Por favor insira o CEP!!", "Ok");
+    else{
+        $.ajax({
+            method: "GET",
+            url: "https://viacep.com.br/ws/"+$('#cep').val()+"/json/",
+            success: function (dados){
+                $('#estado').val(dados.uf);
+                $('#cidade').val(dados.localidade);
+                $('#bairro').val(dados.bairro);
+                $('#rua').val(dados.logradouro);
+            }
+        }).fail(function(xhr, status, errorThrown){
+            alert("Erro ao salvar: " +xhr.responseText);
+        });
+    }
 }
 
 function cadastrarUsuario(){
@@ -71,8 +77,8 @@ function cadastrarUsuario(){
         }),
         contentType: "application/json; charset-utf8",
         success: function (dados){
-            alert(dados)
-            location.reload();
+            if(dados.nome != null) gerarMessageBox("rgb(214, 253, 226", "Cadastro concluído com sucesso!!", "Prosseguir", true);
+            else gerarMessageBox("rgb(253, 214, 214)", "Este email já foi cadastrado!!", "Tentar novamente");
         }
     }).fail(function(xhr, status, errorThrown){
         alert("Erro ao salvar: " +xhr.responseText);
@@ -114,8 +120,7 @@ function alterarEndereco(){
         }),
         contentType: "application/json; charset-utf8",
         success: function (dados){
-            alert("ENdereço alterado com sucesso!!")
-            location.reload();
+            gerarMessageBox("rgb(214, 253, 226", "Endereço alerado com sucesso!!", "Prosseguir");
         }
     }).fail(function(xhr, status, errorThrown){
         alert("Erro ao sallet: " +xhr.responseText);
@@ -133,5 +138,4 @@ $('#next').click(function (){
 
 $('#back').click(function (){
     $('#step-2').hide().prev().show();
-    $('#nome').val("testo");
 });

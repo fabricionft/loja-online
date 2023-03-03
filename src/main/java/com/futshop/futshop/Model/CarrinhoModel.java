@@ -6,6 +6,7 @@ import jakarta.persistence.Embeddable;
 public class CarrinhoModel {
 
     private Long codigo;
+    private String imagem;
     private String descricaoProduto;
     private Integer quantidade;
     private String tamanho;
@@ -19,6 +20,14 @@ public class CarrinhoModel {
 
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
     public String getDescricaoProduto() {

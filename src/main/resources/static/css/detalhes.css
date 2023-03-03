@@ -1,6 +1,6 @@
 .container-detalhes{
     width: 100%;
-    min-height: 600px;
+    min-height: 575px;
     height: auto;
     display: flex;
     align-items: center;
@@ -48,6 +48,8 @@
     margin: 12.5px 0;
 }
 
+.linha-valor{flex-direction: column; align-items: flex-start;}
+
 .detalhes-promocao, .detalhes-estoque{
     width: 50%;
     height: 100%;
@@ -74,7 +76,7 @@
     box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
 }
 
-.texto-numeros, .texto-descricao, .texto-valor{
+.texto-numeros, .texto-descricao, .base, .valor-base, .valor-desconto{
     width: 95%;
     display: flex;
     align-items: center;
@@ -89,8 +91,19 @@
 .texto-numeros{margin-top: 5px; justify-content: center;}
 
 .texto-descricao{font-weight: normal;}
-.texto-valor{color: rgb(3, 208, 71); font-size: 20px;}
 
+.base, .valor-base{
+    width: auto;
+    font: 14px calibri;
+    color: rgb(200, 199, 199);
+}
+
+.valor-base{text-decoration:line-through;}
+.valor-desconto{
+    color: rgb(3, 208, 71);
+    font-size: 20px;
+    font-weight: bold;
+}
 
 .button-adcionar{
     width: 100%;
@@ -105,7 +118,7 @@
 
 @media screen and (max-width: 650px) {
     .detalhes{
-        width: 85%;
+        width: 90%;
         flex-wrap: wrap;
         margin: 40px 0;
     }

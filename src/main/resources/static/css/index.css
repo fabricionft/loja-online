@@ -5,6 +5,7 @@ body{
 
 .container-sections{
     width: 90%;
+    min-height: 530px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -12,22 +13,8 @@ body{
     margin: 30px 0;
 }
 
-.header-produto{
-    width: 93.5%;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    color: #222;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 22px;
-}
-
-.section-promocao, .section-propaganda, .section-novidade, .section-produto{
+.header-produto, .section-produto, .section-propaganda{
     width: 100%;
-    height: inherit;
     display: flex;
     align-items: center;
     justify-content: left;
@@ -36,7 +23,23 @@ body{
 
 .section-propaganda{
     width: auto;
-    justify-content: center;
+}
+
+.texto-titulo-section{
+    color: #222;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 22px;
+}
+
+.btn-limpar-pesquisa{
+    width: 150px;
+    height: 40px;
+}
+
+.texto-titulo-section, .btn-limpar-pesquisa{
+    margin: 20px 1%;
 }
 
 .img-propaganda{
@@ -45,10 +48,9 @@ body{
 }
 
 .produto{
-    width: 21%;
-    margin-left: 3%;
-    margin-bottom: 2.5%;
-    height:  400px;
+    width: 22%;
+    margin: 0 1% 1% 1.5%;
+    height:  425px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -97,7 +99,7 @@ body{
 .img-produto{
     justify-content: center;
     width: 90%;
-    height: 60%;
+    height: 57.5%;
 }
 
 .desc-produto{
@@ -110,9 +112,23 @@ body{
 }
 
 .valor-produto{
-    height: 10%;
+    height: 12.5%;
+    flex-direction: column;
     align-items: flex-start;
+}
+
+.valor-base, .valor-desconto, .base{
+    margin: 0;
+    display: flex;
+    font: 14px calibri;
+    color: rgb(115, 115, 115);
+}
+
+.valor-base{text-decoration:line-through;}
+
+.valor-desconto{
     font: 20px "Open Sans",Arial,Helvetica,sans-serif;
+    letter-spacing: -1px;
     color: #00a000;
     font-weight: bold;
 }
@@ -136,26 +152,20 @@ body{
 
 
 @media screen and (max-width: 1000px) {
-    .container-sections{
-        width: 85%;
-    }
-
-    .section-promocao, .section-propaganda, .section-novidade, .section-produto{
+    .section-produto{
         justify-content: space-between;
     }
 
+    .texto-titulo-section, .btn-limpar-pesquisa{
+        margin: 20px 0;
+    }
+
     .produto{
-        width: 47.5%;
-        margin: 0;
-        margin-bottom: 10%;
+        width: 47%;
+        margin: 0 0 5%;
     }
 }
 
 @media screen and (max-width: 500px) {
-    
-    .produto{
-        width: 100%;
-        margin: 0;
-        margin-bottom: 10%;
-    }
+    .produto{width: 100%; margin: 0 0 10%;}
 }

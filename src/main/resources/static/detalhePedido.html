@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhe pedido</title>
+
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/header-main-footer.css">
+    <link rel="stylesheet" href="css/messageBox.css">
+    <link rel="stylesheet" href="css/detalhePedido.css">
+
+    <script
+            src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous" defer>
+    </script>
+    <script src="js/geral.js" defer></script>
+    <script src="js/detalhePedidos.js" defer></script>
+ </head>
+
+ <body>
+<!--Barra de menu-->
+<input type="checkbox" class="input-menu" id="abrirMenu">
+<div class="sobreposicao-menu"></div>
+<nav class="container-menu">
+    <div class="menu-login" id="nomeUsuario">
+        <p class="usuario-logado" id="estadoUSuario"></p>
+    </div>
+
+    <header class="header-menu">FutShop</header>
+
+    <div class="menu-links">
+        <a class="item-menu" href="index.html">
+            <div class="img-menu"><img src="icon/iconCasa.png" class="icon-menu"></div>
+            <div class="texto-menu">Home</div>
+        </a>
+
+        <a class="item-menu" onclick="abrirMeusDados()">
+            <div class="img-menu"><img src="icon/user-dados.png" class="icon-menu"></div>
+            <div class="texto-menu">Meus dados</div>
+        </a>
+
+        <a class="item-menu" href="meusPedidos.html">
+            <div class="img-menu"><img src="icon/pedido.png" class="icon-menu"></div>
+            <div class="texto-menu">Meus pedidos</div>
+        </a>
+
+        <a class="item-menu" href="carrinho.html">
+            <div class="img-menu"><img src="icon/carrinho-menu.png" class="icon-menu"></div>
+            <div class="texto-menu">Carrinho</div>
+        </a>
+    </div>
+
+    <div class="margem-sair">
+        <label for="abrirMenu">
+            <img src="icon/esconder.png" class="icon-fechar-menu">
+        </label>
+    </div>
+</nav>
+
+<!--Conteúdo-->
+<main class="container-conteudo">
+    <header class="cabecalho">
+        <nav class="nav-atalhos">
+            <label for="abrirMenu" class="icon-abrir-menu">
+                <img src="icon/botao-de-menu-de-tres-linhas-horizontais.png" width="25px">
+            </label>
+
+            <a class="aCarrinho" href="carrinho.html">
+                <img src="icon/carrinho-carrinho.png" width="33px">
+                <p class="quantidade-carrinho" id="quantidade-carrinho">0</p>
+            </a>
+        </nav>
+
+        <div class="margem"></div>
+    </header>
+
+    <div class="container-detalhe-pedidos">
+        <div class="detalhe-pedido">
+            <div class="margem-detalhe-pedido">
+                <div class="info-usuario-pedido">
+                    <p class="subtitulo-detalhe-pedido">Nome cliente</p>
+                    <p class="texto-detalhe-pedido" id="nomeCliente">Fabrício Ferreira Tavares</p>
+
+                    <p class="subtitulo-detalhe-pedido">Email</p>
+                    <p class="texto-detalhe-pedido" id="emailCliente">fafa@gmail.com</p>
+
+                    <p class="subtitulo-detalhe-pedido">Telefone</p>
+                    <p class="texto-detalhe-pedido" id="celularCliente">19 9825345424</p>
+
+                    <p class="subtitulo-detalhe-pedido">Número pedido</p>
+                    <p class="texto-detalhe-pedido" id="numeroPedido">35435435</p>
+
+                    <p class="subtitulo-detalhe-pedido">Data pedido</p>
+                    <p class="texto-detalhe-pedido" id="dataPedido">20/07/2023</p>
+
+                    <p class="subtitulo-detalhe-pedido">Status pedido</p>
+                    <p class="texto-detalhe-pedido" id="statusPedido">Esperando confirmação</p>
+
+                    <p class="subtitulo-detalhe-pedido">Quantidade de itens</p>
+                    <p class="texto-detalhe-pedido" id="quantidadeItensPedido">3</p>
+
+                    <p class="subtitulo-detalhe-pedido">Método de pagamento</p>
+                    <p class="texto-detalhe-pedido" id="metodoPagamentoPedido">Pix</p>
+
+                    <p class="subtitulo-detalhe-pedido">Parcelamento</p>
+                    <p class="texto-detalhe-pedido" id="parcelamentoPedido">R$ 348,99</p>
+
+                    <p class="subtitulo-detalhe-pedido">Valor final</p>
+                    <p class="texto-detalhe-pedido" id="valorpedido">R$ 348,99</p>
+
+                    <p class="subtitulo-detalhe-pedido">Endereço de entrega</p>
+                    <p class="texto-detalhe-pedido" id="enderecoPedido">13145-848, Paulínia - SP, São José 2, Rua Agripino Jacinto de Oliveira Nº31</p>
+                </div>
+                <div class="info-itens-pedido" id="itensPedido">
+                    <div class="linha-principal">
+                        <div class="coluna-principal-1">&emsp;Descrição</div>
+                        <div class="coluna-principal-2">Qtd</div>
+                        <div class="coluna-principal-3">Preço</div>
+                        <div class="coluna-principal-4">Subtotal</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="rodape">
+        <div class="div-info">
+            <div class="info">
+                <header class="titulo">FutShop</header>
+                <p class="texto">Somos uma loja vendedora de camisas tailandesas 1.1, buscando sempre trazer o melhor.
+                    para nossos clientes</p>
+            </div>
+
+            <div class="info">
+                <header class="titulo">Contatos</header>
+                <p class="texto">19 982544396</p>
+                <p class="texto">19 984597236</p>
+                <p class="texto">fafa@gmail.com</p>
+            </div>
+
+            <div class="info">
+                <header class="titulo">Seções</header>
+                <a class="texto-1" href="index.html">Home</a>
+                <a class="texto-1" class="item-menu" onclick="abrirMeusDados()">Meus dados</a>
+                <a class="texto-1" href="carrinho.html">Carrinho</a>
+            </div>
+
+            <div class="info">
+                <header class="titulo">Dúvidas</header>
+                <p class="texto-1">Como criar conta</p>
+                <p class="texto-1">Como mudar senha</p>
+                <p class="texto-1">Como recuperar senha</p>
+                <p class="texto-1">Como fazer pedido</p>
+            </div>
+        </div>
+        <div class="div-redes">
+            <header class="titulo-1">Redes</header>
+            <div class="div-imgs">
+                <img src="icon/github-icon.png" class="icon">
+                <img src="icon/instagram.png" class="icon">
+                <img src="icon/linkedin.png" class="icon">
+                <img src="icon/youtube.png" class="icon">
+            </div>
+        </div>
+    </footer>
+ </main>
+ </body>
+</html>

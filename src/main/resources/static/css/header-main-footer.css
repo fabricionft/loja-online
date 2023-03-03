@@ -1,42 +1,50 @@
 /*------------------  Carrinho  --------------------*/
 .cabecalho{
     width: 90%;
-    height: 70px;
+    height: auto;
     background: rgb(255, 255, 255);
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
     margin-top: 25px;
-    border-radius: 8px;
-}
-
-.nav-pesquisa{
-    width: 100%;
-    height: 90%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 8px 8px 0 0;
     position: relative;
 }
 
-.linha{
-    width: 30%;
-    height: 60%;
+.nav-atalhos, .nav-pesquisa{
+    width: 95%;
+    height: 70px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-pesquisa{
     position: absolute;
-    left: 30px;
+    justify-content: left;
+}
+
+.linha{
+    width: 40%;
+    height: 40px;
+    position: relative;
 }
 
 .input-pesquisar{
     width: 100%;
     height: 100%;
     border-radius: 8px;
-    padding-left: 12px;
     color: rgb(183, 181, 181);
     border: 1px solid rgb(211, 209, 209);
+    padding-left: 7.5px;
 }
 
 .btn-pesquisa{
-    height: 80%;
+    top: 0;
+    right: -10px;
+    height: 100%;
     width: 50px;
     display: flex;
     align-items: center;
@@ -44,9 +52,6 @@
     cursor: pointer;
     background: transparent;
     position: absolute;
-    width: 35px;
-    top: 20%;
-    right: -10px;
     border: none;
 }
 
@@ -55,22 +60,33 @@
 }
 
 .aCarrinho{
-    position: absolute;
+    display: flex;
+    align-items: center;
+    height: auto;
+    border: 1px solid reds;
     cursor: pointer;
-    right: 40px;
+    position: relative;
+    z-index: 1;
 }
 
 .quantidade-carrinho{
-    position: absolute;
-    right: 35px;
-    top: -13px;
-    font: 20px impact;
-    color: #00a000;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(79, 48, 179);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17.5px;
+    color: #ffffff;
     margin: 0;
+    margin-top: -20px;
+    margin-left: -5px;
+    border-radius: 25%;
 }
 
 .margem{
-    height: 10%;
+    height: 5px;
     width: 100%;
     background-image: linear-gradient(to right, rgb(79, 48, 179), rgb(23, 210, 235));
     border-radius: 0 0 8px 8px;
@@ -163,28 +179,17 @@
     display: none;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 800px) {
 
-    .btn-menu{
-        left: 15px;
-        display: flex;
+    .nav-atalhos{
+        flex-direction: row;
     }
 
     .linha{
         width: 55%;
-        left: 55px;
+        left: 40px;
     }
 
-    .input-pesquisar{
-        font-size: 11PX;
-    }
-
-    .aCarrinho{
-        right: 15px
-    }
-}
-
-@media screen and (max-width: 1000px) {
     .info{
         width: 50%;
         margin-bottom: 25px;
@@ -192,5 +197,21 @@
 }
 
 @media screen and (max-width: 500px) {
+    .nav-atalhos, .nav-pesquisa{
+        width: 90%;
+        height: 60px;
+    }
+
+    .nav-pesquisa{
+        position: initial;
+        height: 50px;
+    }
+
+    .linha{
+        width: 95%;
+        top: -10px;
+        left: 0;
+    }
+
     .info{width: 100%;}
 }
