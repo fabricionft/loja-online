@@ -1,6 +1,6 @@
 .container-detalhes{
     width: 100%;
-    min-height: 575px;
+    min-height: 585px;
     height: auto;
     display: flex;
     align-items: center;
@@ -120,7 +120,7 @@
     .detalhes{
         width: 90%;
         flex-wrap: wrap;
-        margin: 40px 0;
+        margin: 42.5px 0;
     }
 
     .detalhes-img, .detalhes-info{width: 100%;}

@@ -8,10 +8,15 @@ window.onload = () =>{
 }
 
 function renderizarFormResumoPedido(acao){
-    if(acao == 1 && $('#totalCarrinho').html() > 0)$('#esconderPedido').addClass('ativo');
+    if(acao == 1 && $('#totalCarrinho').html() > 0){
+        $('#esconderPedido').addClass('ativo');
+        $('#enderecoPedido').html(localStorage.getItem('endereco'));
+        travarTela();
+    }
     else if(acao == 2){
         $('#esconderPedido').removeClass('ativo');
         $('.select-pedido').val("escolha");
+        destravarTela();
     }
     else gerarMessageBox("rgb(253, 214, 214)", "É necessário ter ao menos um item no carrinho para fazer um pedido!", "Ok");
 }
@@ -41,7 +46,7 @@ function confirmarPedido(){
     if(tipoPagamento != "escolha" && quantidadeParcelas != "escolha"){
         $.ajax({
             method: "POST",
-            url: "pedidos/codigo/"+localStorage.getItem('codigo')+"/formaPagamento/"+tipoPagamento+"/quantidadeParcelas/"+quantidadeParcelas,
+            url: "pedidos/cliente/"+localStorage.getItem('codigo')+"/formaPagamento/"+tipoPagamento+"/quantidadeParcelas/"+quantidadeParcelas,
             success: function (dados){
                 renderizarQuantidade(0);
                 renderizarFormResumoPedido(2);

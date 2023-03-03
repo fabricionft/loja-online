@@ -19,7 +19,7 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioService service;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -43,40 +43,41 @@ public class UsuarioController {
 
     @GetMapping
     public List<UsuarioResponseDTO> listarUsuarios(){
-        return converterListaEmDTO(usuarioService.listarUsuarios());
+        return converterListaEmDTO(service.listarUsuarios());
     }
 
     @GetMapping(path = "/{codigo}")
     public ResponseEntity<?> buscarUsuarioPorID(@PathVariable Long codigo){
-        return new ResponseEntity<>(converterEmDTO(usuarioService.buscarUsuarioPorID(codigo)), HttpStatus.OK);
+        return new ResponseEntity<>(converterEmDTO(service.buscarUsuarioPorID(codigo)), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> salvarUsuario(@RequestBody UsuarioRequestDTO usuarioDTO) throws AlreadyBoundException {
-        UsuarioModel usuario = usuarioService.salvarUsuario(converterEmEntidade(usuarioDTO));
+        UsuarioModel usuario = service.salvarUsuario(converterEmEntidade(usuarioDTO));
         return new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/email/{email}/senha/{senha}")
     public ResponseEntity<?> fazerLogin(@PathVariable String email,
                                         @PathVariable String senha){
-        return new ResponseEntity<>(converterEmDTO(usuarioService.fazerLogin(email, senha)), HttpStatus.OK);
+        if(service.fazerLogin(email, senha) == null) return  null;
+        else return new ResponseEntity<>(converterEmDTO(service.fazerLogin(email, senha)), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{codigo}")
     public ResponseEntity<?> alterarEndereco(@PathVariable Long codigo,
                                              @RequestBody UsuarioRequestDTO endereco){
-        UsuarioModel usuario = usuarioService.alterarEndereco(codigo, converterEmEntidade(endereco));
+        UsuarioModel usuario = service.alterarEndereco(codigo, converterEmEntidade(endereco));
         return new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.CREATED);
     }
 
     @DeleteMapping
     public ResponseEntity<?> excluirTodosUsuarios(){
-        return  new ResponseEntity<>(usuarioService.excluirTodosUsuarios(), HttpStatus.OK);
+        return  new ResponseEntity<>(service.excluirTodosUsuarios(), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/usuario/{codigo}")
     public ResponseEntity<?> excluirUsuario(@PathVariable Long codigo){
-       return new ResponseEntity<>(usuarioService.excluirUsuarioPorID(codigo), HttpStatus.OK);
+       return new ResponseEntity<>(service.excluirUsuarioPorID(codigo), HttpStatus.OK);
     }
 }

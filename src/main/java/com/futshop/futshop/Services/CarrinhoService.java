@@ -23,14 +23,14 @@ public class CarrinhoService {
     }
 
     public UsuarioModel adcionarItem(Long codigo, Long codigoUser){
-        CarrinhoModelUsuario itens = new CarrinhoModelUsuario();
         ProdutoModel produto = produtoRepository.buscarPorID(codigo);
         UsuarioModel usuario = usuarioRepository.buscarPorID(codigoUser);
+        CarrinhoModelUsuario itens = new CarrinhoModelUsuario();
 
         if(produto.getQuantidadeEstoque() > 0){
             int cont = 0;
             for(CarrinhoModelUsuario item: usuario.getItens()){
-                if(produto.getCodigo() == item.getCodigo()){
+                if(item.getCodigo().equals(produto.getCodigo())){
                     soma(produto, item);
                     cont++;
                 }
@@ -60,11 +60,11 @@ public class CarrinhoService {
         UsuarioModel usuario = usuarioRepository.buscarPorID(codigoUSer);
 
         for(CarrinhoModelUsuario item: usuario.getItens()){
-            if(item.getCodigo() == codigoProd && acao == 1 && produto.getQuantidadeEstoque() > 0) {
+            if(item.getCodigo().equals(codigoProd) && acao == 1 && produto.getQuantidadeEstoque() > 0) {
                 soma(produto, item);
                 break;
             }
-            if(item.getCodigo() == codigoProd && acao == 2){
+            if(item.getCodigo().equals(codigoProd) && acao == 2){
                 subtracao(produto, item, codigoUSer);
                 break;
             }
@@ -80,7 +80,7 @@ public class CarrinhoService {
         UsuarioModel usuario = usuarioRepository.buscarPorID(codigoUser);
 
         for(int i = 0; i <= usuario.getItens().size(); i++){
-            if(usuario.getItens().get(i).getCodigo() == codigoProd){
+            if(usuario.getItens().get(i).getCodigo().equals(codigoProd)){
                 produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + usuario.getItens().get(i).getQuantidade());
                 usuario.getItens().remove(i);
                 break;

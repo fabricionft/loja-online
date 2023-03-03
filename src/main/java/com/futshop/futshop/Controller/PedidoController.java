@@ -29,10 +29,16 @@ public class PedidoController {
         return  service.buscarPedidoPorID(codigo);
     }
 
-    @PostMapping(path = "/codigo/{codigoCLiente}/formaPagamento/{formaPagamento}/quantidadeParcelas/{quantidadeParcelas}")
-    public PedidoModel salvar(@PathVariable Long codigoCLiente,
-                              @PathVariable String formaPagamento,
-                              @PathVariable Integer quantidadeParcelas){
-        return  service.salvarPedido(codigoCLiente, formaPagamento, quantidadeParcelas);
+    @PostMapping(path = "/cliente/{codigoCLiente}/formaPagamento/{formaPagamento}/quantidadeParcelas/{quantidadeParcelas}")
+    public PedidoModel fazerPedido(@PathVariable Long codigoCLiente,
+                                   @PathVariable String formaPagamento,
+                                   @PathVariable Integer quantidadeParcelas){
+        return  service.fazerPedido(codigoCLiente, formaPagamento, quantidadeParcelas);
+    }
+
+    @PutMapping(path = "/pedido/{codigo}/acao/{acao}")
+    public PedidoModel mudarStatus(@PathVariable Long codigo,
+                                   @PathVariable Integer acao){
+        return service.mudarStatusPedido(codigo, acao);
     }
 }

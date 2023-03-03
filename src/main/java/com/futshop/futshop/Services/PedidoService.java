@@ -1,10 +1,8 @@
 package com.futshop.futshop.Services;
 
-import com.futshop.futshop.Model.CarrinhoModelUsuario;
-import com.futshop.futshop.Model.PedidoModel;
-import com.futshop.futshop.Model.CarrinhoModelPedido;
-import com.futshop.futshop.Model.UsuarioModel;
+import com.futshop.futshop.Model.*;
 import com.futshop.futshop.Repository.PedidoRepository;
+import com.futshop.futshop.Repository.ProdutoRepository;
 import com.futshop.futshop.Repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,9 @@ public class PedidoService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     private CarrinhoModelPedido converterEmCarrinhoPedido(CarrinhoModelUsuario carrinho){
@@ -44,7 +45,7 @@ public class PedidoService {
         return pedidoRepository.buscarPedidoPorID(codigo);
     }
 
-    public PedidoModel salvarPedido( Long codigoCLiente, String formaPagamento, Integer quantidadeParcelas){
+    public PedidoModel fazerPedido( Long codigoCLiente, String formaPagamento, Integer quantidadeParcelas){
         UsuarioModel usuario = usuarioRepository.buscarPorID(codigoCLiente);
         PedidoModel pedido = new PedidoModel();
         Random rd = new Random();
@@ -81,6 +82,24 @@ public class PedidoService {
         usuario.setValorTotalItens(0.0);
         usuarioRepository.save(usuario);
 
+        return pedidoRepository.save(pedido);
+    }
+
+    public PedidoModel mudarStatusPedido(Long codigo, Integer acao){
+        List<ProdutoModel> produtos = produtoRepository.findAll();
+        PedidoModel pedido = pedidoRepository.buscarPedidoPorID(codigo);
+
+        if(acao.equals(1)) pedido.setStatus("Pedido confirmado");
+        if(acao.equals(2)) {
+            pedido.setStatus("Pedido negado");
+            for(CarrinhoModelPedido item: pedido.getItens()){
+                for(ProdutoModel produto: produtos) {
+                    if(item.getCodigo().equals(produto.getCodigo())){
+                        produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + item.getQuantidade());
+                    }
+                }
+            }
+        }
         return pedidoRepository.save(pedido);
     }
 }

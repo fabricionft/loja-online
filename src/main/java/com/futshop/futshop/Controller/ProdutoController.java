@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProdutoController {
 
     @Autowired
-    private ProdutoService produtoService;
+    private ProdutoService service;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -42,42 +42,52 @@ public class ProdutoController {
 
     @GetMapping
     public ResponseEntity<?> listar(){
-        return new ResponseEntity<>(converterListaEmDTO(produtoService.listarProdutos()), HttpStatus.OK);
+        return new ResponseEntity<>(converterListaEmDTO(service.listarProdutos()), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/promocoes")
-    public ResponseEntity<?> listarPromocoes(){
-        return new ResponseEntity<>(converterListaEmDTO(produtoService.listarPromocoes()), HttpStatus.OK);
+    @GetMapping(path = "/tipo/{tipo}")
+    public ResponseEntity<?> filtrarPorTipo(@PathVariable String tipo){
+        return new ResponseEntity<>(converterListaEmDTO(service.filtrarPorTipo(tipo)), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/novidades")
-    public ResponseEntity<?> listarNovidades(){
-        return new ResponseEntity<>(converterListaEmDTO(produtoService.listarNovidades()), HttpStatus.OK);
+    @GetMapping(path = "/promocaoDesc")
+    public ResponseEntity<?> ordenarPromocaoEmOrdemDecrescente(){
+        return new ResponseEntity<>(converterListaEmDTO(service.ordenarPromocaoEmOrdemDecrescente()), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/valorAsc")
+    public ResponseEntity<?> ordenarValorEmOrdemCrescente(){
+        return new ResponseEntity<>(converterListaEmDTO(service.ordenarValorEmOrdemCrescente()), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/valorDesc")
+    public ResponseEntity<?> ordenarValorEmOrdemDecrescente(){
+        return new ResponseEntity<>(converterListaEmDTO(service.ordenarValorEmOrdemDecrescente()), HttpStatus.OK);
     }
 
     @GetMapping(path = "descricao/{descricao}")
     public ResponseEntity<?> listarPesquisados(@PathVariable String descricao){
-        return new ResponseEntity<>(converterListaEmDTO(produtoService.buscarPorDescricao(descricao)), HttpStatus.OK);
+        return new ResponseEntity<>(converterListaEmDTO(service.buscarPorDescricao(descricao)), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{codigo}")
     public ResponseEntity<?> buscarPorID(@PathVariable Long codigo){
-        return new ResponseEntity(converterParaDTO(produtoService.buscarProdutoPorID(codigo)), HttpStatus.OK);
+        return new ResponseEntity(converterParaDTO(service.buscarProdutoPorID(codigo)), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> salvar(@RequestBody ProdutoRequestDTO produtoDTO) {
-        ProdutoModel produto = produtoService.salvarProduto(converterParaEntidade(produtoDTO));
+        ProdutoModel produto = service.salvarProduto(converterParaEntidade(produtoDTO));
         return new ResponseEntity<>(converterParaDTO(produto), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{codigo}")
     public ResponseEntity<?> deletar(@PathVariable Long codigo){
-        return new ResponseEntity<>(produtoService.deletarProdutoPorID(codigo), HttpStatus.OK);
+        return new ResponseEntity<>(service.deletarProdutoPorID(codigo), HttpStatus.OK);
     }
 
     @DeleteMapping()
     public ResponseEntity<?> deletarTodos(){
-        return new ResponseEntity<>(produtoService.deletarTodosProdutos(), HttpStatus.OK);
+        return new ResponseEntity<>(service.deletarTodosProdutos(), HttpStatus.OK);
     }
 }

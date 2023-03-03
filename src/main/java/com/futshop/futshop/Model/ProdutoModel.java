@@ -3,12 +3,6 @@ package com.futshop.futshop.Model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -28,6 +22,9 @@ public class ProdutoModel {
     @Column(length = 400, nullable = false)
     private String descricao;
 
+    @Column(length = 50, nullable = false)
+    private String tipo;
+
     @Column(length = 3, nullable = false)
     private Integer promocao;
 
@@ -44,5 +41,5 @@ public class ProdutoModel {
     private Double valorComDesconto;
 
     @Column(length = 50, nullable = false)
-    private Date dataPostagem = new Date();
+    private String dataPostagem;
 }

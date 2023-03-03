@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class CarrinhoController {
 
     @Autowired
-    private CarrinhoService carrinhoService;
+    private CarrinhoService service;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -26,30 +26,30 @@ public class CarrinhoController {
 
     @GetMapping(path = "/{codigo}")
     public ResponseEntity<?> itensUsuario(@PathVariable Long codigo){
-        return new ResponseEntity<>(converterEmDTO(carrinhoService.listarItensUsuario(codigo)), HttpStatus.OK);
+        return new ResponseEntity<>(converterEmDTO(service.listarItensUsuario(codigo)), HttpStatus.OK);
     }
 
     @PostMapping(path = "/produto/{codigo}/usuario/{codigoUser}")
     public ResponseEntity<?> adcionarItem(@PathVariable Long codigo,
                                           @PathVariable Long codigoUser){
-        return new ResponseEntity<>(converterEmDTO(carrinhoService.adcionarItem(codigo, codigoUser)), HttpStatus.CREATED);
+        return new ResponseEntity<>(converterEmDTO(service.adcionarItem(codigo, codigoUser)), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/produto/{codigo}/usuario/{codigoUser}/acao/{acao}")
     public ResponseEntity<?> alterarItem(@PathVariable Long codigo,
                                          @PathVariable Long codigoUser,
                                          @PathVariable Integer acao){
-        return new ResponseEntity<>(converterEmDTO(carrinhoService.alterarQuantidadeItem(codigo, codigoUser, acao)), HttpStatus.OK);
+        return new ResponseEntity<>(converterEmDTO(service.alterarQuantidadeItem(codigo, codigoUser, acao)), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/produto/{codigoProd}/usuario/{codigoUser}")
     public ResponseEntity<?> excluirItem(@PathVariable Long codigoProd,
                                          @PathVariable Long codigoUser){
-        return new ResponseEntity<>(converterEmDTO(carrinhoService.excluirItem(codigoProd, codigoUser)), HttpStatus.OK);
+        return new ResponseEntity<>(converterEmDTO(service.excluirItem(codigoProd, codigoUser)), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/usuario/{codigo}")
     public ResponseEntity<?> excluirItens(@PathVariable Long codigo){
-        return new ResponseEntity<>(converterEmDTO(carrinhoService.excluirItens(codigo)), HttpStatus.OK);
+        return new ResponseEntity<>(converterEmDTO(service.excluirItens(codigo)), HttpStatus.OK);
     }
 }

@@ -9,7 +9,7 @@ window.onload = () => {
 }
 
 function listarItens(){
-    for(var i = 0; i<= 600; i++) $('#linha-carrinho').remove();
+    while($("[name='linha']").length > 0) $('#linha-carrinho').remove();
     $.ajax({
         method: "GET",
         url: "carrinho/"+localStorage.getItem('codigo'),
@@ -19,7 +19,7 @@ function listarItens(){
                 listaItens(item);
             });
             ini = lista.length;
-            $('#totalCarrinho').html(dados.valorTotalItens.toFixed(2));
+            $('#totalCarrinho').html(" "+dados.valorTotalItens.toFixed(2));
         }
     }).fail(function(xhr, status, errorThrown){
         alert("Erro ao salvar: " +xhr.responseText);
@@ -39,7 +39,6 @@ function adcionaItens(id){
         });
     }
     else gerarMessageBox("rgb(253, 214, 214)", "É necessário fazer login para adcionar um item ao carrinho!!", "Ok");
-
 }
 
 var ini;
@@ -55,10 +54,10 @@ function alterar(codigo, acao){
 
             lista.forEach(item => {
                 $('#quantidadeItens-'+item.codigo).html(item.quantidade);
-                $('#valorFinal-'+item.codigo).html("R$ "+item.precoFinal.toFixed(2));
+                $('#valorFinal-'+item.codigo).html(item.precoFinal.toFixed(2));
             });
 
-            $('#totalCarrinho').html(dados.valorTotalItens.toFixed(2));
+            $('#totalCarrinho').html(" "+dados.valorTotalItens.toFixed(2));
         }
     }).fail(function(xhr, status, errorThrown){
         alert("Erro ao salvar: " +xhr.responseText);
@@ -80,20 +79,20 @@ function excluir(){
 
 function listaItens(dados){
     $('#itensCarrinho').append(
-        '<tr class="linha-carrinho" id="linha-carrinho">'+
+        '<tr class="linha-carrinho" name="linha" id="linha-carrinho">'+
             '<td class="coluna-1">'+
                 '<div class="img-carrinho"><img src="'+dados.imagem+'" class="imgs-carrinho"></div>'+
                 '<div class="desc-carrinho">'+dados.descricaoProduto+' - '+dados.tamanho+'</div>'+
             '</td>'+
             '<td class="coluna-2">'+
-                '<div class="texto-quantidade-carrinho"><p id="quantidadeItens-'+dados.codigo+'">'+dados.quantidade+'</p></div>'+
+                '<p class="texto-quantidade-carrinho" id="quantidadeItens-'+dados.codigo+'">'+dados.quantidade+'</p>'+
                 '<div class="btns-quantidade-carrinho">'+
                     '<button class="btn-quantidade" onclick="alterar('+dados.codigo+","+1+')">+</button>'+
                     '<button class="btn-quantidade" onclick="alterar('+dados.codigo+","+2+')">-</button>'+
                 '</div>'+
             '</td>'+
-            '<td class="coluna-3">R$ '+dados.precoUnitario.toFixed(2)+'</td>'+
-            '<td class="coluna-4" id="valorFinal-'+dados.codigo+'">R$ '+dados.precoFinal.toFixed(2)+'</td>'+
+            '<td class="coluna-3">'+dados.precoUnitario.toFixed(2)+'</td>'+
+            '<td class="coluna-4" id="valorFinal-'+dados.codigo+'">'+dados.precoFinal.toFixed(2)+'</td>'+
         '</tr>'
     );
 }

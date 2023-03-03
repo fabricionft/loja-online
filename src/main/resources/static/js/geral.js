@@ -12,27 +12,42 @@ function renderizarQuantidade(quantidade){
 
 function abrirMeusDados(){
     if(verificarLogin()) location.href="meusDados.html";
-    else{
-        renderizarFormLogin(1);
-        gerarMessageBox("rgb(253, 214, 214)", "É necessário fazer login para acessar seus dados!!", "Ok");
-    }
+    else gerarMessageBox("rgb(253, 214, 214)", "É necessário fazer login para acessar seus dados!!", "Ok");
 }
 
-function gerarMessageBox(cor, mensagem, textobtn, acesso){
+function abrirMeusPedidos(){
+    if(verificarLogin()) location.href="meusPedidos.html";
+    else gerarMessageBox("rgb(253, 214, 214)", "É necessário fazer login para acessar seus pedidos!!", "Ok");
+}
+
+function travarTela() {
+    document.documentElement.style.overflow = 'hidden';
+    document.body.scroll = "no";
+}
+
+function destravarTela() {
+    document.documentElement.style.overflow = 'auto';
+    document.body.scroll = "yes";
+}
+
+function gerarMessageBox(cor, mensagem, textoBtn, acesso){
     $('#esconder').addClass('ativo')
     $('#mensagem').css("transform", "translateY(250px)");
     $('#mensagem').css("background", cor);
 
     $('#textoMensagem').html(mensagem);
-    $('#btnMessage').html(textobtn);
+    $('#btnMessage').html(textoBtn);
 
     if(acesso){
         renderizarFormCadastro(2);
         renderizarFormLogin(2);
     }
+
+    travarTela();
 }
 
 function fecharMessageBox(){
+    destravarTela();
     $('#esconder').removeClass('ativo')
     $('#mensagem'). css("transform", "translateY(-250px)");
 

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/header-main-footer.css">
     <link rel="stylesheet" href="css/detalhes.css">
+     <link rel="stylesheet" href="css/messageBox.css">
 
     <script
         src="https://code.jquery.com/jquery-3.6.1.min.js"
@@ -42,7 +43,7 @@
                  <div class="texto-menu">Meus dados</div>
              </a>
 
-             <a class="item-menu" href="meusPedidos.html">
+             <a class="item-menu" onclick="abrirMeusPedidos()">
                  <div class="img-menu"><img src="icon/pedido.png" class="icon-menu"></div>
                  <div class="texto-menu">Meus pedidos</div>
              </a>
@@ -156,5 +157,15 @@
             </div>
         </footer>
     </main>
+
+     <!--Message Box-->
+     <div class="esconderMessageBox" id="esconder">
+         <div class="message-box" id="mensagem">
+             <div class="texto-message-box" id="textoMensagem"></div>
+             <footer class="footer-message-box" id="btnMensagem">
+                 <button class="btn-message-box" id="btnMessage" onclick="fecharMessageBox()">Ok</button>
+             </footer>
+         </div>
+     </div>
  </body>
 </html>

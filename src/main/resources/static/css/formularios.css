@@ -33,7 +33,7 @@
 }
 
 .form-cadastro{
-    width: 600px;
+    width: 610px;
     height: 375px;
     display: flex;
     flex-direction: column;
@@ -58,11 +58,12 @@
 }
 
 .step{
-    width: 95%;
+    width: 90%;
     height: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
 }
 
 .footer-form-cadastro{
@@ -71,7 +72,6 @@
 }
 
 .cadastro-titulo-texto{
-    margin-left: 25px;
     font: 17.5px calibri;
     font-weight: bold;
     color: rgb(57, 57, 57);
@@ -82,7 +82,12 @@
     height: 20%;
     display: flex;
     flex-direction: column;
-    margin-left: 25px;
+
+}
+
+.margem-data-nascimento{
+    height: 100%;
+    display: flex;
 }
 
 .label-form-cadastro{
@@ -91,16 +96,16 @@
     color: rgb(92, 91, 91);
 }
 
-.input-form-cadastro-1, .input-form-cadastro-2, .input-form-cadastro-3,
-.input-form-cadastro-4, .input-form-cadastro-senha, .linha-senha-cadastro, .linha-cep{
-    width: 300px;
-    height: 50%;
+.input-form-cadastro-1, .input-form-cadastro-2, .input-form-cadastro-3, .input-form-cadastro-4,
+.input-form-cadastro-5, .input-form-cadastro-senha, .linha-senha-cadastro, .linha-cep{
+    width: 250px;
+    height: 45px;
     border-radius: 6px;
     padding-left: 10px;
     cursor: pointer;
     color: rgb(108, 108, 108);
     border: 1px solid rgb(237, 237, 237);
-    background: rgba(123, 0, 238, 0.085);
+    background: rgba(100, 10, 234, 0.065);
 }
 
 .input-form-cadastro-2{
@@ -115,6 +120,13 @@
     height: 100%;
     width: 175px;
 }
+
+.input-form-cadastro-5{
+    width: 30%;
+    margin-left: 10px;
+}
+
+.input-form-cadastro-5:nth-child(1){margin-left: 0;}
 
 input:hover{
     border: 1px solid rgb(87, 14, 189);
@@ -140,10 +152,9 @@ input:hover{
 }
 
 .btn-cadastro{
-    background: green;
+    background: #00a000;
     width: 25%;
     height: 55%;
-    margin-left: 25px;
 }
 
 .btn-cadastro:hover{background: rgb(2, 95, 2);}
@@ -151,7 +162,7 @@ input:hover{
 .btn-voltar{
     width: 20%;
     height: 55%;
-    margin-left: 25px;
+    margin-right: 25px;
 }
 
 .btn-limpar{
@@ -260,7 +271,6 @@ input:hover{
 }
 
 
-
 @media screen and (max-width: 800px) {
     .icon-esconder{
         margin-bottom: 10px;
@@ -272,15 +282,15 @@ input:hover{
     }
 
     .form-cadastro{
-        height: 550px;
-        width: 85%;
+        height: 400px;
+        width: 90%;
     }
 
     .step{
         align-items: center;
     }
 
-    .footer-form-cadastro{height: 15%;}
+    .footer-form-cadastro{height: 10%;}
 
     .cadastro-titulo{
         width: 90%;
@@ -295,8 +305,6 @@ input:hover{
         width: 100%;
     }
 
-    .label-form-cadastro{margin: 0;}
-
     .divisor, .divisor-1, .divisor-2{
         width: 45%;
         margin: 0;
@@ -306,13 +314,14 @@ input:hover{
 
     .input-form-cadastro-1, .input-form-cadastro-2,
     .input-form-cadastro-3, .input-form-cadastro-4, .linha-senha-cadastro{
-        width: 93%;
-        height: 40px;
+        width: 95%;
     }
+
+    .input-form-cadastro-5{margin-left: auto;}
 
     .btn-cadastro, .btn-voltar{
         width: 60%;
-        height: 50%;
+        height: 60%;
         margin-left: 0;
         margin-right: 8px;
     }
@@ -326,9 +335,13 @@ input:hover{
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 550px) {
+    .form-cadastro{
+        height: 625px;
+    }
+
     .divisor, .divisor-1, .divisor-2{
-        width: 90%;
+        width: 88%;
     }
 
     .divisor-1{width: 30%;}
@@ -336,4 +349,4 @@ input:hover{
     .divisor-2{width: 48%;}
 
     .form-login{width: 330px; height: 230px;}
-}
+}}

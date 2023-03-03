@@ -46,7 +46,7 @@
                  <div class="texto-menu">Meus dados</div>
              </a>
 
-             <a class="item-menu" href="meusPedidos.html">
+             <a class="item-menu" onclick="abrirMeusPedidos()">
                  <div class="img-menu"><img src="icon/pedido.png" class="icon-menu"></div>
                  <div class="texto-menu">Meus pedidos</div>
              </a>
@@ -100,6 +100,7 @@
                     <div class="pagamento">
                         <div class="part-footer-1">
                             <p class="texto-carrinho" id="texto-carrinho">Total: </p>
+                            <p class="total-carrinho" >R$</p>
                             <p class="total-carrinho" id="totalCarrinho">0.0</p>
                         </div>
                         <div class="part-footer-2">
@@ -178,7 +179,7 @@
 
                  <div class="divisor-pedido">
                      <label class="subtitulo-pedido">Endereço de destino</label>
-                     <p class="endereco">13145-848, Paulínia - SP, São José 2, Rua Agripino Jacinto de Oliveira Nº31</p>
+                     <p class="endereco" id="enderecoPedido">XXXXX-XX, XXX - XX, XXX, XXXXXXX, XXX, xXX</p>
                  </div>
 
                  <div class="divisor-pedido-btn">

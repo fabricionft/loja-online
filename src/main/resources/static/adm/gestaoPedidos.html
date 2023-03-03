@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão pedidos</title>
+
+    <link rel="stylesheet" href="css/gestaoPedidos.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/messageBox.css">
+
+    <script
+        src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous" defer>
+    </script>
+     <script src="js/geral.js" defer></script>
+    <script src="js/detalhePedido.js" defer></script>
+    <script src="js/pedido.js" defer></script>
+ </head>
+ 
+ <body>
+    <header class="cabecalho-menu-gestao">
+        <a href="menuGestao.html">
+            <img src="icon/direito-removebg-preview.png" class="icon-cabecalho">
+        </a>
+    </header>
+
+    <main class="conteudo">
+        <div class="container-pedidos">
+            <div class="tabela-produtos" id="tabelaPedidos">
+                <header class="cabecalho-tabela-produtos">
+                    <select class="filtrar-pedidos" id="filtrarPedidos" onchange="filtrar()">
+                        <option value="pendente">Pendentes</option>
+                        <option value="confirmado">Confirmados</option>
+                        <option value="recusado">Recusados</option>
+                    </select>
+                </header>
+
+                <div class="linha-tabela-produtos">
+                    <div class="coluna-principal-1">
+                        <p class="texto-tabela-produtos-principal">Número</p>
+                    </div>
+
+                    <div class="coluna-principal-2">
+                        <p class="texto-tabela-produtos-principal">Qtd itens</p>
+                    </div>
+
+                    <div class="coluna-principal-3">
+                        <p class="texto-tabela-produtos-principal">Data</p>
+                    </div>
+
+                    <div class="coluna-principal-4">
+                        <p class="texto-tabela-produtos-principal">Valor</p>
+                    </div>
+
+                    <div class="coluna-principal-5">
+                        <p class="texto-tabela-produtos-principal">Ações</p>
+                    </div>
+                </div>
+            </div>
+
+            <!--Detalhe-->
+            <div class="detalhe-pedido" id="detalhePedido">
+                <div class="margem-detalhe-pedido">
+                    <header class="cabecalho-detalhe-pedido">
+                        <img src="icon/x.png" width="20px" onclick="renderizarDetalhamento(2)">
+                    </header>
+
+                    <!--Itens-->
+                    <div class="info-detlahe-pedido">
+                        <p class="subtitulo-detalhe-pedido">Nome cliente</p>
+                        <p class="texto-detalhe-pedido" id="nomeCliente">XXX</p>
+
+                        <p class="subtitulo-detalhe-pedido">Email</p>
+                        <p class="texto-detalhe-pedido" id="emailCliente">XXX</p>
+
+                        <p class="subtitulo-detalhe-pedido">Telefone</p>
+                        <p class="texto-detalhe-pedido" id="celularCliente">XXX</p>
+
+                        <p class="subtitulo-detalhe-pedido">Status pedido</p>
+                        <p class="texto-detalhe-pedido" id="statusPedido">XXX</p>
+
+                        <p class="subtitulo-detalhe-pedido">Parcelamento</p>
+                        <p class="texto-detalhe-pedido" id="parcelamentoPedido">XXXX</p>
+
+                        <p class="subtitulo-detalhe-pedido">Endereço de entrega</p>
+                        <p class="texto-detalhe-pedido" id="enderecoEntrega">XXX</p>
+
+                        <div class="itens-detalhe-pedido" id="itensDetalhePedido">
+                            <p class="subtitulo-detalhe-pedido">Itens</p>
+                        </div>
+                    </div>
+
+                    <!--Botoes-->
+                    <footer class="btns-detalhe-pedido" id="footerBtnsDetalhePedido">
+                    </footer>
+                </div>
+            </div>
+       </div>
+    </main>
+
+    <!--Message Box-->
+    <div class="esconderMessageBox" id="esconder">
+        <div class="message-box" id="mensagem">
+            <div class="texto-message-box" id="textoMensagem"></div>
+            <footer class="footer-message-box" id="btnMensagem">
+                <button class="btn-message-box" id="btnMessage" onclick="fecharMessageBox()">Ok</button>
+            </footer>
+        </div>
+    </div>
+ </body>
+</html>

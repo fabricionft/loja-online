@@ -1,0 +1,135 @@
+.container-cadastro-produto{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: -1;
+    opacity: 0;
+    position: fixed;
+}
+
+.container-cadastro-produto.ativo{
+    opacity: 1;
+    z-index: 1;
+}
+
+.icon-esconder{
+    width: 25px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.formCadastro{
+    width: 500px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    border: 1px solid rgb(227, 226, 226);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 20%), 0 8px 16px rgb(0 0 0 / 20%);
+    border-radius: 6px;
+    background: #fff;
+}
+
+.titulo-form-produtos{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: rgb(70, 70, 70);
+}
+
+.inputs-formulario{
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.divisor, .divisor-2, .divisor-3, .divisor-4, .divisor-5{
+    width: 48%;
+    height: auto;
+    margin-bottom: 12.5px;
+}
+
+.divisor-2{width: 100%;}
+.divisor-3, .divisor-4{width: 30%;}
+.divisor-5{width: 65%;}
+
+.divisor-titulo, .divisor-btn{
+    width: 90%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.divisor-btn{height: 80px;}
+
+.texto-form-produtos{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+    color: rgb(58, 58, 58);
+}
+
+.input-form-produtos, .input-img, .text-area-form-produtos{
+    width: 100%;
+    height: 40px;
+    border-radius: 6px;
+    padding: 0;
+    margin-top: 4px;
+    color: rgb(108, 108, 108);
+    border: 1px solid black;
+    border: 1px solid rgb(235, 235, 235);
+    background: rgba(100, 10, 234, 0.065);
+    cursor: pointer;
+}
+
+.input-img, .input-esconder{
+    display: none;
+}
+
+.text-area-form-produtos{height: 80px}
+
+.btn-img, .btn-limpar, .btn-cadastrar{
+    font-weight: bold;
+    height: 45px;
+}
+
+.btn-img{
+    width: 95%;
+    margin-top: 4px;
+    background: rgb(79, 48, 179);
+}
+
+.btn-limpar{
+    width: 35%;
+    margin-right: 10px;
+    background: rgb(79, 48, 179);
+}
+
+.btn-img:hover, .btn-limpar:hover{
+    background: rgb(56, 1, 194);
+}
+
+.btn-cadastrar{
+    width: 60%;
+}
+
+@media screen and (max-width: 800px) {
+    .container-cadastro-produto{
+        flex-direction: column;
+    }    
+
+    .formCadastro{
+        width: 90%;
+    }
+
+    .icon-esconder{
+        margin-left: 90%;
+        margin-bottom: 12.5px;
+    }
+
+    .divisor-3{width: 48%;}
+}

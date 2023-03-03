@@ -12,29 +12,12 @@ window.onload = () => {
 }
 
 function lista(){
-    var i = 0;
-    //Promoções
-    $.ajax({
-        method: "GET",
-        url: "/produtos/promocoes",
-        success: function (dados){
-            dados.forEach(item => {
-                i++;
-                if(item.quantidadeEstoque > 0 && i <= 4) adcionaProduto(item, "section-produto-1");
-                if(item.quantidadeEstoque > 0 && i <= 4) adcionaProduto(item, "section-produto-3");
-            });
-        }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
-    });
-
-    //Produtos
     $.ajax({
         method: "GET",
         url: "/produtos",
         success: function (dados){
             dados.forEach(item => {
-                if (item.quantidadeEstoque > 0) adcionaProduto(item, "section-produto-4");
+                if (item.quantidadeEstoque > 0) adcionaProduto(item, "section-produto");
             });
         }
     }).fail(function(xhr, status, errorThrown){
@@ -42,12 +25,11 @@ function lista(){
     });
 }
 
-function pesquisar(){
-    const descricao = $('#barraPesquisar').val();
-    if(descricao.length == 0) location.reload();
+function buscar(caminho, valor){
+    if(valor.length == 0) location.reload();
     $.ajax({
         method: "GET",
-        url: "/produtos/descricao/"+descricao,
+        url: "/produtos/"+caminho+valor,
         success: function (dados){
             limparPesquisa();
             dados.forEach(item => {
@@ -92,10 +74,9 @@ function adcionaProduto(dados, local){
 }
 
 function limparPesquisa(){
-    for(var i = 1; i <= 4; i++){
-         $('#titulo-section-'+i).remove();
-         $('#section-produto-'+i).remove();
-    }
+    $('#tituloSection').remove();
+    $('#section-produto').remove();
+
     for(var i = 1; i <= 500; i++){
         $('#btnLimparPesquisa').remove();
         $('#produto').remove();

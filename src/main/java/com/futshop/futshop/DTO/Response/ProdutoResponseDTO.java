@@ -12,11 +12,11 @@ public class ProdutoResponseDTO {
     private String nomeProduto;
     private String imagem;
     private String descricao;
+    private String tipo;
     private Integer promocao;
     private Integer quantidadeEstoque;
     private String tamanho;
     private Double valorBase;
     private Double valorComDesconto;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private String dataPostagem;
 }

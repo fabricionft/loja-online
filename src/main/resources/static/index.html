@@ -21,6 +21,7 @@
     <script src="js/formularios.js" defer></script>
     <script src="js/carrinho.js" defer></script>
     <script src="js/geral.js" defer></script>
+    <script src="js/validacoes.js" defer></script>
     <script src="js/index.js" defer></script>
  </head>
 
@@ -50,7 +51,7 @@
                  <div class="texto-menu">Meus dados</div>
              </a>
 
-             <a class="item-menu" href="meusPedidos.html">
+             <a class="item-menu" onclick="abrirMeusPedidos()">
                  <div class="img-menu"><img src="icon/pedido.png" class="icon-menu"></div>
                  <div class="texto-menu">Meus pedidos</div>
              </a>
@@ -58,21 +59,6 @@
              <a class="item-menu" href="carrinho.html">
                  <div class="img-menu"><img src="icon/carrinho-menu.png" class="icon-menu"></div>
                  <div class="texto-menu">Carrinho</div>
-             </a>
-
-             <a class="item-menu" href="#titulo-section-1">
-                 <div class="img-menu"><img src="icon/promocao-menu.png" class="icon-menu"></div>
-                 <div class="texto-menu">Promoções</div>
-             </a>
-
-             <a class="item-menu" href="#titulo-section-3">
-                 <div class="img-menu"><img src="icon/new-menu.png" class="icon-menu"></div>
-                 <div class="texto-menu">Novidades</div>
-             </a>
-
-             <a class="item-menu" href="#titulo-section-4">
-                 <div class="img-menu"><img src="icon/camisa-menu.png" class="icon-menu"></div>
-                 <div class="texto-menu">Produtos</div>
              </a>
          </div>
 
@@ -102,7 +88,7 @@
                 <div class="linha">
                     <input type="text" class="input-pesquisar"
                            placeholder="Pesquise o seu produto" id="barraPesquisar">
-                    <a class="btn-pesquisa" onclick="pesquisar()">
+                    <a class="btn-pesquisa" onclick="buscar('descricao/', $('#barraPesquisar').val())">
                         <img src="icon/lupa.png" class="icon-lupa">
                     </a>
                 </div>
@@ -113,35 +99,41 @@
 
         <!--Seções-->
         <div class="container-sections">
+
+            <!--Titulo/botoes-->
+            <header class="header-produto" id="titulo-pesquisa">
+                <div class="filtros">
+                    <div class="linha-filtro">
+                        <img src="icon/sort.png" class="icon-filtrar">
+                        <select id="filtrar" class="escolha-ordenar" onchange="buscar('tipo/', this.value)">
+                            <option value="escolha">Filtrar por</option>
+                            <option value="Premier League">Premier League</option>
+                            <option value="La Liga">La Liga</option>
+                            <option value="Brasileirão">Brasileirão</option>
+                            <option value="Ligue 1">Ligue 1</option>
+                            <option value="serie A">Serie A</option>
+                            <option value="seleções">Seleções</option>
+                        </select>
+                    </div>
+
+                    <div class="linha-filtro">
+                        <img src="icon/ordenar.png" class="icon-ordenar">
+                        <select id="ordenar" class="escolha-ordenar" onchange="buscar('', this.value)">
+                            <option value="escolha">Ordenar por</option>
+                            <option value="promocaoDesc">Maior desconto</option>
+                            <option value="valorAsc">Menor preço</option>
+                            <option value="valorDesc">Maior preço</option>
+                        </select>
+                    </div>
+                </div>
+
+                <p class="texto-titulo-section" id="tituloSection">Camisas</p>
+            </header>
+
+            <!--Produtos-->
+            <section class="section-produto" id="section-produto"></section>
             <!--Pesquisa-->
-            <header class="header-produto" id="titulo-pesquisa"></header>
             <section class="section-produto" id="section-pesquisa"></section>
-
-            <!--Promoções-->
-            <header class="header-produto" id="titulo-section-1">
-                <p class="texto-titulo-section">Promoções</p>
-            </header>
-            <section class="section-produto" id="section-produto-1"></section>
-
-            <!--Propaganda-->
-            <header class="header-produto" id="titulo-section-2">
-                <p class="texto-titulo-section">Propaganda</p>
-            </header>
-            <section class="section-propaganda" id="section-produto-2">
-                <img src="img/camisas.jpg" class="img-propaganda">
-            </section>
-
-            <!--Novidades-->
-            <header class="header-produto" id="titulo-section-3">
-                <p class="texto-titulo-section">Novidades</p>
-            </header>
-            <section class="section-produto" id="section-produto-3"></section>
-
-            <!--Camisas-->
-            <header class="header-produto" id="titulo-section-4">
-                <p class="texto-titulo-section">Camisas</p>
-            </header>
-            <section class="section-produto" id="section-produto-4"></section>
         </div>
 
         <!--Footer-->
@@ -202,37 +194,63 @@
                 <div class="divisor">
                     <label class="label-form-cadastro">Nome completo</label>
                     <input class="input-form-cadastro-1" type="text"
-                    id="nome" placeholder="Ex: Ana Júlia">
+                           id="nome" placeholder="Digite seu nome completo" name="input-step-1">
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Data nascimento</label>
-                    <input class="input-form-cadastro-2" type="date"
-                    id="dataNascimento">
+                    <div class="margem-data-nascimento">
+                        <select class="input-form-cadastro-5" id="mesDataNascimento" onchange="gerarDias()">
+                            <option value="escolha">Mês</option>
+                            <option value="01">Janeiro</option>
+                            <option value="02">Fevereiro</option>
+                            <option value="03">Março</option>
+                            <option value="04">Abril</option>
+                            <option value="05">Maio</option>
+                            <option value="06">Junho</option>
+                            <option value="07">Julho</option>
+                            <option value="08">Agosto</option>
+                            <option value="09">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+
+                        <select class="input-form-cadastro-5" id="diaDataNascimento">
+                            <option value="escolha">Dia</option>
+                        </select>
+
+                        <select class="input-form-cadastro-5" id="anoDataNascimento">
+                            <option value="escolha">Ano</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">CPF</label>
                     <input class="input-form-cadastro-2" type="text"
-                    maxlength="14" id="cpf" placeholder="XXX.XXX.XXX-XX">
+                           maxlength="11" id="cpf" placeholder="Digite apenas digitos" name="input-step-1">
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Email</label>
                     <input class="input-form-cadastro-1" type="text"
-                           id="emailCadastro" placeholder="Ex: ana@gmail.com">
+                           id="emailCadastro" placeholder="Digite seu email" name="input-step-1">
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Senha</label>
-                    <input class="input-form-cadastro-2" type="password"
-                    id="senhaCadastro" placeholder="Ex: 123456">
+                    <div class="linha-senha-cadastro">
+                        <input class="input-form-cadastro-senha" type="password"
+                               id="senhaCadastro" placeholder="Defina sua senha" name="input-step-1">
+                        <img src="icon/olho.png" class="icon-input" id="trocarInputCadastro">
+                    </div>
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Celular</label>
                     <input class="input-form-cadastro-2" type="text"
-                       id="celular" placeholder="(XX) XXXXX-XXXX">
+                           id="celular" placeholder="Digite apenas digitos" maxlength="11">
                 </div>
 
                 <footer class="footer-form-cadastro">
@@ -251,14 +269,15 @@
                     <label class="label-form-cadastro">CEP</label>
                     <div class="linha-cep">
                         <input class="input-form-cadastro-4" type="text" height="100%"
-                        id="cep" maxlength="8" placeholder="XXXXX-XXX">
+                               id="cep" maxlength="8" placeholder="Digite apenas digitos" name="input-step-2">
                         <button class="btn-cep" type="button" onclick="buscarEnderecoPorCEP()">Buscar</button>
                     </div>
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Estado</label>
-                    <select id="estado" class="input-form-cadastro-3">
+                    <select id="estado" class="input-form-cadastro-3" name="input-step-2">
+                        <option value="escolha">Escolha</option>
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
                         <option value="AP">Amapá</option>
@@ -293,25 +312,25 @@
                 <div class="divisor">
                     <label class="label-form-cadastro">Cidade</label>
                     <input class="input-form-cadastro-2" type="text"
-                    id="cidade" placeholder="Ex: Ceilândia">
+                           id="cidade" placeholder="Digite o nome de sua cidade" name="input-step-2">
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Bairro</label>
                     <input class="input-form-cadastro-2" type="text"
-                    id="bairro" placeholder="São José">
+                           id="bairro" placeholder="Digite o nome do seu bairro" name="input-step-2">
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Rua</label>
                     <input class="input-form-cadastro-1" type="text"
-                    id="rua" placeholder="Ex: Rua José Moda">
+                           id="rua" placeholder="Digite o nome de sua rua" name="input-step-2">
                 </div>
 
                 <div class="divisor-1">
                     <label class="label-form-cadastro">Número</label>
-                    <input class="input-form-cadastro-3" type="number"
-                           id="numero" placeholder="XXX">
+                    <input class="input-form-cadastro-3" type="text"
+                           id="numero" placeholder="XXX" name="input-step-2" maxlength="6">
                 </div>
 
                 <div class="divisor-2">
@@ -339,9 +358,9 @@
                     <img src="icon/user.png" class="icon-input">
                 </div>
                 <div class="linha-login">
-                    <input class="input-form-login" type="password" placeholder="Senha"
-                    id="senha">
-                    <img src="icon/olho.png" class="icon-input">
+                    <input class="input-form-login" type="password"
+                           placeholder="Senha" id="senha">
+                    <img src="icon/olho.png" class="icon-input" id="trocarInputLogin">
                 </div>
             </div>
             <footer class="footer-form-login">

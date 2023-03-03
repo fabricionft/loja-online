@@ -13,12 +13,21 @@ public interface ProdutoRepository extends JpaRepository <ProdutoModel, Long> {
     @Query(value = "select * from produto where codigo = ?", nativeQuery = true)
     public ProdutoModel buscarPorID(Long codigo);
 
-    @Query(value = "select * from produto order by promocao desc", nativeQuery = true)
-    public List<ProdutoModel> buscarPromocoes();
-
-    @Query(value = "select * from produto order by dataPostagem asc", nativeQuery = true)
-    public List<ProdutoModel> buscarNovidades();
-
+    //Pesquisar
     @Query(value = "select * from produto  where descricao like %?%", nativeQuery = true)
     public List<ProdutoModel> buscarPorDescricao(String descricao);
+
+    //Filtrar
+    @Query(value = "select * from produto where tipo = ?", nativeQuery = true)
+    public List<ProdutoModel> buscarPorTipo(String tipo);
+
+    //Ordenar
+    @Query(value = "select * from produto order by promocao desc", nativeQuery = true)
+    public List<ProdutoModel> promocaoDecrescente();
+
+    @Query(value = "select * from produto order by valor_com_desconto asc", nativeQuery = true)
+    public List<ProdutoModel> valorCrescente();
+
+    @Query(value = "select * from produto order by valor_com_desconto desc", nativeQuery = true)
+    public List<ProdutoModel> valorDecrescente();
 }
