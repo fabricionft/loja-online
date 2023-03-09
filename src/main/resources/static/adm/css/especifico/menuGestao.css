@@ -1,0 +1,86 @@
+.container-funcoes{
+    margin-top: 40px;
+    width: 55%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: left;
+}
+
+.funcao{
+    width: 30%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    border-radius: 10px;
+    margin-left: 4%;
+    background: var(--branco);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 7.5%), 0 8px 16px rgb(0 0 0 / 7.5%);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.funcao:nth-child(3n + 1){margin-left: 0;}
+
+.funcao:hover{
+    background: rgba(79, 48, 179, 0.15);
+}
+
+.img-funcao, .descricao-funcao{
+    width: 80%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.descricao-funcao{height: 50%; position: relative;}
+
+.texto-descricao-funcao{
+    position: absolute;
+    top: 45px;
+}
+
+.texto-descricao-funcao-mobile{
+    position: absolute;
+    top: 10px;
+    font-size: 17.5px;
+    color: var(--preto);
+    font-weight: bold;
+}
+
+.icon{
+    height: 100%;
+}
+
+@media screen and (max-width: 800px) {
+    .container-funcoes{
+        width: 90%;
+        justify-content: space-between;
+    }
+
+    .funcao{
+        width: 47%;
+        margin-left: 0;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .funcao{
+        height: 160px;
+    }
+
+    .img-funcao{height: 70%;}
+    .icon{height: 65%;}
+    .descricao-funcao{height: 20%;}
+
+    .texto-descricao-funcao{
+        display: none;
+    }
+
+    .texto-descricao-funcao-mobile{top: 0;}
+}

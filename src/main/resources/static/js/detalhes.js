@@ -24,5 +24,4 @@ function mostrarProduto(){
 
 $('#adcionaItem').click(function(){
     adcionaItens(localStorage.getItem('codigoProduto'));
-    mostrarProduto();
 })

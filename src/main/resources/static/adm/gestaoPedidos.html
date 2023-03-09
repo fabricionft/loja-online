@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão pedidos</title>
 
-    <link rel="stylesheet" href="css/gestaoPedidos.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/messageBox.css">
+     <link rel="stylesheet" href="css/geral/layout.css">
+     <link rel="stylesheet" href="css/geral/messageBox.css">
+     <link rel="stylesheet" href="css/geral/variaveis-templates.css">
+
+    <link rel="stylesheet" href="css/especifico/gestaoPedidos.css">
 
     <script
         src="https://code.jquery.com/jquery-3.6.1.min.js"
@@ -29,49 +31,55 @@
 
     <main class="conteudo">
         <div class="container-pedidos">
-            <div class="tabela-produtos" id="tabelaPedidos">
-                <header class="cabecalho-tabela-produtos">
-                    <select class="filtrar-pedidos" id="filtrarPedidos" onchange="filtrar()">
-                        <option value="pendente">Pendentes</option>
-                        <option value="confirmado">Confirmados</option>
-                        <option value="recusado">Recusados</option>
-                    </select>
-                </header>
+            <!--Pedido-->
+            <section class="section-pedido" id="sectionPedido">
+                <div class="tabela-produtos" id="tabelaPedidos">
+                    <header class="cabecalho-tabela-produtos">
+                        <select class="filtrar-pedidos" id="filtrarPedidos" onchange="filtrar()">
+                            <option value="pendente">Pendentes</option>
+                            <option value="confirmado">Confirmadas</option>
+                            <option value="recusado">Recusadas</option>
+                        </select>
+                    </header>
 
-                <div class="linha-tabela-produtos">
-                    <div class="coluna-principal-1">
-                        <p class="texto-tabela-produtos-principal">Número</p>
-                    </div>
+                    <div class="linha-tabela-produtos">
+                        <div class="coluna-principal-1">
+                            <p class="texto-tabela-produtos-principal">Número</p>
+                        </div>
 
-                    <div class="coluna-principal-2">
-                        <p class="texto-tabela-produtos-principal">Qtd itens</p>
-                    </div>
+                        <div class="coluna-principal-2">
+                            <p class="texto-tabela-produtos-principal">Qtd itens</p>
+                        </div>
 
-                    <div class="coluna-principal-3">
-                        <p class="texto-tabela-produtos-principal">Data</p>
-                    </div>
+                        <div class="coluna-principal-3">
+                            <p class="texto-tabela-produtos-principal">Data</p>
+                        </div>
 
-                    <div class="coluna-principal-4">
-                        <p class="texto-tabela-produtos-principal">Valor</p>
-                    </div>
+                        <div class="coluna-principal-4">
+                            <p class="texto-tabela-produtos-principal">Valor</p>
+                        </div>
 
-                    <div class="coluna-principal-5">
-                        <p class="texto-tabela-produtos-principal">Ações</p>
+                        <div class="coluna-principal-5">
+                            <p class="texto-tabela-produtos-principal">Ações</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!--Detalhe-->
-            <div class="detalhe-pedido" id="detalhePedido">
-                <div class="margem-detalhe-pedido">
+            <section class="section-detalhe-pedido" id="sectionDetalhePedido">
+                <div class="detalhe-pedido" id="detalhePedido">
                     <header class="cabecalho-detalhe-pedido">
                         <img src="icon/x.png" width="20px" onclick="renderizarDetalhamento(2)">
                     </header>
 
                     <!--Itens-->
                     <div class="info-detlahe-pedido">
-                        <p class="subtitulo-detalhe-pedido">Nome cliente</p>
+                        <p class="subtitulo-detalhe-pedido">Cliente</p>
                         <p class="texto-detalhe-pedido" id="nomeCliente">XXX</p>
+
+                        <p class="subtitulo-detalhe-pedido">CPF</p>
+                        <p class="texto-detalhe-pedido" id="cpfCliente">XXX</p>
 
                         <p class="subtitulo-detalhe-pedido">Email</p>
                         <p class="texto-detalhe-pedido" id="emailCliente">XXX</p>
@@ -81,6 +89,9 @@
 
                         <p class="subtitulo-detalhe-pedido">Status pedido</p>
                         <p class="texto-detalhe-pedido" id="statusPedido">XXX</p>
+
+                        <p class="subtitulo-detalhe-pedido">Forma de pagamento</p>
+                        <p class="texto-detalhe-pedido" id="formaDePagamentoPedido">XXXX</p>
 
                         <p class="subtitulo-detalhe-pedido">Parcelamento</p>
                         <p class="texto-detalhe-pedido" id="parcelamentoPedido">XXXX</p>
@@ -97,9 +108,20 @@
                     <footer class="btns-detalhe-pedido" id="footerBtnsDetalhePedido">
                     </footer>
                 </div>
-            </div>
-       </div>
+            </section>
+        </div>
     </main>
+
+    <!--Form motivo rejeição-->
+    <div class="container-motivo-rejeicao" id="containerMotivoRejeicao">
+        <img src="icon/esconder.png" class="icon-esconder" onclick="renderizarFormRejeicao(2)">
+
+        <form class="form-motivo-rejeicao">
+            <div class="margem-motivo-rejeicao" id="formMotivoRejeicao">
+                <textarea id="motivo" class="input-rejeicao" cols="30" rows="10" placeholder="Digite o motivo da rejeição"></textarea>
+            </div>
+        </form>
+    </div>
 
     <!--Message Box-->
     <div class="esconderMessageBox" id="esconder">

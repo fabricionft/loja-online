@@ -52,45 +52,77 @@ public class PedidoService {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy   HH:mm:ss");
         Calendar calendar = Calendar.getInstance();
 
-        //Dados pedido
-        pedido.setNumero(rd.nextLong(900000000)+100000000);
-        pedido.setData(formatter.format(calendar.getTime()));
-        pedido.setPagamento(formaPagamento);
-        pedido.setQuantidaeParcelas(quantidadeParcelas);
-        pedido.setValorParcela(usuario.getValorTotalItens() / quantidadeParcelas);
+        if(verificarEstoque(usuario.getCodigo())){
+            reduzirEstoque(usuario.getCodigo());
 
-        //Dados Usuários
-        pedido.setCodigoCliente(usuario.getCodigo());
-        pedido.setNomeCliente(usuario.getNome());
-        pedido.setEmail(usuario.getEmail());
-        pedido.setCelular(usuario.getCelular());
-        pedido.setEndereco(usuario.getCep()+", "+usuario.getEstado()+", "+usuario.getCidade() +", "+usuario.getBairro()
-                                         +", "+usuario.getRua()+", "+usuario.getNumero()+", "+usuario.getComplemento());
+            //Dados pedido
+            pedido.setNumero(rd.nextLong(900000000)+100000000);
+            pedido.setData(formatter.format(calendar.getTime()));
+            pedido.setPagamento(formaPagamento);
+            pedido.setQuantidaeParcelas(quantidadeParcelas);
+            pedido.setValorParcela(usuario.getValorTotalItens() / quantidadeParcelas);
 
-        //Dados itens
-        List<CarrinhoModelPedido> lista = new ArrayList<>();
-        for(CarrinhoModelUsuario item: usuario.getItens()){
-            lista.add(converterEmCarrinhoPedido(item));
+            //Dados Usuários
+            pedido.setCodigoCliente(usuario.getCodigo());
+            pedido.setCpfCliente(usuario.getCpf());
+            pedido.setNomeCliente(usuario.getNome());
+            pedido.setEmail(usuario.getEmail());
+            pedido.setCelular(usuario.getCelular());
+            pedido.setEndereco(usuario.getCep()+", "+usuario.getEstado()+", "+usuario.getCidade() +", "+usuario.getBairro()
+                    +", "+usuario.getRua()+", "+usuario.getNumero()+", "+usuario.getComplemento());
+
+            //Dados itens
+            List<CarrinhoModelPedido> lista = new ArrayList<>();
+            for(CarrinhoModelUsuario item: usuario.getItens()){
+                lista.add(converterEmCarrinhoPedido(item));
+            }
+
+            pedido.setItens(lista);
+            pedido.setQuantidadeItens(usuario.getQuantidadeItens());
+            pedido.setValor(usuario.getValorTotalItens());
+
+            usuario.getItens().clear();
+            usuario.setQuantidadeItens(0);
+            usuario.setValorTotalItens(0.0);
+            usuarioRepository.save(usuario);
+
+            return pedidoRepository.save(pedido);
         }
-
-        pedido.setItens(lista);
-        pedido.setQuantidadeItens(usuario.getQuantidadeItens());
-        pedido.setValor(usuario.getValorTotalItens());
-
-        usuario.getItens().clear();
-        usuario.setQuantidadeItens(0);
-        usuario.setValorTotalItens(0.0);
-        usuarioRepository.save(usuario);
-
-        return pedidoRepository.save(pedido);
+        else return null;
     }
 
-    public PedidoModel mudarStatusPedido(Long codigo, Integer acao){
+    private void reduzirEstoque(Long codigo){
+        List<ProdutoModel> produtos = produtoRepository.findAll();
+        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
+
+        for(CarrinhoModelUsuario item: usuario.getItens()){
+            for(ProdutoModel produto: produtos){
+                if(item.getCodigo().equals(produto.getCodigo()) && item.getQuantidade() <= produto.getQuantidadeEstoque()){
+                    produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - item.getQuantidade());
+                    produtoRepository.save(produto);
+                }
+            }
+        }
+    }
+    private boolean verificarEstoque(Long codigo){
+        List<ProdutoModel> produtos = produtoRepository.findAll();
+        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
+
+        for(CarrinhoModelUsuario item: usuario.getItens()){
+            for(ProdutoModel produto: produtos){
+                if(item.getQuantidade() > produto.getQuantidadeEstoque()) return false;
+            }
+        }
+        return true;
+    }
+
+    public PedidoModel mudarStatusPedido(Long codigo, Integer acao, String motivo){
         List<ProdutoModel> produtos = produtoRepository.findAll();
         PedidoModel pedido = pedidoRepository.buscarPedidoPorID(codigo);
 
         if(acao.equals(1)) pedido.setStatus("Pedido confirmado");
         if(acao.equals(2)) {
+            pedido.setMotivoRejeicao(motivo);
             pedido.setStatus("Pedido negado");
             for(CarrinhoModelPedido item: pedido.getItens()){
                 for(ProdutoModel produto: produtos) {

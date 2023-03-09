@@ -8,7 +8,7 @@ function listarPedidos(){
         method: "GET",
         url: "/pedidos",
         success: function (dados){
-            while($("[name='linha']").length > 0) $('#linha').remove();
+            while($("[name='linha']").length) $('#linha').remove();
             dados.slice().reverse().forEach(item => {
                 if(item.status == localStorage.getItem('filtro'))criaLinha(item)
             });
@@ -19,9 +19,10 @@ function listarPedidos(){
 }
 
 function filtrar(){
-    if($('#filtrarPedidos').val() == "pendente") localStorage.setItem('filtro', "Aguardando confirmação")
-    else if($('#filtrarPedidos').val() == "confirmado") localStorage.setItem('filtro', "Pedido confirmado")
-    else localStorage.setItem('filtro', "Pedido negado")
+    if($('#filtrarPedidos').val() == "pendente") localStorage.setItem('filtro', "Aguardando confirmação");
+    else if($('#filtrarPedidos').val() == "confirmado") localStorage.setItem('filtro', "Pedido confirmado");
+    else localStorage.setItem('filtro', "Pedido negado");
+    esconderDetalhe();
     listarPedidos();
 }
 

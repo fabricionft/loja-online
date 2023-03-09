@@ -1,9 +1,8 @@
-function verficarPreenchimentoDosCampos(step){
-    let inputs = document.getElementsByName('input-step-'+step);
+function verficarPreenchimentoDosCampos(nomeElementos){
+    let inputs = document.getElementsByName(nomeElementos);
     let quantidadeNulo = 0
-    for(i = 0; i < inputs.length; i++){
+    for(i = 0; i < inputs.length; i++)
         if(inputs[i].value.length == 0) quantidadeNulo++;
-    }
 
     if(quantidadeNulo == 0) return true
     else{
@@ -23,8 +22,27 @@ function verificarErros(quantidadeDeErros, erros){
     }
 }
 
+function validarCamposDeSenha(){
+    let quantidadeDeErros = 0;
+    let erros = [];
+
+    if(verficarPreenchimentoDosCampos('senhas')){
+        if($('#senhaNova').val() != $('#confirmacaoNovasenha').val()){
+            quantidadeDeErros++;
+            erros.push("A nova senha e sua confirmação devem ser iguais")
+        }
+
+        if($('#senhaNova').val().length < 6){
+            quantidadeDeErros++;
+            erros.push("A nova senha precisa conter pelo menos 6 digitos")
+        }
+
+        if(verificarErros(quantidadeDeErros, erros)) return true;
+    }
+}
+
 function validarEtapa1(){
-    if(verficarPreenchimentoDosCampos(1)){
+    if(verficarPreenchimentoDosCampos('input-step-1')){
         let erros = [];
         let quantidadeDeErros = 0;
 
@@ -74,7 +92,7 @@ function validarEtapa1(){
 }
 
 function validarEtapa2(){
-    if(verficarPreenchimentoDosCampos(2)){
+    if(verficarPreenchimentoDosCampos('input-step-2')){
         let erros = [];
         let quantidadeDeErros = 0;
 
@@ -136,3 +154,4 @@ $(document).ready(function() {
         $("#numero").val(this.value.match(/[0-9]*/));
     });
 });
+

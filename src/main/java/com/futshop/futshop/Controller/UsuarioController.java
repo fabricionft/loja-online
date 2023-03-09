@@ -40,7 +40,6 @@ public class UsuarioController {
         return listaUsuarioDTO;
     }
 
-
     @GetMapping
     public List<UsuarioResponseDTO> listarUsuarios(){
         return converterListaEmDTO(service.listarUsuarios());
@@ -69,6 +68,13 @@ public class UsuarioController {
                                              @RequestBody UsuarioRequestDTO endereco){
         UsuarioModel usuario = service.alterarEndereco(codigo, converterEmEntidade(endereco));
         return new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{codigo}/senhaAtual/{senhaAtual}/senhaNova/{senhaNova}")
+    public ResponseEntity<?> alterarSenha(@PathVariable Long codigo,
+                                          @PathVariable String senhaAtual,
+                                          @PathVariable String senhaNova){
+        return  new ResponseEntity<>(service.alterarSenha(codigo, senhaAtual, senhaNova), HttpStatus.OK);
     }
 
     @DeleteMapping

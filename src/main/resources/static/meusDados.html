@@ -7,22 +7,24 @@
 
     <title>Meus dados</title>
 
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/header-main-footer.css">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/meusDados.css">
-    <link rel="stylesheet" href="css/formularios.css">
-    <link rel="stylesheet" href="css/messageBox.css">
+     <link rel="stylesheet" href="css/geral/variaveis-templates.css">
+     <link rel="stylesheet" href="css/geral/layout.css">
+     <link rel="stylesheet" href="css/geral/header-footer.css">
+     <link rel="stylesheet" href="css/geral/messageBox.css">
+     <link rel="stylesheet" href="css/geral/formularios.css">
+
+    <link rel="stylesheet" href="css/especifico/meusDados.css">
 
     <script
-            src="https://code.jquery.com/jquery-3.6.1.min.js"
-            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
-            crossorigin="anonymous" defer>
+        src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous" defer>
     </script>
-    <script src="js/formularios.js" defer></script>
-    <script src="js/index.js" defer></script>
+     <script src="js/formularios.js" defer></script>
+     <script src="js/validacoes.js" defer></script>
+     <script src="js/index.js" defer></script>
      <script src="js/geral.js" defer></script>
-    <script src="js/meusDados.js" defer></script>
+     <script src="js/meusDados.js" defer></script>
  </head>
 
  <body>
@@ -79,7 +81,9 @@
                     </header>
 
                     <div class="info-dados-pessoal">
-                        <div class="tipo-dados">Dados pessoais</div>
+                        <div class="tipo-dados">
+                            <h1 class="tipo-dados-texto">Dados pessoais</h1>
+                        </div>
                         <div class="conteudo">
                             <div class="linha-dados">
                                 <p class="subtitulo-dados">Nome</p>
@@ -109,7 +113,9 @@
                     </div>
 
                     <div class="info-dados-endereco">
-                        <div class="tipo-dados">Dados de endereço</div>
+                        <div class="tipo-dados">
+                            <h1 class="tipo-dados-texto">Dados de endereço</h1>
+                        </div>
                         <div class="conteudo">
                             <div class="linha-dados">
                                 <p class="subtitulo-dados">CEP</p>
@@ -150,7 +156,7 @@
 
                     <div class="botoes-dados">
                         <button class="btn-dados" onclick="preencherEndereco()">Alterar endereço</button>
-                        <button class="btn-dados">Alterar senha</button>
+                        <button class="btn-dados" onclick="renderizarFormTrocarSenha(1)">Alterar senha</button>
                     </div>
                 </div>
             </div>
@@ -205,6 +211,7 @@
 
         <div class="form-cadastro">
             <!--Passo 2-->
+            <!--Passo 2-->
             <form class="step" id="step-2">
                 <div class="cadastro-titulo">
                     <h1 class="cadastro-titulo-texto">Dados de endereço</h1>
@@ -215,14 +222,15 @@
                     <label class="label-form-cadastro">CEP</label>
                     <div class="linha-cep">
                         <input class="input-form-cadastro-4" type="text" height="100%"
-                               id="cep" maxlength="8">
+                               id="cep" maxlength="8" placeholder="Digite apenas digitos" name="input-step-2">
                         <button class="btn-cep" type="button" onclick="buscarEnderecoPorCEP()">Buscar</button>
                     </div>
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Estado</label>
-                    <select id="estado" class="input-form-cadastro-3">
+                    <select id="estado" class="input-form-cadastro-3" name="input-step-2">
+                        <option value="escolha">Escolha</option>
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
                         <option value="AP">Amapá</option>
@@ -257,25 +265,25 @@
                 <div class="divisor">
                     <label class="label-form-cadastro">Cidade</label>
                     <input class="input-form-cadastro-2" type="text"
-                           id="cidade">
+                           id="cidade" placeholder="Digite o nome de sua cidade" name="input-step-2">
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Bairro</label>
                     <input class="input-form-cadastro-2" type="text"
-                           id="bairro">
+                           id="bairro" placeholder="Digite o nome do seu bairro" name="input-step-2">
                 </div>
 
                 <div class="divisor">
                     <label class="label-form-cadastro">Rua</label>
                     <input class="input-form-cadastro-1" type="text"
-                           id="rua">
+                           id="rua" placeholder="Digite o nome de sua rua" name="input-step-2">
                 </div>
 
                 <div class="divisor-1">
                     <label class="label-form-cadastro">Número</label>
-                    <input class="input-form-cadastro-3" type="number"
-                           id="numero" placeholder="XXX">
+                    <input class="input-form-cadastro-3" type="text"
+                           id="numero" placeholder="XXX" name="input-step-2" maxlength="6">
                 </div>
 
                 <div class="divisor-2">
@@ -290,6 +298,37 @@
             </form>
         </div>
     </div>
+
+     <!--Form trocar senha-->
+     <div class="container-trocar-senha" id="containerTrocarSenha">
+         <img src="icon/esconder.png" class="icon-esconder" onclick="renderizarFormTrocarSenha(2)">
+
+         <form class="form-trocar-senha">
+             <header class="cabecalho-trocar-senha">
+                 <h1 class="cadastro-titulo-texto">Trocar de senha</h1>
+             </header>
+
+             <div class="divisor-inputs-trocar-senha">
+                 <input type="password" class="inputs-trocar-senha"
+                        id="senhaAtual" name="senhas" placeholder="Digite sua senha atual">
+
+                 <input type="password" class="inputs-trocar-senha"
+                        id="senhaNova" name="senhas" placeholder="Digite a nova senha">
+
+                 <input type="password"class="inputs-trocar-senha"
+                        id="confirmacaoNovasenha" name="senhas" placeholder="Digite a nova senha novamente">
+
+                 <div class="linha-check">
+                     <input type="checkbox" class="check" id="check">
+                     <p class="exibir-senha-texto">Exibir senhas</p>
+                 </div>
+             </div>
+
+             <div class="divisor-btn-trocar-senha">
+                 <button type="button" class="btn-alterar-senha" onclick="alterarSenha()">Alterar</button>
+             </div>
+         </form>
+     </div>
 
     <!--Message Box-->
     <div class="esconderMessageBox" id="esconder">

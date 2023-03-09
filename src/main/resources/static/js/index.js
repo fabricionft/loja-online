@@ -8,10 +8,10 @@ window.onload = () => {
         document.getElementById('login').style.display="initial";
     }
     renderizarQuantidade(localStorage.getItem('quantidadeItens'));
-    lista();
+    listarProdutos();
 }
 
-function lista(){
+function listarProdutos(){
     $.ajax({
         method: "GET",
         url: "/produtos",
@@ -26,7 +26,7 @@ function lista(){
 }
 
 function buscar(caminho, valor){
-    if(valor.length == 0) location.reload();
+    if(!valor.length) location.reload();
     $.ajax({
         method: "GET",
         url: "/produtos/"+caminho+valor,
@@ -38,9 +38,9 @@ function buscar(caminho, valor){
             $('#titulo-pesquisa').append(
                 '<button onclick="location.reload()" class="btn-limpar-pesquisa" id="btnLimparPesquisa">Limpar pesquisa</button>'
             );
-            if (dados.length == 0){
+            if (!dados.length){
                 $('#section-pesquisa').append(
-                    '<p class="texto-titulo-section" id="aviso">Sem resultados para sua pesquisa</p>'
+                    '<p class="texto-titulo-section" id="aviso">Sem resultados para sua pesquisa!!</p>'
                 );
             }
         }
@@ -51,7 +51,7 @@ function buscar(caminho, valor){
 
 function adcionaProduto(dados, local){
     $('#'+local).append(
-        '<div class="produto" id="produto">'+
+        '<div class="produto" id="produto" name="produto">'+
             '<a type="button" class="link" onclick="pegarId('+dados.codigo+')" href="detalhes.html">'+
                 '<header class="promo-produto">'+
                     '<p class="numero-promo">'+dados.promocao+'%</p><p class="texto-promo">OFF</p>'+
@@ -76,12 +76,10 @@ function adcionaProduto(dados, local){
 function limparPesquisa(){
     $('#tituloSection').remove();
     $('#section-produto').remove();
+    $('#btnLimparPesquisa').remove();
+    $('#aviso').remove();
 
-    for(var i = 1; i <= 500; i++){
-        $('#btnLimparPesquisa').remove();
-        $('#produto').remove();
-    }
-     $('#aviso').remove();
+    while($("[name='produto']").length) $('#produto').remove();
 }
 
 function pegarId(id){

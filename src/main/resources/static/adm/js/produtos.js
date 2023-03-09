@@ -3,7 +3,6 @@ window.onload = () =>{
 }
 
 function listarProdutos(){
-    //limpar();
     $.ajax({
        method: "GET",
        url: "/produtos",
@@ -62,9 +61,7 @@ function renderizarFormProdutos(opc){
 }
 
 function salvar(){
-    let imagem = "";
-    if($("#imagemProduto")[0].files.length) imagem = $("#imagemProduto")[0].files[0].name;
-    else imagem = $('#imagemEsconder').val();
+    let imagem = ($("#imagemProduto")[0].files.length) ? "img/"+$("#imagemProduto")[0].files[0].name : $('#imagemEsconder').val();
 
     $.ajax({
         method: "POST",
@@ -124,6 +121,7 @@ function excluir(codigo){
 }
 
 function pesquisar(){
+    if(!$('#pesquisarProduto').val().length) location.reload();
     limpar();
     $.ajax({
         method: "GET",

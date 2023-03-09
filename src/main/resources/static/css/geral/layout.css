@@ -1,0 +1,169 @@
+/*layout*/
+body{
+    margin: 0px;
+    background: var(--fundo);
+    display: flex;
+    min-height: 700px;
+    max-height: 50000px;
+}
+
+.container-conteudo{
+    height: 100%;
+    width: 17.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 17.5%;
+    width: 82.5%;
+}
+
+.sobreposicao-menu{
+    width: 100%;
+    height: 1000px;
+    position: fixed;
+    z-index: 2;
+    background: var(--preto-sobreposicao);
+    left: -100%;
+}
+
+.container-menu{
+    background-image: linear-gradient(to bottom, var(--roxo), var(--ciano));
+    height: 100%;
+    width: 17.5%;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 3;
+}
+
+.menu-links, .header-menu, .menu-login{
+    width: 90%;
+    height: 82.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.header-menu{
+    height: 7.5%;
+    width: 78%;
+    color: var(--branco);
+    font: 30px helvetica;
+    font-weight: bold;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.menu-login{
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+    background: transparent;
+}
+
+.p-login-cadastro, .p-login-sair, .a-login-cadastro{
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+
+.p-login-sair{
+    display: none;
+}
+
+.a-login-cadastro{
+    color: var(--ciano);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.a-login-cadastro:hover{
+    color: var(--ciano-escuro);
+}
+
+.usuario-logado{
+    color: var(--ciano);
+    font-family: helvetica;
+    font-weight: bold;
+}
+
+.item-menu{
+    width: 100%;
+    height: 8%;
+    display: flex;
+    cursor: pointer;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.item-menu:hover{
+    background: var(--roxo-escuro);
+    width: 90%;
+}
+
+.img-menu, .texto-menu{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.texto-menu{
+    width: 75%;
+    justify-content: left;
+    font: 20px 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
+}
+
+.icon-menu{
+    width: 25px;
+}
+
+.input-menu{
+    display: none;
+}
+
+.margem-sair{
+    position: fixed;
+    top: 50%;
+    right: -20%;
+}
+
+@media screen and (max-width: 800px) {
+    .input-menu[type = "checkbox"]:checked~.container-conteudo{
+        position: fixed;
+        height: auto;
+    }
+
+    .input-menu[type = "checkbox"]:checked~.sobreposicao-menu{transform: translateX(100%);}
+
+    .input-menu[type = "checkbox"]:checked~.container-menu{
+        transform: translateX(100%);
+        transition: 0.8s;
+    }
+
+    .container-menu{
+        width: 45%;
+        left: -45%;
+    }
+
+    .container-conteudo{
+        width: 100%;
+        margin: 0;
+    }
+
+    .icon-abrir-menu, .icon-abrir-menu-md, .icon-fechar-menu{display: flex;}
+    .icon-fechar-menu{margin-left: 50%;}
+}
+
+@media screen and (max-width: 500px) {
+    .container-menu{
+        width: 75%;
+        left: -75%;
+    }
+}

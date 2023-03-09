@@ -11,13 +11,13 @@ function renderizarQuantidade(quantidade){
 }
 
 function abrirMeusDados(){
-    if(verificarLogin()) location.href="meusDados.html";
-    else gerarMessageBox("rgb(253, 214, 214)", "É necessário fazer login para acessar seus dados!!", "Ok");
+    (verificarLogin()) ? location.href="meusDados.html":
+    gerarMessageBox("rgb(253, 214, 214)", "É necessário fazer login para acessar seus dados!!", "Ok");
 }
 
 function abrirMeusPedidos(){
-    if(verificarLogin()) location.href="meusPedidos.html";
-    else gerarMessageBox("rgb(253, 214, 214)", "É necessário fazer login para acessar seus pedidos!!", "Ok");
+    (verificarLogin()) ? location.href="meusPedidos.html":
+    gerarMessageBox("rgb(253, 214, 214)", "É necessário fazer login para acessar seus pedidos!!", "Ok");
 }
 
 function travarTela() {

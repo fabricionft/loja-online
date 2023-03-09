@@ -35,6 +35,8 @@ public class UsuarioModel {
     private Integer quantidadeItens = 0;
     private Double valorTotalItens = 0.0;
 
+    private String expirar;
+
     public void setItens(CarrinhoModelUsuario item) {
         this.itens.add(item);
     }

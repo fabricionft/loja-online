@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhe pedido</title>
 
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/header-main-footer.css">
-    <link rel="stylesheet" href="css/messageBox.css">
-    <link rel="stylesheet" href="css/detalhePedido.css">
+    <link rel="stylesheet" href="css/geral/variaveis-templates.css">
+    <link rel="stylesheet" href="css/geral/layout.css">
+    <link rel="stylesheet" href="css/geral/header-footer.css">
+    <link rel="stylesheet" href="css/geral/messageBox.css">
+
+    <link rel="stylesheet" href="css/especifico/detalhePedido.css">
 
     <script
             src="https://code.jquery.com/jquery-3.6.1.min.js"
@@ -98,6 +100,9 @@
 
                     <p class="subtitulo-detalhe-pedido">Status pedido</p>
                     <p class="texto-detalhe-pedido" id="statusPedido">Esperando confirmação</p>
+
+                    <p class="subtitulo-detalhe-pedido" name="motivo">Motivo negação</p>
+                    <p class="texto-detalhe-pedido" name="motivo" id="motivoRejeicao">XXXX</p>
 
                     <p class="subtitulo-detalhe-pedido">Quantidade de itens</p>
                     <p class="texto-detalhe-pedido" id="quantidadeItensPedido">3</p>

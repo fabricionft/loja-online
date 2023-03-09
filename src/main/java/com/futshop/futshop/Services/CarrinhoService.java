@@ -17,8 +17,7 @@ public class CarrinhoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-
-    public UsuarioModel listarItensUsuario(Long codigo){
+    public UsuarioModel listarItensUsuario(Long codigo) {
         return usuarioRepository.buscarPorID(codigo);
     }
 
@@ -31,7 +30,7 @@ public class CarrinhoService {
             int cont = 0;
             for(CarrinhoModelUsuario item: usuario.getItens()){
                 if(item.getCodigo().equals(produto.getCodigo())){
-                    soma(produto, item);
+                    soma(item, produto);
                     cont++;
                 }
             }
@@ -46,7 +45,6 @@ public class CarrinhoService {
                 itens.setPrecoFinal(itens.getPrecoUnitario());
 
                 usuario.setItens(itens);
-                produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - 1);
             }
         }
 
@@ -61,7 +59,7 @@ public class CarrinhoService {
 
         for(CarrinhoModelUsuario item: usuario.getItens()){
             if(item.getCodigo().equals(codigoProd) && acao == 1 && produto.getQuantidadeEstoque() > 0) {
-                soma(produto, item);
+                soma(item, produto);
                 break;
             }
             if(item.getCodigo().equals(codigoProd) && acao == 2){
@@ -81,7 +79,7 @@ public class CarrinhoService {
 
         for(int i = 0; i <= usuario.getItens().size(); i++){
             if(usuario.getItens().get(i).getCodigo().equals(codigoProd)){
-                produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + usuario.getItens().get(i).getQuantidade());
+                //produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + usuario.getItens().get(i).getQuantidade());
                 usuario.getItens().remove(i);
                 break;
             }
@@ -94,23 +92,17 @@ public class CarrinhoService {
 
     public UsuarioModel excluirItens(Long codigo){
         UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
-
-        for(CarrinhoModelUsuario produto: usuario.getItens()){
-            ProdutoModel prod = produtoRepository.buscarPorID(produto.getCodigo());
-            prod.setQuantidadeEstoque(prod.getQuantidadeEstoque() + produto.getQuantidade());
-            produtoRepository.save(prod);
-        }
-
         usuario.getItens().clear();
         calc(usuario);
         return usuarioRepository.save(usuario);
     }
 
     //Soma quantidade de cada item
-    public void soma(ProdutoModel produto, CarrinhoModelUsuario item){
-        item.setQuantidade(item.getQuantidade() + 1);
-        produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - 1);
-        item.setPrecoFinal(item.getPrecoUnitario() * item.getQuantidade());
+    public void soma(CarrinhoModelUsuario item, ProdutoModel produto){
+        if(produto.getQuantidadeEstoque() > item.getQuantidade()){
+            item.setQuantidade(item.getQuantidade() + 1);
+            item.setPrecoFinal(item.getPrecoUnitario() * item.getQuantidade());
+        }
     }
 
     //Subtrai quantidade de cada item
@@ -118,7 +110,6 @@ public class CarrinhoService {
         if(item.getQuantidade() == 1) excluirItem(produto.getCodigo(), codigoCli);
         else{
             item.setQuantidade(item.getQuantidade() - 1);
-            produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + 1);
             item.setPrecoFinal(item.getPrecoUnitario() * item.getQuantidade());
         }
     }

@@ -36,9 +36,10 @@ public class PedidoController {
         return  service.fazerPedido(codigoCLiente, formaPagamento, quantidadeParcelas);
     }
 
-    @PutMapping(path = "/pedido/{codigo}/acao/{acao}")
+    @PutMapping(path = "/pedido/{codigo}/acao/{acao}/motivo/{motivo}")
     public PedidoModel mudarStatus(@PathVariable Long codigo,
-                                   @PathVariable Integer acao){
-        return service.mudarStatusPedido(codigo, acao);
+                                   @PathVariable Integer acao,
+                                   @PathVariable String motivo){
+        return service.mudarStatusPedido(codigo, acao, motivo);
     }
 }

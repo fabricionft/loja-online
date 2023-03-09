@@ -23,7 +23,6 @@ public class CarrinhoController {
         return modelMapper.map(usuario, CarrinhoResponseDTO.class);
     }
 
-
     @GetMapping(path = "/{codigo}")
     public ResponseEntity<?> itensUsuario(@PathVariable Long codigo){
         return new ResponseEntity<>(converterEmDTO(service.listarItensUsuario(codigo)), HttpStatus.OK);

@@ -6,6 +6,7 @@ import com.futshop.futshop.Model.UsuarioModel;
 import com.futshop.futshop.Repository.ProdutoRepository;
 import com.futshop.futshop.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.rmi.AlreadyBoundException;
@@ -19,7 +20,6 @@ public class UsuarioService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
-
 
     public List<UsuarioModel> listarUsuarios(){
         return usuarioRepository.findAll();
@@ -54,6 +54,16 @@ public class UsuarioService {
         usuario.setComplemento(endereco.getComplemento());
 
         return usuarioRepository.save(usuario);
+    }
+
+    public boolean alterarSenha(Long codigo, String senhaAtual, String senhaNova){
+        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
+        if(usuario.getSenha().equals(senhaAtual)){
+            usuario.setSenha(senhaNova);
+            usuarioRepository.save(usuario);
+            return true;
+        }
+        else return false;
     }
 
     public String excluirTodosUsuarios(){

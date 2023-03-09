@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos</title>
 
-    <link rel="stylesheet" href="css/gestaoProdutros.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/formularioProdutos.css">
-    <link rel="stylesheet" href="css/messageBox.css">
+    <link rel="stylesheet" href="css/geral/messageBox.css">
+    <link rel="stylesheet" href="css/geral/layout.css">
+    <link rel="stylesheet" href="css/geral/variaveis-templates.css">
+
+    <link rel="stylesheet" href="css/especifico/gestaoProdutos.css">
+    <link rel="stylesheet" href="css/especifico/formularioProdutos.css">
 
     <script
         src="https://code.jquery.com/jquery-3.6.1.min.js"
@@ -99,7 +101,7 @@
                 <div class="divisor-3">
                     <label class="texto-form-produtos">Imagem</label>
                     <button type="button" class="btn-img">
-                        <label for="imagemProduto">Escolha a imagem</label>
+                        <label for="imagemProduto" class="imagem-texto">Escolha a imagem</label>
                     </button>
                     <input type="file" class="input-img" id="imagemProduto">
                 </div>

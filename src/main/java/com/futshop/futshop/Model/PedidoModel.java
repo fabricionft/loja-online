@@ -24,6 +24,8 @@ public class PedidoModel {
 
     private String status = "Aguardando confirmação";
 
+    private String motivoRejeicao;
+
     private String pagamento;
 
     private Integer quantidaeParcelas;
@@ -31,6 +33,8 @@ public class PedidoModel {
     private Double valorParcela;
 
     private String nomeCliente;
+
+    private String cpfCliente;
 
     private String celular;
 

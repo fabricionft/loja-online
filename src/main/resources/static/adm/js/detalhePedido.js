@@ -1,12 +1,12 @@
 function exibirDetalhe(){
     window.scrollTo(0, 0);
-    $('#detalhePedido').css("display", "flex");
-    if($(window).width() < 1000)$('#tabelaPedidos').css("display", "none");
+    $('#sectionDetalhePedido').css("display", "initial");
+    if($(window).width() < 1000)$('#sectionPedido').css("display", "none");
 }
 
-function esconderDetallhe(){
-    $('#detalhePedido').css("display", "none");
-    $('#tabelaPedidos').css("display", "flex");
+function esconderDetalhe(){
+    $('#sectionDetalhePedido').css("display", "none");
+    $('#sectionPedido').css("display", "initial");
 }
 
 function renderizarDetalhamento(acao, codigo){
@@ -22,16 +22,17 @@ function renderizarDetalhamento(acao, codigo){
             alert("Erro ao buscar: " +xhr.responseText);
         });
     }
-    if(acao == 2) esconderDetallhe();
+    if(acao == 2) esconderDetalhe();
 }
 
 function alterarStatusPedido(codigo, acao){
-    if(acao == 1) verbo = "confirmado";
-    else verbo = "negado";
+    let verbo = (acao == 1) ?  "confirmado" : "rejeitado";
+    let motivo = ($('#motivo').val().length) ? $('#motivo').val() : "Confirmado";
+    console.log(codigo + "  " + acao + "  " + motivo);
 
     $.ajax({
         method: "PUT",
-        url: "/pedidos/pedido/"+codigo+"/acao/"+acao,
+        url: "/pedidos/pedido/"+codigo+"/acao/"+acao+"/motivo/"+motivo,
         success: function (dados){
            gerarMessageBox("rgb(214, 253, 226)", "Pedido "+verbo+" com sucesso!!", "Ok");
            listarPedidos();
@@ -41,15 +42,36 @@ function alterarStatusPedido(codigo, acao){
     });
 }
 
+function renderizarFormRejeicao(acao){
+    if(acao == 1){
+        $('#containerMotivoRejeicao').addClass('ativo');
+        travarTela();
+    }
+    if(acao == 2){
+        $('#containerMotivoRejeicao').removeClass('ativo');
+        destravarTela();
+    }
+}
+
+function rejeitar(codigo){
+    renderizarFormRejeicao(1);
+    $('#btnRejeicao').remove();
+    $('#formMotivoRejeicao').append(
+        '<button type="button" class="confirmar-rejeicao" id="btnRejeicao" onclick="alterarStatusPedido('+codigo+', 2)">Confirmar</button>'
+    )
+}
+
 function preencherDetalhamento(dados){
     $('#nomeCliente').html(dados.nomeCliente);
+    $('#cpfCliente').html(dados.cpfCliente);
     $('#emailCliente').html(dados.email);
     $('#celularCliente').html(dados.celular);
     $('#statusPedido').html(dados.status);
+    $('#formaDePagamentoPedido').html(dados.pagamento);
     $('#parcelamentoPedido').html(dados.quantidaeParcelas+"X de R$ "+dados.valorParcela.toFixed(2));
     $('#enderecoEntrega').html(dados.endereco);
 
-    while($("[name='linhaDetalhe']").length > 0) $('#linhaDetalhe').remove();
+    while($("[name='linhaDetalhe']").length) $('#linhaDetalhe').remove();
     dados.itens.forEach(item => {
         $('#itensDetalhePedido').append(
             '<div class="linha-item-detalhe-pedido" name="linhaDetalhe" id="linhaDetalhe">'+
@@ -75,7 +97,7 @@ function preencherDetalhamento(dados){
     $("[name='btnsDetalhe']").remove();
     $('#footerBtnsDetalhePedido').append(
         '<button class="btn-confirmar" name="btnsDetalhe" onclick="alterarStatusPedido('+dados.codigo+', 1)">Confirmar</button>'+
-        '<button class="btn-recusar" name="btnsDetalhe" onclick="alterarStatusPedido('+dados.codigo+', 2)">Recusar</button>'
+        '<button class="btn-recusar" name="btnsDetalhe" onclick="rejeitar('+dados.codigo+')">Recusar</button>'
     );
 
     if(dados.status != "Aguardando confirmação")  $("[name='btnsDetalhe']").css('display', "none");

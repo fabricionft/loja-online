@@ -12,12 +12,19 @@ function listarDados(){
         method: "GET",
         url: "/pedidos/pedido/"+localStorage.getItem('codigoPedido'),
         success: function (dados){
+            let motivo = $("[name='motivo']")
+            if(dados.status == "Pedido negado")
+                for(i = 0; i < motivo.length; i++) motivo[i].style.display="flex";
+            else
+                for(i = 0; i < motivo.length; i++) motivo[i].style.display="none";
+
             $('#nomeCliente').html(dados.nomeCliente);
             $('#emailCliente').html(dados.email);
             $('#celularCliente').html(dados.celular);
             $('#dataPedido').html(dados.data);
             $('#numeroPedido').html("#"+dados.numero);
             $('#statusPedido').html(dados.status);
+            $('#motivoRejeicao').html(dados.motivoRejeicao);
             $('#quantidadeItensPedido').html(dados.quantidadeItens);
             $('#metodoPagamentoPedido').html(dados.pagamento);
             $('#parcelamentoPedido').html(dados.quantidaeParcelas+"X de R$ "+dados.valorParcela.toFixed(2));

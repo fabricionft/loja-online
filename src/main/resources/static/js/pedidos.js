@@ -48,10 +48,13 @@ function confirmarPedido(){
             method: "POST",
             url: "pedidos/cliente/"+localStorage.getItem('codigo')+"/formaPagamento/"+tipoPagamento+"/quantidadeParcelas/"+quantidadeParcelas,
             success: function (dados){
-                renderizarQuantidade(0);
-                renderizarFormResumoPedido(2);
-                gerarMessageBox("rgb(214, 253, 226", "Pedido realizado com sucesso. Dentre 1-3 dias úteis o dono da página aceitará ou recusará seu pedido, caso aceite, entrará em contato lhe enviando a cobrança no formato de pagamento escolhido!!", "Prosseguir");
-            }
+                if(dados.numero == null) gerarMessageBox("rgb(253, 214, 214)", "Pedido não autorizado. Algum(ns) item(ns) do carrinho estão sem unidades sufioientes no estoque!!", "Prosseguir");
+                else{
+                     renderizarQuantidade(0);
+                     renderizarFormResumoPedido(2);
+                     gerarMessageBox("rgb(214, 253, 226", "Pedido realizado com sucesso. Dentre 1-3 dias úteis o dono da página aceitará ou recusará seu pedido, caso aceite, entrará em contato lhe enviando a cobrança no formato de pagamento escolhido!!", "Prosseguir");
+                }
+           }
         }).fail(function(xhr, status, errorThrown){
             alert("Erro ao fazer pedido: " +xhr.responseText);
         });
@@ -66,7 +69,7 @@ function listarPedidos(){
         success: function (dados){
             dados.slice().reverse().forEach(item => criarPedido(item));
 
-            let listaStatus = document.getElementsByClassName('tet-status');
+            let listaStatus = document.getElementsByName('statusPedido');
             for(i = 0; i < listaStatus.length; i++){
                 if(listaStatus[i].innerHTML == "Aguardando confirmação") listaStatus[i].style.color="orange"
                 else if(listaStatus[i].innerHTML == "Pedido confirmado") listaStatus[i].style.color="green"
@@ -82,19 +85,19 @@ function criarPedido(dados){
     $('#containerPedido').append(
         '<div class="pedido">'+
             '<div class="margem-pedidos">'+
-                '<p class="tit">Data pedido</p>'+
-                '<p class="tet">'+dados.data+'</p>'+
+                '<p class="subtitulo">Data pedido</p>'+
+                '<p class="texto">'+dados.data+'</p>'+
 
-                '<p class="tit">Número pedido</p>'+
-                '<p class="tet">#'+dados.numero+'</p>'+
+                '<p class="subtitulo">Número pedido</p>'+
+                '<p class="texto">#'+dados.numero+'</p>'+
 
-                '<p class="tit">Status pedido</p>'+
-                '<p class="tet-status">'+dados.status+'</p>'+
+                '<p class="subtitulo">Status pedido</p>'+
+                '<p class="texto-status" name="statusPedido">'+dados.status+'</p>'+
 
-                '<p class="tit">Valor pedido</p>'+
-                '<p class="tet">R$ '+dados.valor.toFixed(2)+'</p>'+
+                '<p class="subtitulo">Valor pedido</p>'+
+                '<p class="texto">R$ '+dados.valor.toFixed(2)+'</p>'+
 
-                '<button class="btn-pedidos" onclick="pegarIdPedido('+dados.codigo+')">Ver detalhamento</button>'+
+                '<button class="btn-detalhe" onclick="pegarIdPedido('+dados.codigo+')">Ver detalhamento</button>'+
             '</div>'+
         '</div>'
     );

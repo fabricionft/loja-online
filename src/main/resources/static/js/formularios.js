@@ -22,8 +22,20 @@ function renderizarFormLogin(acao){
     }
 }
 
+//Form trocar senha
+function renderizarFormTrocarSenha(acao){
+    if(acao == 1){
+        $('#containerTrocarSenha').addClass('ativo');
+        travarTela();
+    }
+    if(acao == 2){
+        $('#containerTrocarSenha').removeClass('ativo');
+        destravarTela();
+    }
+}
+
 function fazerLogin(){
-    if($('#email').val().length == 0 || $('#senha').val().length == 0) gerarMessageBox("rgb(253, 214, 214)", "Por favor preencha os campos corretamente!!", "Tentar novamente");
+    if(!$('#email').val().length || !$('#senha').val().length) gerarMessageBox("rgb(253, 214, 214)", "Por favor preencha os campos corretamente!!", "Tentar novamente");
     else{
         $.ajax({
             method: "POST",
@@ -59,11 +71,13 @@ function buscarEnderecoPorCEP(){
             method: "GET",
             url: "https://viacep.com.br/ws/"+$('#cep').val()+"/json/",
             success: function (dados){
-                $('#estado').val(dados.uf);
-                $('#cidade').val(dados.localidade);
-                $('#bairro').val(dados.bairro);
-                $('#rua').val(dados.logradouro);
                 if(dados.uf == null) gerarMessageBox("rgb(253, 214, 214)", "CEP inexistente", "Ok");
+                else{
+                    $('#estado').val(dados.uf);
+                    $('#cidade').val(dados.localidade);
+                    $('#bairro').val(dados.bairro);
+                    $('#rua').val(dados.logradouro);
+                }
             }
         }).fail(function(xhr, status, errorThrown){
             alert("Erro ao sallet: " +xhr.responseText);
@@ -124,28 +138,45 @@ function preencherEndereco(){
 }
 
 function alterarEndereco(){
-    $.ajax({
-        method: "PUT",
-        url: "/usuario/"+localStorage.getItem('codigo'),
-        data: JSON.stringify(
-        {
-            cep: $('#cep').val(),
-            estado: $('#estado').val(),
-            cidade: $('#cidade').val(),
-            bairro: $('#bairro').val(),
-            rua: $('#rua').val(),
-            numero: $('#numero').val(),
-            complemento: $('#complemento').val()
-        }),
-        contentType: "application/json; charset-utf8",
-        success: function (dados){
-            let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
-            localStorage.setItem('endereco', endereco);
-            gerarMessageBox("rgb(214, 253, 226", "Endereço alterado com sucesso!!", "Prosseguir");
-        }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao sallet: " +xhr.responseText);
-    });
+    if(validarEtapa2()){
+        $.ajax({
+            method: "PUT",
+            url: "/usuario/"+localStorage.getItem('codigo'),
+            data: JSON.stringify(
+            {
+                cep: $('#cep').val(),
+                estado: $('#estado').val(),
+                cidade: $('#cidade').val(),
+                bairro: $('#bairro').val(),
+                rua: $('#rua').val(),
+                numero: $('#numero').val(),
+                complemento: $('#complemento').val()
+            }),
+            contentType: "application/json; charset-utf8",
+            success: function (dados){
+                let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
+                localStorage.setItem('endereco', endereco);
+                gerarMessageBox("rgb(214, 253, 226", "Endereço alterado com sucesso!!", "Prosseguir");
+            }
+        }).fail(function(xhr, status, errorThrown){
+            alert("Erro ao sallet: " +xhr.responseText);
+        });
+    }
+}
+
+function alterarSenha(){
+    if(validarCamposDeSenha()){
+        $.ajax({
+            method: "PUT",
+            url: "/usuario/1/senhaAtual/"+$('#senhaAtual').val()+"/senhaNova/"+$('#senhaNova').val(),
+            success: function (dados){
+                if(dados) gerarMessageBox("rgb(214, 253, 226)", "Senha alterada com sucesso!!", "Prosseguir");
+                else gerarMessageBox("rgb(253, 214, 214)", "Senha atual incorreta", "Tentar novamente");
+            }
+        }).fail(function(xhr, status, errorThrown){
+            alert("Erro ao sallet: " +xhr.responseText);
+        });
+    }
 }
 
 $(document).ready(function(){
@@ -172,20 +203,15 @@ function gerarAnos(){
 
 function gerarDias(){
     let mes = $('#mesDataNascimento').val();
-    let dias;
+    let dias = (mes == 01 || mes == 03 || mes == 05 ||mes == 07 ||
+                mes == 08 || mes == 10 || mes == 12) ? 31 : 30;
+                if(mes == 2) dias = 28;
 
-    if(mes == 01 || mes == 03 || mes == 05 ||mes == 07 ||
-       mes == 08 || mes == 10 || mes == 12) dias = 31;
-    else if(mes == 04 || mes == 06 || mes == 09 ||mes == 11) dias = 30;
-    else dias = 28;
-
-    for(var i = 0; i <= 31; i++ )$('#dia').remove();
+    while($("[name='dia']").length) $('#dia').remove();
     for(var i = 1; i <= dias; i++){
-        let dia = "0";
-        if(i <= 9) dia += i;
-        else dia = i;
+        let dia = (i <= 9) ? "0"+i : i;
         $('#diaDataNascimento').append(
-            '<option id="dia" name="b">'+dia+'</option>'
+            '<option id="dia" name="dia">'+dia+'</option>'
         );
     }
 }
@@ -210,4 +236,13 @@ $('#trocarInputLogin').click(function (){
         $('#senha').attr('type', "password")
         $('#trocarInputLogin').attr('src', "icon/olho.png");
     }
+});
+
+$('#check').click(function (){
+    let senhas = $("[name='senhas']");
+
+    if(senhas[0].type == "password")
+        for(i = 0; i < senhas.length; i++) senhas[i].type = "text";
+    else
+        for(i = 0; i < senhas.length; i++) senhas[i].type = "password";
 });
