@@ -25,4 +25,5 @@ function fecharMessageBox(){
     $('#mensagem'). css("transform", "translateY(-250px)");
 
     if($('#btnMessage').html() == "Ok") location.reload();
+    if($('#btnMessage').html() == "Prosseguir") location.href="menuGestao.html";
 }

@@ -1,9 +1,11 @@
 package com.futshop.futshop.Controller;
 
+import com.futshop.futshop.DTO.Request.AdminLoginDTO;
 import com.futshop.futshop.DTO.Request.UsuarioRequestDTO;
 import com.futshop.futshop.DTO.Response.UsuarioResponseDTO;
 import com.futshop.futshop.Model.UsuarioModel;
 import com.futshop.futshop.Services.UsuarioService;
+import jakarta.annotation.security.RolesAllowed;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,6 +63,11 @@ public class UsuarioController {
                                         @PathVariable String senha){
         if(service.fazerLogin(email, senha) == null) return  null;
         else return new ResponseEntity<>(converterEmDTO(service.fazerLogin(email, senha)), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/login")
+    public ResponseEntity<?> fazerLogincomoAdministrador(@RequestBody AdminLoginDTO admin){
+        return new ResponseEntity<>(service.fazerLogincomoAdministrador(admin), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{codigo}")

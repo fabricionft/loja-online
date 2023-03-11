@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class UsuarioRequestDTO {
 
+    private Boolean admin;
     private String nome;
     private String dataNascimento;
     private String cpf;

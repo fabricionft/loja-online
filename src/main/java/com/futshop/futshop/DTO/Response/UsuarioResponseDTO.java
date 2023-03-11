@@ -11,7 +11,7 @@ import java.util.List;
 public class UsuarioResponseDTO {
 
     private Long codigo;
-    private Boolean adm;
+    private Boolean admin;
     private String nome;
     private String dataNascimento;
     private String cpf;

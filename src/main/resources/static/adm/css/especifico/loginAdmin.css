@@ -1,0 +1,53 @@
+body{
+    background: var(--fundo);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-login-admin{
+    width: 300px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--branco);
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 15%), 0 8px 16px rgb(0 0 0 / 15%);
+}
+
+.margem-form-login-admin{
+    width: 85%;
+    height: 80%;
+}
+
+.divisor-inputs, .divisor-btns{
+    width: 100%;
+    height: 60%;
+    display: flex;
+}
+
+.divisor-btns{
+    height: 40%;
+    align-items: flex-end;
+}
+
+.divisor-inputs{
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.input-login-admin{
+    width: calc(100% - 15px);
+    height: 40%;
+}
+
+.btn-login-admin{
+    width: 100%;
+    height: 60%;
+}

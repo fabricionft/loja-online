@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin</title>
+
+    <link rel="stylesheet" href="css/especifico/loginAdmin.css">
+    <link rel="stylesheet" href="css/geral/messageBox.css">
+    <link rel="stylesheet" href="css/geral/variaveis-templates.css">
+
+    <script
+            src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous" defer>
+    </script>
+    <script src="js/geral.js" defer></script>
+    <script src="js/formularios.js" defer></script>
+</head>
+</head>
+<body>
+    <form class="form-login-admin">
+        <div class="margem-form-login-admin">
+            <div class="divisor-inputs">
+                <input type="text" class="input-login-admin"
+                       id="email" placeholder="Email">
+                <input type="password" class="input-login-admin"
+                       id="senha" placeholder="Senha">
+            </div>
+
+            <div class="divisor-btns">
+                <button type="button" class="btn-login-admin" onclick="fazerLoginComoAdmin()">Login</button>
+            </div>
+        </div>
+    </form>
+
+    <!--Message Box-->
+    <div class="esconderMessageBox" id="esconder">
+        <div class="message-box" id="mensagem">
+            <div class="texto-message-box" id="textoMensagem"></div>
+            <footer class="footer-message-box" id="btnMensagem">
+                <button class="btn-message-box" id="btnMessage" onclick="fecharMessageBox()">Ok</button>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

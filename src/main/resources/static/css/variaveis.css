@@ -1,0 +1,32 @@
+:root{
+    --cor-de-fundo: rgb(241, 245, 247);
+    --cor-objetos: #fff;
+
+    --cor-gradiante-1: rgb(79, 48, 179);
+    --cor-gradiante-2: rgb(48, 188, 207);
+
+    --cor-botao-1: #00a000;
+    --cor-botao-2: rgb(94, 61, 202);
+
+    --cor-botao-1-hover: #058105;
+    --cor-botao-2-hover: rgb(70, 41, 164);
+
+    --cor-dinheiro: rgb(3, 208, 71);
+
+    --cor-titulo-1: #222;
+    --cor-titulo-2: #fff;
+    --cor-titulo-3: rgb(94, 61, 202);
+
+    --cor-texto-1: rgb(84, 84, 84);
+    --cor-texto-2: #00a000;
+    --cor-texto-3: #000;
+    --cor-texto-4: #fff;
+
+
+    --cor-subtitulo-1: rgb(70, 0, 128);
+    --cor-subtitulo-2: rgb(48, 188, 207);
+
+    --cor-sobreposicao: rgba(0, 0, 0, 0.4);
+
+    --cor-input-1: #fff;
+}

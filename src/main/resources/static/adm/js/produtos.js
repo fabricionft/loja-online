@@ -110,13 +110,15 @@ function editar(codigo){
 
 function excluir(codigo){
     $.ajax({
-        method: "DELETE",
+        type: "DELETE",
         url: "/produtos/"+codigo,
-        success: function (dados){
-            gerarMessageBox("rgb(214, 253, 226)", "Produto deletado com sucesso!!", "Ok");
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao listar: " +xhr.responseText);
+    }).done(function (response) {
+        gerarMessageBox("rgb(214, 253, 226)", "Produto deletado com sucesso!!", "Ok");
+    }).fail(function (err)  {
+        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
     });
 }
 

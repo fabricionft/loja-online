@@ -1,5 +1,6 @@
 package com.futshop.futshop.Services;
 
+import com.futshop.futshop.DTO.Request.AdminLoginDTO;
 import com.futshop.futshop.Model.CarrinhoModelUsuario;
 import com.futshop.futshop.Model.ProdutoModel;
 import com.futshop.futshop.Model.UsuarioModel;
@@ -8,6 +9,7 @@ import com.futshop.futshop.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.rmi.AlreadyBoundException;
 import java.util.List;
@@ -20,6 +22,9 @@ public class UsuarioService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    TokenService tokenService;
 
     public List<UsuarioModel> listarUsuarios(){
         return usuarioRepository.findAll();
@@ -40,6 +45,12 @@ public class UsuarioService {
 
     public UsuarioModel fazerLogin(String email, String senha){
         return usuarioRepository.fazerlogin(email, senha);
+    }
+
+    public String fazerLogincomoAdministrador(AdminLoginDTO admin){
+        UsuarioModel usuario = fazerLogin(admin.getEmail(), admin.getSenha());
+        if(usuario != null && usuario.getAdmin().equals(true)) return tokenService.gerarToken(admin);
+        return "Não é um admin";
     }
 
     public UsuarioModel alterarEndereco(Long codigo, UsuarioModel endereco){
