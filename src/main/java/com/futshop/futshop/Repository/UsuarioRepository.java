@@ -11,9 +11,6 @@ public interface UsuarioRepository extends JpaRepository<UsuarioModel, Long> {
     @Query(value = "select * from usuarios where codigo = ?", nativeQuery = true)
     public UsuarioModel buscarPorID(Long codigo);
 
-    @Query(value = "select * from usuarios where email = ? and senha = ?", nativeQuery = true)
-    public UsuarioModel fazerlogin(String email, String senha);
-
     @Query(value = "select * from usuarios where email = ?", nativeQuery = true)
     public UsuarioModel buscarPorLogin(String login);
 }

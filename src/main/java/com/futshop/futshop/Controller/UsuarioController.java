@@ -57,26 +57,20 @@ public class UsuarioController {
         return new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.CREATED);
     }
 
-    //Parei aqui 11/03
-    @GetMapping(path = "/validar/{email}/{senha}")
-    public ResponseEntity<Boolean> validarSenha(@PathVariable String email,
-                                                @PathVariable String senha){
-        return service.validarSenha(email, senha);
-    }
-
     @PostMapping(path = "/email/{email}/senha/{senha}")
     public ResponseEntity<?> fazerLogin(@PathVariable String email,
                                         @PathVariable String senha){
-        UsuarioModel usuario = service.fazerLogin(email, senha);
-        HttpStatus status = (usuario == null) ? HttpStatus.UNAUTHORIZED : HttpStatus.OK;
-        return new ResponseEntity<>(usuario, status);
+        return  service.fazerLogin(email, senha);
     }
 
     @PostMapping(path = "/login")
     public ResponseEntity<?> fazerLogincomoAdministrador(@RequestBody AdminLoginDTO admin){
-        String token = service.fazerLogincomoAdministrador(admin);
-        HttpStatus status = (token == null) ? HttpStatus.UNAUTHORIZED : HttpStatus.OK;
-        return new ResponseEntity<>((token != null) ? token : "Este usuário não existe", status);
+        return service.fazerLogincomoAdministrador(admin);
+    }
+
+    @PutMapping(path = "/tipoUsuario/{codigo}")
+    public ResponseEntity<?> alterarTipodoUsuario(@PathVariable Long codigo){
+        return new ResponseEntity<>(service.alterarTipoDeUsuario(codigo), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{codigo}")

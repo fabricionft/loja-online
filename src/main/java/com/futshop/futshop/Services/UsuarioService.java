@@ -1,9 +1,8 @@
 package com.futshop.futshop.Services;
 
 import com.futshop.futshop.DTO.Request.AdminLoginDTO;
-import com.futshop.futshop.Model.CarrinhoModelUsuario;
-import com.futshop.futshop.Model.ProdutoModel;
-import com.futshop.futshop.Model.UsuarioModel;
+import com.futshop.futshop.Model.*;
+import com.futshop.futshop.Repository.PedidoRepository;
 import com.futshop.futshop.Repository.ProdutoRepository;
 import com.futshop.futshop.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.rmi.AlreadyBoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -53,33 +51,29 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public ResponseEntity<Boolean> validarSenha(String email,String senha){
-        UsuarioModel usuario = usuarioRepository.buscarPorLogin(email);
-
-        if(usuario == null) return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
-
-        boolean valid = passwordEncoder.matches(senha, usuario.getSenha());
-        HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
-
-        return new ResponseEntity<>(valid, status);
-    }
-
-    public UsuarioModel fazerLogin(String email, String senha){
+    public ResponseEntity<UsuarioModel> fazerLogin(String email, String senha){
         if(validarSenha(email, senha).getBody()){
             UsuarioModel usuario = usuarioRepository.buscarPorLogin(email);
-            return  usuario;
+            return  new ResponseEntity<>(usuario, HttpStatus.OK);
         }
-        return null;
+        return  new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
-    public String fazerLogincomoAdministrador(AdminLoginDTO admin){
-        UsuarioModel usuario = fazerLogin(admin.getEmail(), admin.getSenha());
-        if(usuario == null) return null;
-        else if(usuario != null & usuario.getAdmin().equals(true)) return tokenService.gerarToken(admin);
-        else return "Não é um admin";
+    public ResponseEntity<String> fazerLogincomoAdministrador(AdminLoginDTO admin){
+        UsuarioModel usuario = usuarioRepository.buscarPorLogin(admin.getEmail());
+        if(usuario.getAdmin().equals(true)) return new ResponseEntity<>(tokenService.gerarToken(admin), HttpStatus.OK);
+        else return new ResponseEntity<>("O seu usuário não é um usuário administrador", HttpStatus.UNAUTHORIZED);
+    }
+
+    public UsuarioModel alterarTipoDeUsuario(Long codigo){
+        isUsuario(codigo);
+        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
+        usuario.setAdmin(true);
+        return  usuario;
     }
 
     public UsuarioModel alterarEndereco(Long codigo, UsuarioModel endereco){
+        isUsuario(codigo);
         UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
 
         usuario.setCep(endereco.getCep());
@@ -105,29 +99,29 @@ public class UsuarioService {
 
     public String excluirTodosUsuarios(){
         List<UsuarioModel> usuario = usuarioRepository.findAll();
-
-        for(UsuarioModel user: usuario){
-            for(CarrinhoModelUsuario item: user.getItens()){
-                ProdutoModel prod = produtoRepository.buscarPorID(item.getCodigo());
-                prod.setQuantidadeEstoque(prod.getQuantidadeEstoque() + item.getQuantidade());
-                produtoRepository.save(prod);
-            }
-        }
-
         usuarioRepository.deleteAll();
         return "Usuários deletados com sucesso!!";
     }
 
     public String excluirUsuarioPorID(Long codigo){
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
-
-        for(CarrinhoModelUsuario item: usuario.getItens()){
-            ProdutoModel prod = produtoRepository.buscarPorID(item.getCodigo());
-            prod.setQuantidadeEstoque(prod.getQuantidadeEstoque() + item.getQuantidade());
-            produtoRepository.save(prod);
-        }
-
+        isUsuario(codigo);
         usuarioRepository.deleteById(codigo);
         return "Usuário deletado com sucesso!!";
+    }
+
+    //Validações
+    private ResponseEntity<Boolean> validarSenha(String email,String senha){
+        UsuarioModel usuario = usuarioRepository.buscarPorLogin(email);
+        isUsuario(usuario.getCodigo());
+
+        boolean valid = passwordEncoder.matches(senha, usuario.getSenha());
+        HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+
+        return new ResponseEntity<>(valid, status);
+    }
+
+    private void isUsuario(Long codigo){
+        Optional<UsuarioModel> usuario = Optional.ofNullable(usuarioRepository.buscarPorID(codigo));
+        if(usuario.isEmpty()) throw new RuntimeException();
     }
 }

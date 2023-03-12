@@ -15,4 +15,9 @@ public class ApplicationExceptonHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity errosDuplicidade(Exception e){
         return new ResponseEntity("Este email ja foi cadastrado, por favor digite outro!", HttpStatus.ALREADY_REPORTED);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity usuarioInexistente(Exception e){
+        return new ResponseEntity("Usuário inexistente!", HttpStatus.ALREADY_REPORTED);
+    }
 }
