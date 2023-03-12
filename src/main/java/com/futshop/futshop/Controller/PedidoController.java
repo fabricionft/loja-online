@@ -15,18 +15,18 @@ public class PedidoController {
     private PedidoService service;
 
     @GetMapping
-    List<PedidoModel> listar(){
+    List<PedidoModel> listarPedidos(){
         return service.listarPedidos();
     }
 
     @GetMapping(path = "/cliente/{codigoCliente}")
-    public List<PedidoModel> buscarPedidosPorID(@PathVariable Long codigoCliente){
+    public List<PedidoModel> buscarPedidosPorIdDoCliente(@PathVariable Long codigoCliente){
         return  service.buscarPedidosPorIdDoCliente(codigoCliente);
     }
 
     @GetMapping(path = "pedido/{codigo}")
-    public PedidoModel buscarPorID(@PathVariable Long codigo){
-        return  service.buscarPedidoPorID(codigo);
+    public PedidoModel buscarPedidoPorIdDoPedido(@PathVariable Long codigo){
+        return  service.buscarPedidoPorIdDoPedido(codigo);
     }
 
     @PostMapping(path = "/cliente/{codigoCLiente}/formaPagamento/{formaPagamento}/quantidadeParcelas/{quantidadeParcelas}")

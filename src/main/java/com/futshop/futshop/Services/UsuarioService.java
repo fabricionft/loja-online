@@ -7,9 +7,12 @@ import com.futshop.futshop.Model.UsuarioModel;
 import com.futshop.futshop.Repository.ProdutoRepository;
 import com.futshop.futshop.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.rmi.AlreadyBoundException;
 import java.util.List;
@@ -24,7 +27,13 @@ public class UsuarioService {
     private ProdutoRepository produtoRepository;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     TokenService tokenService;
+
+    public UsuarioService() {
+    }
 
     public List<UsuarioModel> listarUsuarios(){
         return usuarioRepository.findAll();
@@ -40,17 +49,34 @@ public class UsuarioService {
                 throw  new AlreadyBoundException();
             }
         }
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
+    public ResponseEntity<Boolean> validarSenha(String email,String senha){
+        UsuarioModel usuario = usuarioRepository.buscarPorLogin(email);
+
+        if(usuario == null) return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+
+        boolean valid = passwordEncoder.matches(senha, usuario.getSenha());
+        HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+
+        return new ResponseEntity<>(valid, status);
+    }
+
     public UsuarioModel fazerLogin(String email, String senha){
-        return usuarioRepository.fazerlogin(email, senha);
+        if(validarSenha(email, senha).getBody()){
+            UsuarioModel usuario = usuarioRepository.buscarPorLogin(email);
+            return  usuario;
+        }
+        return null;
     }
 
     public String fazerLogincomoAdministrador(AdminLoginDTO admin){
         UsuarioModel usuario = fazerLogin(admin.getEmail(), admin.getSenha());
-        if(usuario != null && usuario.getAdmin().equals(true)) return tokenService.gerarToken(admin);
-        return "Não é um admin";
+        if(usuario == null) return null;
+        else if(usuario != null & usuario.getAdmin().equals(true)) return tokenService.gerarToken(admin);
+        else return "Não é um admin";
     }
 
     public UsuarioModel alterarEndereco(Long codigo, UsuarioModel endereco){
@@ -69,9 +95,9 @@ public class UsuarioService {
 
     public boolean alterarSenha(Long codigo, String senhaAtual, String senhaNova){
         UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
-        if(usuario.getSenha().equals(senhaAtual)){
+
+        if(validarSenha(usuario.getEmail(), senhaAtual).getBody()){
             usuario.setSenha(senhaNova);
-            usuarioRepository.save(usuario);
             return true;
         }
         else return false;

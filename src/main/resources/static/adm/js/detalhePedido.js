@@ -11,16 +11,19 @@ function esconderDetalhe(){
 
 function renderizarDetalhamento(acao, codigo){
     if(acao == 1){
-        exibirDetalhe();
         $.ajax({
             method: "GET",
             url: "/pedidos/pedido/"+codigo,
-            success: function (dados){
-               preencherDetalhamento(dados)
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
             }
-        }).fail(function(xhr, status, errorThrown){
-            alert("Erro ao buscar: " +xhr.responseText);
+        }).done(function (dados) {
+            exibirDetalhe();
+            preencherDetalhamento(dados)
+        }).fail(function (err)  {
+            gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
         });
+
     }
     if(acao == 2) esconderDetalhe();
 }
@@ -33,12 +36,14 @@ function alterarStatusPedido(codigo, acao){
     $.ajax({
         method: "PUT",
         url: "/pedidos/pedido/"+codigo+"/acao/"+acao+"/motivo/"+motivo,
-        success: function (dados){
-           gerarMessageBox("rgb(214, 253, 226)", "Pedido "+verbo+" com sucesso!!", "Ok");
-           listarPedidos();
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao alterar: " +xhr.responseText);
+    }).done(function (response) {
+        gerarMessageBox("rgb(214, 253, 226)", "Pedido "+verbo+" com sucesso!!", "Ok");
+        listarPedidos();
+    }).fail(function (err)  {
+        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
     });
 }
 

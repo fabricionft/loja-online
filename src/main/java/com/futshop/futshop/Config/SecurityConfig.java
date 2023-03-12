@@ -29,10 +29,12 @@ public class SecurityConfig{
         return  http.csrf().disable()
                 .authorizeHttpRequests(
                     authorizeConfig -> {
-                        authorizeConfig.requestMatchers("/pedidos/cliente/*").authenticated();
-                        authorizeConfig.requestMatchers("/pedidos/pedido/*").authenticated();
-                        authorizeConfig.requestMatchers(HttpMethod.DELETE, "/produtos/*").authenticated()
-                                .and().addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+                        //Gestão de produtos
+                        authorizeConfig.requestMatchers(HttpMethod.POST, "/produtos").authenticated();
+                        authorizeConfig.requestMatchers(HttpMethod.DELETE, "/produtos/*").authenticated();
+                        //Gestão de pedidos
+                        authorizeConfig.requestMatchers(HttpMethod.PUT, "/pedidos/pedido/**").authenticated()
+                        .and().addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
                         authorizeConfig.anyRequest().permitAll();
                     }
                 ).formLogin(Customizer.withDefaults())

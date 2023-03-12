@@ -5,7 +5,6 @@ import com.futshop.futshop.DTO.Request.UsuarioRequestDTO;
 import com.futshop.futshop.DTO.Response.UsuarioResponseDTO;
 import com.futshop.futshop.Model.UsuarioModel;
 import com.futshop.futshop.Services.UsuarioService;
-import jakarta.annotation.security.RolesAllowed;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,16 +57,26 @@ public class UsuarioController {
         return new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.CREATED);
     }
 
+    //Parei aqui 11/03
+    @GetMapping(path = "/validar/{email}/{senha}")
+    public ResponseEntity<Boolean> validarSenha(@PathVariable String email,
+                                                @PathVariable String senha){
+        return service.validarSenha(email, senha);
+    }
+
     @PostMapping(path = "/email/{email}/senha/{senha}")
     public ResponseEntity<?> fazerLogin(@PathVariable String email,
                                         @PathVariable String senha){
-        if(service.fazerLogin(email, senha) == null) return  null;
-        else return new ResponseEntity<>(converterEmDTO(service.fazerLogin(email, senha)), HttpStatus.OK);
+        UsuarioModel usuario = service.fazerLogin(email, senha);
+        HttpStatus status = (usuario == null) ? HttpStatus.UNAUTHORIZED : HttpStatus.OK;
+        return new ResponseEntity<>(usuario, status);
     }
 
     @PostMapping(path = "/login")
     public ResponseEntity<?> fazerLogincomoAdministrador(@RequestBody AdminLoginDTO admin){
-        return new ResponseEntity<>(service.fazerLogincomoAdministrador(admin), HttpStatus.OK);
+        String token = service.fazerLogincomoAdministrador(admin);
+        HttpStatus status = (token == null) ? HttpStatus.UNAUTHORIZED : HttpStatus.OK;
+        return new ResponseEntity<>((token != null) ? token : "Este usuário não existe", status);
     }
 
     @PutMapping(path = "/{codigo}")

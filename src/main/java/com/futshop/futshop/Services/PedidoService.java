@@ -41,7 +41,7 @@ public class PedidoService {
         return pedidoRepository.buscarPedidosPorID(codigoCliente);
     }
 
-    public PedidoModel buscarPedidoPorID(Long codigo){
+    public PedidoModel buscarPedidoPorIdDoPedido(Long codigo){
         return pedidoRepository.buscarPedidoPorID(codigo);
     }
 

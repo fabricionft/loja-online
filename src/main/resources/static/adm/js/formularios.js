@@ -9,7 +9,6 @@ function fazerLoginComoAdmin(){
         }),
         contentType: "application/json; charset-utf8",
         success: function (dados){
-            console.log(dados);
             if(dados != "Não é um admin"){
                 gerarMessageBox("rgb(214, 253, 226)", "Autenticação bem sucedida!! Você recebeu um token de autenticação que funcionará pelos próximos 60 min's. Após tal intervalo o mesmo ira expirar e então será necessário fazer login novamente para receber outro!", "Prosseguir");
                 localStorage.setItem('token', dados);

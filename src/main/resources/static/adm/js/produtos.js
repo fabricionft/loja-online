@@ -79,11 +79,13 @@ function salvar(){
             valorBase: $('#valorProduto').val()
         }),
         contentType: "application/json; charset-utf8",
-        success: function (dados){
-            gerarMessageBox("rgb(214, 253, 226)", "Produto cadastrado/editado com sucesso!!", "Ok");
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+    }).done(function (response) {
+        gerarMessageBox("rgb(214, 253, 226)", "Produto deletado com sucesso!!", "Ok");
+    }).fail(function (err)  {
+        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
     });
 }
 
@@ -91,20 +93,22 @@ function editar(codigo){
     $.ajax({
         method: "GET",
         url: "/produtos/"+codigo,
-        success: function (dados){
-            renderizarFormProdutos(1);
-            $('#imagemEsconder').val(dados.imagem);
-            $('#codigoProduto').val(dados.codigo);
-            $('#nomeProduto').val(dados.nomeProduto);
-            $('#descricaoProduto').val(dados.descricao);
-            $('#tipoProduto').val(dados.tipo);
-            $('#promocaoProduto').val(dados.promocao);
-            $('#quantidadeProduto').val(dados.quantidadeEstoque);
-            $('#tamanhoProduto').val(dados.tamanho);
-            $('#valorProduto').val(dados.valorBase);
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao listar: " +xhr.responseText);
+    }).done(function (dados) {
+        renderizarFormProdutos(1);
+        $('#imagemEsconder').val(dados.imagem);
+        $('#codigoProduto').val(dados.codigo);
+        $('#nomeProduto').val(dados.nomeProduto);
+        $('#descricaoProduto').val(dados.descricao);
+        $('#tipoProduto').val(dados.tipo);
+        $('#promocaoProduto').val(dados.promocao);
+        $('#quantidadeProduto').val(dados.quantidadeEstoque);
+        $('#tamanhoProduto').val(dados.tamanho);
+        $('#valorProduto').val(dados.valorBase);
+    }).fail(function (err)  {
+        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
     });
 }
 
@@ -137,5 +141,5 @@ function pesquisar(){
 }
 
 function limpar(){
-    while($("[name='linha']").length > 0) $('#linha').remove();
+    while($("[name='linha']").length) $('#linha').remove();
 }
