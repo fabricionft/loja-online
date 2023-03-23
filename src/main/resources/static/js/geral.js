@@ -31,9 +31,11 @@ function destravarTela() {
 }
 
 function gerarMessageBox(cor, mensagem, textoBtn, acesso){
+    let corDeFundo = (cor == 1) ? "rgb(214, 253, 226)" : "rgb(253, 214, 214)";
+
     $('#esconder').addClass('ativo')
     $('#mensagem').css("transform", "translateY(250px)");
-    $('#mensagem').css("background", cor);
+    $('#mensagem').css("background", corDeFundo);
 
     $('#textoMensagem').html(mensagem);
     $('#btnMessage').html(textoBtn);

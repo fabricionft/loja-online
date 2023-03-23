@@ -60,9 +60,15 @@ function renderizarFormProdutos(opc){
     }
 }
 
-function salvar(){
-    let imagem = ($("#imagemProduto")[0].files.length) ? "img/"+$("#imagemProduto")[0].files[0].name : $('#imagemEsconder').val();
+let data = new FormData();
+document.getElementById("upload").onchange = function(e){
+    if(e.target.files != null && e.target.files.length != 0){
+        var arquivo = e.target.files[0];
+        data.append("imagem", arquivo)
+    }
+}
 
+function salvar(){
     $.ajax({
         method: "POST",
         url: "/produtos",
@@ -74,7 +80,6 @@ function salvar(){
             promocao: $('#promocaoProduto').val(),
             quantidadeEstoque: $('#quantidadeProduto').val(),
             tamanho: $('#tamanhoProduto').val(),
-            imagem: imagem,
             tipo: $('#tipoProduto').val(),
             valorBase: $('#valorProduto').val()
         }),
@@ -82,10 +87,29 @@ function salvar(){
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).done(function (response) {
-        gerarMessageBox("rgb(214, 253, 226)", "Produto deletado com sucesso!!", "Ok");
+    }).done(function (dados) {
+        if($("#upload")[0].files.length) salvarImagem(dados.codigo)
+        else gerarMessageBox("rgb(214, 253, 226)", "Produto salvo com sucesso!!", "Ok");
     }).fail(function (err)  {
-        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
+        gerarMessageBox("rgb(253, 214, 214)", err.responseText, "Ok");
+    });
+}
+
+function salvarImagem(codigo){
+    $.ajax({
+        type: "POST",
+        url: "/produtos/img/"+codigo,
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
+        }
+    }).done(function (response) {
+        gerarMessageBox("rgb(214, 253, 226)", "Produto salvo com sucesso!!", "Ok");
+    }).fail(function (err)  {
+        gerarMessageBox("rgb(253, 214, 214)", err.responseText, "Ok");
     });
 }
 
@@ -114,7 +138,7 @@ function editar(codigo){
 
 function excluir(codigo){
     $.ajax({
-        type: "DELETE",
+        method: "DELETE",
         url: "/produtos/"+codigo,
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));

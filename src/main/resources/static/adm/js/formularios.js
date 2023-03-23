@@ -9,15 +9,10 @@ function fazerLoginComoAdmin(){
         }),
         contentType: "application/json; charset-utf8",
         success: function (dados){
-            if(dados != "Não é um admin"){
-                gerarMessageBox("rgb(214, 253, 226)", "Autenticação bem sucedida!! Você recebeu um token de autenticação que funcionará pelos próximos 60 min's. Após tal intervalo o mesmo ira expirar e então será necessário fazer login novamente para receber outro!", "Prosseguir");
-                localStorage.setItem('token', dados);
-            }
-            else {
-                gerarMessageBox("rgb(253, 214, 214)", "Seu usuário não é um usuário administrador!!", "Ok");
-            }
+            gerarMessageBox("rgb(214, 253, 226)", "Autenticação bem sucedida!! Você recebeu um token de autenticação que funcionará pelos próximos 60 min's. Após tal intervalo o mesmo ira expirar e então será necessário fazer login novamente para receber outro!", "Prosseguir", true);
+            localStorage.setItem('token', dados);
         }
     }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+        gerarMessageBox("rgb(253, 214, 214)", xhr.responseText, "Ok");
     });
 }

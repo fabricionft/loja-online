@@ -12,15 +12,17 @@ function listarItens(){
     while($("[name='linha']").length) $('#linhaCarrinho').remove();
     $.ajax({
         method: "GET",
-        url: "carrinho/"+localStorage.getItem('codigo'),
-        success: function (dados){
-            dados.itens.forEach(item => {
-                listaItens(item);
-            });
-            $('#totalCarrinho').html(" "+dados.valorTotalItens.toFixed(2));
+        url: "carrinhos/"+localStorage.getItem('codigo'),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+    }).done(function (dados) {
+        dados.itens.forEach(item => {
+            listaItens(item);
+        });
+        $('#totalCarrinho').html(" "+dados.valorTotalItens.toFixed(2));
+    }).fail(function (err)  {
+        gerarMessageBox(2, "Seu token expirou!!", "Ok");
     });
 }
 
@@ -28,47 +30,53 @@ function adcionaItens(id){
     if(localStorage.getItem('logado') == 'logado'){
         $.ajax({
             method: "POST",
-            url: "carrinho/produto/"+id+"/usuario/"+localStorage.getItem('codigo'),
-            success: function (dados){
-                renderizarQuantidade(dados.quantidadeItens);
+            url: "carrinhos/produto/"+id+"/usuario/"+localStorage.getItem('codigo'),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
             }
-        }).fail(function(xhr, status, errorThrown){
-            alert("Erro ao salvar: " +xhr.responseText);
+        }).done(function (dados) {
+             renderizarQuantidade(dados.quantidadeItens);
+        }).fail(function (err)  {
+            gerarMessageBox(2, "Seu token expirou!!", "Ok");
         });
     }
-    else gerarMessageBox("rgb(253, 214, 214)", "É necessário fazer login para adcionar um item ao carrinho!!", "Ok");
+    else gerarMessageBox(2, "É necessário fazer login para adcionar um item ao carrinho!!", "Ok");
 }
 
 function alterar(codigo, acao){
     $.ajax({
         method: "PUT",
-        url: "carrinho/produto/"+codigo+"/usuario/"+localStorage.getItem('codigo')+"/acao/"+acao,
-        success: function (dados){
-            if($('#quantidadeItens-'+codigo).html() == 1 && acao == 2) listarItens();
-
-            dados.itens.forEach(item => {
-                $('#quantidadeItens-'+item.codigo).html(item.quantidade);
-                $('#valorFinal-'+item.codigo).html(item.precoFinal.toFixed(2));
-            });
-
-            $('#totalCarrinho').html(" "+dados.valorTotalItens.toFixed(2));
-            renderizarQuantidade(dados.quantidadeItens);
+        url: "carrinhos/produto/"+codigo+"/usuario/"+localStorage.getItem('codigo')+"/acao/"+acao,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+    }).done(function (dados) {
+         if($('#quantidadeItens-'+codigo).html() == 1 && acao == 2) listarItens();
+
+         dados.itens.forEach(item => {
+             $('#quantidadeItens-'+item.codigo).html(item.quantidade);
+             $('#valorFinal-'+item.codigo).html(item.precoFinal.toFixed(2));
+         });
+
+         $('#totalCarrinho').html(" "+dados.valorTotalItens.toFixed(2));
+         renderizarQuantidade(dados.quantidadeItens);
+    }).fail(function (err)  {
+        gerarMessageBox(2, "Seu token expirou!!", "Ok");
     });
 }
 
 function excluir(){
     $.ajax({
         method: "DELETE",
-        url: "carrinho/usuario/"+localStorage.getItem('codigo'),
-        success: function (dados){
-            listarItens();
-            renderizarQuantidade(dados.quantidadeItens)
+        url: "carrinhos/usuario/"+localStorage.getItem('codigo'),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+    }).done(function (dados) {
+        listarItens();
+        renderizarQuantidade(dados.quantidadeItens);
+    }).fail(function (err)  {
+        gerarMessageBox(2, "Seu token expirou!!", "Ok");
     });
 }
 

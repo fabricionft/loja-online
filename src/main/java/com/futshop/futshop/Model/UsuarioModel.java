@@ -20,6 +20,9 @@ public class UsuarioModel implements UserDetails {
     private Long codigo;
 
     private Boolean admin = false;
+    private String role = "ROLE_USER";
+    private String token;
+
     private String nome;
     private String dataNascimento;
     private String cpf;
@@ -45,7 +48,7 @@ public class UsuarioModel implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override

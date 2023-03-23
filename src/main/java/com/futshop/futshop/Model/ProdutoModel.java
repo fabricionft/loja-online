@@ -16,7 +16,7 @@ public class ProdutoModel {
     @Column(length = 50, nullable = false)
     private String nomeProduto;
 
-    @Column(length = 500)
+    @Column
     private String imagem;
 
     @Column(length = 400, nullable = false)

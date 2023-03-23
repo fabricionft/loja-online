@@ -18,7 +18,7 @@ function renderizarFormResumoPedido(acao){
         $('.select-pedido').val("escolha");
         destravarTela();
     }
-    else gerarMessageBox("rgb(253, 214, 214)", "É necessário ter ao menos um item no carrinho para fazer um pedido!", "Ok");
+    else gerarMessageBox(2, "É necessário ter ao menos um item no carrinho para fazer um pedido!", "Ok");
 }
 
 function gerarParcelas(){
@@ -45,39 +45,43 @@ function confirmarPedido(){
 
     if(tipoPagamento != "escolha" && quantidadeParcelas != "escolha"){
         $.ajax({
-            method: "POST",
+             method: "POST",
             url: "pedidos/cliente/"+localStorage.getItem('codigo')+"/formaPagamento/"+tipoPagamento+"/quantidadeParcelas/"+quantidadeParcelas,
-            success: function (dados){
-                if(dados.numero == null) gerarMessageBox("rgb(253, 214, 214)", "Pedido não autorizado. Algum(ns) item(ns) do carrinho estão sem unidades sufioientes no estoque!!", "Prosseguir");
-                else{
-                     renderizarQuantidade(0);
-                     renderizarFormResumoPedido(2);
-                     gerarMessageBox("rgb(214, 253, 226", "Pedido realizado com sucesso. Dentre 1-3 dias úteis o dono da página aceitará ou recusará seu pedido, caso aceite, entrará em contato lhe enviando a cobrança no formato de pagamento escolhido!!", "Prosseguir");
-                }
-           }
-        }).fail(function(xhr, status, errorThrown){
-            alert("Erro ao fazer pedido: " +xhr.responseText);
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
+            }
+        }).done(function (dados) {
+            if(dados.numero == null) gerarMessageBox(2, "Pedido não autorizado. Algum(ns) item(ns) do carrinho estão sem unidades sufioientes no estoque!!", "Prosseguir");
+            else{
+                 renderizarQuantidade(0);
+                 renderizarFormResumoPedido(2);
+                 gerarMessageBox(1, "Pedido realizado com sucesso. Dentre 1-3 dias úteis o dono da página aceitará ou recusará seu pedido, caso aceite, entrará em contato lhe enviando a cobrança no formato de pagamento escolhido!!", "Prosseguir");
+            }
+        }).fail(function (err)  {
+            gerarMessageBox(2, "Seu token expirou!!", "Ok");
         });
     }
-    else gerarMessageBox("rgb(253, 214, 214)", "Por favor selecione o tipo de pagamento e a quantidade de parcelas desejada!", "Tentar novamente");
+    else gerarMessageBox(2, "Por favor selecione o tipo de pagamento e a quantidade de parcelas desejada!", "Tentar novamente");
 }
 
 function listarPedidos(){
     $.ajax({
         method: "GET",
         url: "/pedidos/cliente/"+localStorage.getItem('codigo'),
-        success: function (dados){
-            dados.slice().reverse().forEach(item => criarPedido(item));
-
-            let listaStatus = document.getElementsByName('statusPedido');
-            for(i = 0; i < listaStatus.length; i++){
-                if(listaStatus[i].innerHTML == "Aguardando confirmação") listaStatus[i].style.color="orange"
-                else if(listaStatus[i].innerHTML == "Pedido confirmado") listaStatus[i].style.color="green"
-                else listaStatus[i].style.color="red"
-            }
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+    }).done(function (dados) {
+        dados.slice().reverse().forEach(item => criarPedido(item));
+
+        let listaStatus = document.getElementsByName('statusPedido');
+        for(i = 0; i < listaStatus.length; i++){
+            if(listaStatus[i].innerHTML == "Aguardando confirmação") listaStatus[i].style.color="orange"
+            else if(listaStatus[i].innerHTML == "Pedido confirmado") listaStatus[i].style.color="green"
+            else listaStatus[i].style.color="red"
+        }
+    }).fail(function (err)  {
+        gerarMessageBox(2, "Seu token expirou!!", "Ok");
     });
 }
 

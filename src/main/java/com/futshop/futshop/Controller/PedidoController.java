@@ -3,6 +3,7 @@ package com.futshop.futshop.Controller;
 import com.futshop.futshop.Model.PedidoModel;
 import com.futshop.futshop.Services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class PedidoController {
     private PedidoService service;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     List<PedidoModel> listarPedidos(){
         return service.listarPedidos();
     }
@@ -37,7 +39,8 @@ public class PedidoController {
     }
 
     @PutMapping(path = "/pedido/{codigo}/acao/{acao}/motivo/{motivo}")
-    public PedidoModel mudarStatus(@PathVariable Long codigo,
+    @PreAuthorize("hasRole('ADMIN')")
+    public PedidoModel alterarStatusPedido(@PathVariable Long codigo,
                                    @PathVariable Integer acao,
                                    @PathVariable String motivo){
         return service.mudarStatusPedido(codigo, acao, motivo);

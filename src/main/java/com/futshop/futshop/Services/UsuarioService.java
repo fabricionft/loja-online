@@ -1,17 +1,13 @@
 package com.futshop.futshop.Services;
 
-import com.futshop.futshop.DTO.Request.AdminLoginDTO;
-import com.futshop.futshop.Model.*;
-import com.futshop.futshop.Repository.PedidoRepository;
+import com.futshop.futshop.Exceptions.UsuarioException;
+import com.futshop.futshop.Model.UsuarioModel;
 import com.futshop.futshop.Repository.ProdutoRepository;
 import com.futshop.futshop.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.rmi.AlreadyBoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,53 +24,48 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    TokenService tokenService;
-
-    public UsuarioService() {
-    }
+    private TokenService tokenService;
 
     public List<UsuarioModel> listarUsuarios(){
         return usuarioRepository.findAll();
     }
 
     public UsuarioModel buscarUsuarioPorID(Long codigo){
-        return usuarioRepository.buscarPorID(codigo);
+        return isUserByCode(codigo);
     }
 
-    public UsuarioModel salvarUsuario(UsuarioModel usuario) throws AlreadyBoundException {
+    public UsuarioModel salvarUsuario(UsuarioModel usuario) {
         for(UsuarioModel user: usuarioRepository.findAll()){
-            if(user.getEmail().equals(usuario.getEmail())){
-                throw  new AlreadyBoundException();
-            }
+            if(usuario.getEmail().equals(user.getEmail())) throw new UsuarioException("O email digitado já foi cadastrado, por favor digite outro!");
         }
+
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
-    public ResponseEntity<UsuarioModel> fazerLogin(String email, String senha){
-        if(validarSenha(email, senha).getBody()){
+    public UsuarioModel fazerLogin(String email, String senha){
+        if(validarSenha(email, senha)){
             UsuarioModel usuario = usuarioRepository.buscarPorLogin(email);
-            return  new ResponseEntity<>(usuario, HttpStatus.OK);
+            usuario.setToken(tokenService.gerarToken(usuario));
+            return  usuarioRepository.save(usuario);
         }
-        return  new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        throw new UsuarioException("Credenciais incorretas");
     }
 
-    public ResponseEntity<String> fazerLogincomoAdministrador(AdminLoginDTO admin){
-        UsuarioModel usuario = usuarioRepository.buscarPorLogin(admin.getEmail());
-        if(usuario.getAdmin().equals(true)) return new ResponseEntity<>(tokenService.gerarToken(admin), HttpStatus.OK);
-        else return new ResponseEntity<>("O seu usuário não é um usuário administrador", HttpStatus.UNAUTHORIZED);
-    }
+    public UsuarioModel alterarTipoDeUsuario(Long codigo, String senha){
+        UsuarioModel usuario = isUserByCode(codigo);
 
-    public UsuarioModel alterarTipoDeUsuario(Long codigo){
-        isUsuario(codigo);
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
-        usuario.setAdmin(true);
-        return  usuario;
+        if(passwordEncoder.matches(senha, "$2a$10$KrjoAbn9LLaIZIRiQ21uGuErs5aKmAeuIqPaApWxKJ0IeEbssFDRm")){
+            usuario.setAdmin(true);
+            usuario.setRole("ROLE_ADMIN");
+            return  usuarioRepository.save(usuario);
+        }
+        throw  new UsuarioException("Senha de auetnticação incorreta!");
+
     }
 
     public UsuarioModel alterarEndereco(Long codigo, UsuarioModel endereco){
-        isUsuario(codigo);
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
+        UsuarioModel usuario = isUserByCode(codigo);
 
         usuario.setCep(endereco.getCep());
         usuario.setEstado(endereco.getEstado());
@@ -88,9 +79,9 @@ public class UsuarioService {
     }
 
     public boolean alterarSenha(Long codigo, String senhaAtual, String senhaNova){
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
+        UsuarioModel usuario = isUserByCode(codigo);
 
-        if(validarSenha(usuario.getEmail(), senhaAtual).getBody()){
+        if(validarSenha(usuario.getEmail(), senhaAtual)){
             usuario.setSenha(senhaNova);
             return true;
         }
@@ -104,24 +95,27 @@ public class UsuarioService {
     }
 
     public String excluirUsuarioPorID(Long codigo){
-        isUsuario(codigo);
+        isUserByCode(codigo);
         usuarioRepository.deleteById(codigo);
         return "Usuário deletado com sucesso!!";
     }
 
     //Validações
-    private ResponseEntity<Boolean> validarSenha(String email,String senha){
-        UsuarioModel usuario = usuarioRepository.buscarPorLogin(email);
-        isUsuario(usuario.getCodigo());
-
-        boolean valid = passwordEncoder.matches(senha, usuario.getSenha());
-        HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
-
-        return new ResponseEntity<>(valid, status);
+    private Boolean validarSenha(String email,String senha){
+        boolean valid = passwordEncoder.matches(senha, isUserByEmail(email).getSenha());
+        return valid;
     }
 
-    private void isUsuario(Long codigo){
-        Optional<UsuarioModel> usuario = Optional.ofNullable(usuarioRepository.buscarPorID(codigo));
-        if(usuario.isEmpty()) throw new RuntimeException();
+    private UsuarioModel isUserByCode(Long codigo){
+        Optional<UsuarioModel> usuario = usuarioRepository.buscarOPTPorID(codigo);
+        if(usuario.isEmpty()) throw new UsuarioException("Usuário inexistente");
+        else return usuario.get();
     }
+
+    private UsuarioModel isUserByEmail(String email){
+        Optional<UsuarioModel> usuario = usuarioRepository.buscarOPTPorEmail(email);
+        if(usuario.isEmpty()) throw new UsuarioException("Usuário inexistente");
+        else return usuario.get();
+    }
+
 }

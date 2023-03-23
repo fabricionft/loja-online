@@ -9,23 +9,25 @@ window.onload = () => {
 function listarDados(){
     $.ajax({
         method: "GET",
-        url: "/usuario/"+localStorage.getItem('codigo'),
-        success: function (dados){
-            $("#nomeUsuarioExibir").html(dados.nome.split(" ")[0]);
-            $("#nomeExibir").html(dados.nome);
-            $("#dataExibir").html(dados.dataNascimento);
-            $("#cpfExibir").html(dados.cpf);
-            $("#emailExibir").html(dados.email);
-            $("#celularExibir").html(dados.celular);
-            $("#cepExibir").html(dados.cep);
-            $("#estadoExibir").html(dados.estado);
-            $("#cidadeExibir").html(dados.cidade);
-            $("#bairroExibir").html(dados.bairro);
-            $("#ruaExibir").html(dados.rua);
-            $("#numeroExibir").html(dados.numero);
-            $("#complementoExibir").html(dados.complemento);
+        url: "/usuarios/"+localStorage.getItem('codigo'),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao sallet: " +xhr.responseText);
+    }).done(function (dados) {
+        $("#nomeUsuarioExibir").html(dados.nome.split(" ")[0]);
+        $("#nomeExibir").html(dados.nome);
+        $("#dataExibir").html(dados.dataNascimento);
+        $("#cpfExibir").html(dados.cpf);
+        $("#emailExibir").html(dados.email);
+        $("#celularExibir").html(dados.celular);
+        $("#cepExibir").html(dados.cep);
+        $("#estadoExibir").html(dados.estado);
+        $("#cidadeExibir").html(dados.cidade);
+        $("#bairroExibir").html(dados.bairro);
+        $("#ruaExibir").html(dados.rua);
+        $("#numeroExibir").html(dados.numero);
+        $("#complementoExibir").html(dados.complemento);
+    }).fail(function (err)  {
+        gerarMessageBox(2, "Seu token expirou!!", "Ok");
     });
 }

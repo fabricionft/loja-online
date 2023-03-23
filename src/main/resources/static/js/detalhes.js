@@ -18,7 +18,7 @@ function mostrarProduto(){
            $("#valorComDesconto").html("R$"+dados.valorComDesconto.toFixed(2));
         }
     }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+        alert("Erro ao exibir produto" +xhr.responseText);
     });
 }
 

@@ -35,43 +35,51 @@ function renderizarFormTrocarSenha(acao){
 }
 
 function fazerLogin(){
-    if(!$('#email').val().length || !$('#senha').val().length) gerarMessageBox("rgb(253, 214, 214)", "Por favor preencha os campos corretamente!!", "Tentar novamente");
+    if(!$('#email').val().length || !$('#senha').val().length) gerarMessageBox(2, "Por favor preencha os campos corretamente!!", "Tentar novamente");
     else{
         $.ajax({
             method: "POST",
-            url: "usuario/email/"+$('#email').val().trim()+"/senha/"+$('#senha').val().trim(),
+            url: "usuarios/email/"+$('#email').val().trim()+"/senha/"+$('#senha').val().trim(),
             success: function (dados){
-                if(dados.nome != null){
-                    localStorage.setItem('logado', 'logado');
-                    localStorage.setItem('codigo', dados.codigo);
-                    localStorage.setItem('nome', dados.nome.split(" ")[0]);
-                    localStorage.setItem('quantidadeItens', dados.quantidadeItens);
-                    let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
-                    localStorage.setItem('endereco', endereco);
-
-                    gerarMessageBox("rgb(214, 253, 226)", "Logado com sucesso!!", "Prosseguir", true);
-                }
-                else gerarMessageBox("rgb(253, 214, 214)", "Credenciais incorretas!!", "Tentar novamente");
+                preencherUsuario(dados);
             }
         }).fail(function(xhr, status, errorThrown){
-            alert("Erro ao salvar: " +xhr.responseText);
+            gerarMessageBox(2, xhr.responseText, "Tentar novamente");
         });
     }
 }
 
+function preencherUsuario(dados){
+    localStorage.setItem('logado', 'logado');
+    localStorage.setItem('codigo', dados.codigo);
+    localStorage.setItem('token', dados.token);
+    localStorage.setItem('nome', dados.nome.split(" ")[0]);
+    localStorage.setItem('quantidadeItens', dados.quantidadeItens);
+    let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
+    localStorage.setItem('endereco', endereco);
+    gerarMessageBox(1, "Usuário logado com sucesso", "Prosseguir");
+}
+
+
 function sair(){
     localStorage.logado="";
+    localStorage.codigo="";
+    localStorage.token="";
+    localStorage.nome="";
+    localStorage.quantidadeItens="";
+    localStorage.endereco="";
+
     location.reload();
 }
 
 function buscarEnderecoPorCEP(){
-    if($('#cep').val().length != 8) gerarMessageBox("rgb(253, 214, 214)", "Por favor digite o CEP completo", "Tentar novamente");
+    if($('#cep').val().length != 8) gerarMessageBox(2, "Por favor digite o CEP completo", "Tentar novamente");
     else{
         $.ajax({
             method: "GET",
             url: "https://viacep.com.br/ws/"+$('#cep').val()+"/json/",
             success: function (dados){
-                if(dados.uf == null) gerarMessageBox("rgb(253, 214, 214)", "CEP inexistente", "Ok");
+                if(dados.uf == null) gerarMessageBox(2, "CEP inexistente", "Ok");
                 else{
                     $('#estado').val(dados.uf);
                     $('#cidade').val(dados.localidade);
@@ -90,7 +98,7 @@ function cadastrarUsuario(){
         let dataNascimento = $('#diaDataNascimento').val()+"/"+$('#mesDataNascimento').val()+"/"+$('#anoDataNascimento').val();
         $.ajax({
             method: "POST",
-            url: "/usuario",
+            url: "/usuarios",
             data: JSON.stringify(
             {
                 nome: $('#nome').val(),
@@ -109,11 +117,10 @@ function cadastrarUsuario(){
             }),
             contentType: "application/json; charset-utf8",
             success: function (dados){
-                if(dados.nome != null) gerarMessageBox("rgb(214, 253, 226", "Cadastro concluído com sucesso!!", "Prosseguir", true);
-                else gerarMessageBox("rgb(253, 214, 214)", "Este email já foi cadastrado!!", "Tentar novamente");
+                gerarMessageBox(1, "Cadastro concluído com sucesso!!", "Prosseguir", true);
             }
         }).fail(function(xhr, status, errorThrown){
-            alert("Erro ao salvar: " +xhr.responseText);
+            gerarMessageBox(2, xhr.responseText, "Tentar novamente");
         });
     }
 }
@@ -122,18 +129,20 @@ function preencherEndereco(){
     renderizarFormCadastro(1);
     $.ajax({
         method: "GET",
-        url: "/usuario/"+localStorage.getItem('codigo'),
-        success: function (dados){
-            $('#cep').val(dados.cep);
-            $('#estado').val(dados.estado);
-            $('#cidade').val(dados.cidade);
-            $('#bairro').val(dados.bairro);
-            $('#rua').val(dados.rua);
-            $('#numero').val(dados.numero);
-            $('#complemento').val(dados.complemento);
+        url: "/usuarios/"+localStorage.getItem('codigo'),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao sallet: " +xhr.responseText);
+    }).done(function (dados) {
+        $('#cep').val(dados.cep);
+        $('#estado').val(dados.estado);
+        $('#cidade').val(dados.cidade);
+        $('#bairro').val(dados.bairro);
+        $('#rua').val(dados.rua);
+        $('#numero').val(dados.numero);
+        $('#complemento').val(dados.complemento);
+    }).fail(function (err)  {
+        gerarMessageBox(2, "Seu token expirou!!", "Ok");
     });
 }
 
@@ -141,7 +150,7 @@ function alterarEndereco(){
     if(validarEtapa2()){
         $.ajax({
             method: "PUT",
-            url: "/usuario/"+localStorage.getItem('codigo'),
+            url: "/usuarios/"+localStorage.getItem('codigo'),
             data: JSON.stringify(
             {
                 cep: $('#cep').val(),
@@ -153,13 +162,15 @@ function alterarEndereco(){
                 complemento: $('#complemento').val()
             }),
             contentType: "application/json; charset-utf8",
-            success: function (dados){
-                let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
-                localStorage.setItem('endereco', endereco);
-                gerarMessageBox("rgb(214, 253, 226", "Endereço alterado com sucesso!!", "Prosseguir");
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
             }
-        }).fail(function(xhr, status, errorThrown){
-            alert("Erro ao sallet: " +xhr.responseText);
+        }).done(function (dados) {
+            let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
+            localStorage.setItem('endereco', endereco);
+            gerarMessageBox(1, "Endereço alterado com sucesso!!", "Prosseguir");
+        }).fail(function (err)  {
+            gerarMessageBox(2, "Seu token expirou!!", "Ok");
         });
     }
 }
@@ -168,13 +179,15 @@ function alterarSenha(){
     if(validarCamposDeSenha()){
         $.ajax({
             method: "PUT",
-            url: "/usuario/1/senhaAtual/"+$('#senhaAtual').val()+"/senhaNova/"+$('#senhaNova').val(),
-            success: function (dados){
-                if(dados) gerarMessageBox("rgb(214, 253, 226)", "Senha alterada com sucesso!!", "Prosseguir");
-                else gerarMessageBox("rgb(253, 214, 214)", "Senha atual incorreta", "Tentar novamente");
+            url: "/usuarios/1/senhaAtual/"+$('#senhaAtual').val()+"/senhaNova/"+$('#senhaNova').val(),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
             }
-        }).fail(function(xhr, status, errorThrown){
-            alert("Erro ao sallet: " +xhr.responseText);
+        }).done(function (dados) {
+            if(dados) gerarMessageBox(1, "Senha alterada com sucesso!!", "Prosseguir");
+            else gerarMessageBox(2, "Senha atual incorreta", "Tentar novamente");
+        }).fail(function (err)  {
+            gerarMessageBox(2, "Seu token expirou!!", "Ok");
         });
     }
 }

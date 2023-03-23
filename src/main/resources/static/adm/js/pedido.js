@@ -7,14 +7,16 @@ function listarPedidos(){
      $.ajax({
         method: "GET",
         url: "/pedidos",
-        success: function (dados){
-            while($("[name='linha']").length) $('#linha').remove();
-            dados.slice().reverse().forEach(item => {
-                if(item.status == localStorage.getItem('filtro'))criaLinha(item)
-            });
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao listar: " +xhr.responseText);
+    }).done(function (dados) {
+       while($("[name='linha']").length) $('#linha').remove();
+       dados.slice().reverse().forEach(item => {
+           if(item.status == localStorage.getItem('filtro'))criaLinha(item)
+       });
+    }).fail(function (err)  {
+        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
     });
 }
 

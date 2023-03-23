@@ -1,8 +1,5 @@
 package com.futshop.futshop.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.futshop.futshop.DTO.Request.ProdutoRequestDTO;
 import com.futshop.futshop.DTO.Response.ProdutoResponseDTO;
 import com.futshop.futshop.Model.ProdutoModel;
@@ -11,7 +8,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/produtos")
@@ -76,17 +81,26 @@ public class ProdutoController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> salvar(@RequestBody ProdutoRequestDTO produtoDTO) {
         ProdutoModel produto = service.salvarProduto(converterParaEntidade(produtoDTO));
         return new ResponseEntity<>(converterParaDTO(produto), HttpStatus.CREATED);
     }
 
+    @PostMapping(path = "/img/{codigo}")
+    public void img(@PathVariable Long codigo,
+                    @RequestParam MultipartFile imagem){
+        service.salvarImagem(codigo, imagem);
+    }
+
     @DeleteMapping(path = "/{codigo}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deletar(@PathVariable Long codigo){
         return new ResponseEntity<>(service.deletarProdutoPorID(codigo), HttpStatus.OK);
     }
 
-    @DeleteMapping()
+    @DeleteMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deletarTodos(){
         return new ResponseEntity<>(service.deletarTodosProdutos(), HttpStatus.OK);
     }

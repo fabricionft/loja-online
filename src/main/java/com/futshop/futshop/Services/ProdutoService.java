@@ -5,7 +5,11 @@ import com.futshop.futshop.Repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -52,6 +56,29 @@ public class ProdutoService {
         produto.setValorComDesconto(produto.getValorBase() - produto.getValorBase() * produto.getPromocao() / 100);
         produto.setDataPostagem(formatter.format(calendar.getTime()));
         return repository.save(produto);
+    }
+
+    public void salvarImagem(Long codigo, MultipartFile imagem){
+        if(! imagem.isEmpty()){
+            ProdutoModel produto = repository.buscarPorID(codigo);
+            String nomeImagem = imagem.getOriginalFilename();
+            produto.setImagem("uploads/"+nomeImagem);
+            repository.save(produto);
+
+            try{
+                String caminho = "C:\\Users\\fabri\\OneDrive\\Área de Trabalho\\FUTSHOP\\loja-online-main\\src\\main\\resources\\static\\uploads";
+                File diretorio = new File(caminho);
+                if(! diretorio.exists()) diretorio.mkdirs();
+
+                File serverFile = new File(diretorio.getAbsolutePath() + File.separator + nomeImagem);
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+
+                stream.write(imagem.getBytes());
+                stream.close();
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public String deletarProdutoPorID(Long codigo){

@@ -21,7 +21,7 @@ function listarProdutos(){
             });
         }
     }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+        alert("Erro ao listar produtos" +xhr.responseText);
     });
 }
 
@@ -45,7 +45,20 @@ function buscar(caminho, valor){
             }
         }
     }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+        alert("Erro ao listar produtos" +xhr.responseText);
+    });
+}
+
+function testar(){
+    $.ajax({
+        method: "GET",
+        url: "/produtos/pegar/IMG_20220903_192946_214.jpg",
+        success: function (dados){
+            console.log(dados);
+            $('#imgT').attr('src', "data:image/jpg;base64, "+dados)
+        }
+    }).fail(function(xhr, status, errorThrown){
+        alert("Erro ao listar produtos" +xhr.responseText);
     });
 }
 

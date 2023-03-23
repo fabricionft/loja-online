@@ -6,7 +6,7 @@ function verficarPreenchimentoDosCampos(nomeElementos){
 
     if(quantidadeNulo == 0) return true
     else{
-        gerarMessageBox("rgb(253, 214, 214)", "Por favor preencha todos os campos!!", "Tentar novamente");
+        gerarMessageBox(2, "Por favor preencha todos os campos!!", "Tentar novamente");
         return false;
     };
 }
@@ -17,7 +17,7 @@ function verificarErros(quantidadeDeErros, erros){
 
     if(quantidadeDeErros == 0) return true;
     else{
-        gerarMessageBox("rgb(253, 214, 214)", exibirErros, "Tentar novamente");
+        gerarMessageBox(2, exibirErros, "Tentar novamente");
         return false;
     }
 }

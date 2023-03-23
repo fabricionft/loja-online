@@ -1,6 +1,5 @@
 package com.futshop.futshop.Controller;
 
-import com.futshop.futshop.DTO.Request.AdminLoginDTO;
 import com.futshop.futshop.DTO.Request.UsuarioRequestDTO;
 import com.futshop.futshop.DTO.Response.UsuarioResponseDTO;
 import com.futshop.futshop.Model.UsuarioModel;
@@ -9,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.rmi.AlreadyBoundException;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
@@ -42,6 +42,7 @@ public class UsuarioController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UsuarioResponseDTO> listarUsuarios(){
         return converterListaEmDTO(service.listarUsuarios());
     }
@@ -52,7 +53,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> salvarUsuario(@RequestBody UsuarioRequestDTO usuarioDTO) throws AlreadyBoundException {
+    public ResponseEntity<?> salvarUsuario(@RequestBody UsuarioRequestDTO usuarioDTO){
         UsuarioModel usuario = service.salvarUsuario(converterEmEntidade(usuarioDTO));
         return new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.CREATED);
     }
@@ -60,17 +61,14 @@ public class UsuarioController {
     @PostMapping(path = "/email/{email}/senha/{senha}")
     public ResponseEntity<?> fazerLogin(@PathVariable String email,
                                         @PathVariable String senha){
-        return  service.fazerLogin(email, senha);
+        UsuarioModel usuario = service.fazerLogin(email, senha);
+        return  new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/login")
-    public ResponseEntity<?> fazerLogincomoAdministrador(@RequestBody AdminLoginDTO admin){
-        return service.fazerLogincomoAdministrador(admin);
-    }
-
-    @PutMapping(path = "/tipoUsuario/{codigo}")
-    public ResponseEntity<?> alterarTipodoUsuario(@PathVariable Long codigo){
-        return new ResponseEntity<>(service.alterarTipoDeUsuario(codigo), HttpStatus.OK);
+    @PutMapping(path = "/tipoUsuario/{codigo}/{senha}")
+    public ResponseEntity<?> alterarTipodoUsuario(@PathVariable Long codigo,
+                                                  @PathVariable String senha){
+        return new ResponseEntity<>(service.alterarTipoDeUsuario(codigo, senha), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{codigo}")
@@ -87,13 +85,16 @@ public class UsuarioController {
         return  new ResponseEntity<>(service.alterarSenha(codigo, senhaAtual, senhaNova), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> excluirTodosUsuarios(){
-        return  new ResponseEntity<>(service.excluirTodosUsuarios(), HttpStatus.OK);
-    }
 
     @DeleteMapping(path = "/usuario/{codigo}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> excluirUsuario(@PathVariable Long codigo){
        return new ResponseEntity<>(service.excluirUsuarioPorID(codigo), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> excluirTodosUsuarios(){
+        return  new ResponseEntity<>(service.excluirTodosUsuarios(), HttpStatus.OK);
     }
 }

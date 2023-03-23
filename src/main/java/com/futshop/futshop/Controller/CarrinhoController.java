@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/carrinho")
+@RequestMapping("/carrinhos")
 public class CarrinhoController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class CarrinhoController {
     }
 
     @GetMapping(path = "/{codigo}")
-    public ResponseEntity<?> itensUsuario(@PathVariable Long codigo){
+    public ResponseEntity<?> listarItensUsuario(@PathVariable Long codigo){
         return new ResponseEntity<>(converterEmDTO(service.listarItensUsuario(codigo)), HttpStatus.OK);
     }
 

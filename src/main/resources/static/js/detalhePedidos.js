@@ -11,29 +11,31 @@ function listarDados(){
     $.ajax({
         method: "GET",
         url: "/pedidos/pedido/"+localStorage.getItem('codigoPedido'),
-        success: function (dados){
-            let motivo = $("[name='motivo']")
-            if(dados.status == "Pedido negado")
-                for(i = 0; i < motivo.length; i++) motivo[i].style.display="flex";
-            else
-                for(i = 0; i < motivo.length; i++) motivo[i].style.display="none";
-
-            $('#nomeCliente').html(dados.nomeCliente);
-            $('#emailCliente').html(dados.email);
-            $('#celularCliente').html(dados.celular);
-            $('#dataPedido').html(dados.data);
-            $('#numeroPedido').html("#"+dados.numero);
-            $('#statusPedido').html(dados.status);
-            $('#motivoRejeicao').html(dados.motivoRejeicao);
-            $('#quantidadeItensPedido').html(dados.quantidadeItens);
-            $('#metodoPagamentoPedido').html(dados.pagamento);
-            $('#parcelamentoPedido').html(dados.quantidaeParcelas+"X de R$ "+dados.valorParcela.toFixed(2));
-            $('#valorpedido').html("R$ "+dados.valor.toFixed(2));
-            $('#enderecoPedido').html(dados.endereco);
-            dados.itens.forEach(item => {criarLinha(item);});
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao salvar: " +xhr.responseText);
+    }).done(function (dados) {
+        let motivo = $("[name='motivo']")
+        if(dados.status == "Pedido negado")
+            for(i = 0; i < motivo.length; i++) motivo[i].style.display="flex";
+        else
+            for(i = 0; i < motivo.length; i++) motivo[i].style.display="none";
+
+        $('#nomeCliente').html(dados.nomeCliente);
+        $('#emailCliente').html(dados.email);
+        $('#celularCliente').html(dados.celular);
+        $('#dataPedido').html(dados.data);
+        $('#numeroPedido').html("#"+dados.numero);
+        $('#statusPedido').html(dados.status);
+        $('#motivoRejeicao').html(dados.motivoRejeicao);
+        $('#quantidadeItensPedido').html(dados.quantidadeItens);
+        $('#metodoPagamentoPedido').html(dados.pagamento);
+        $('#parcelamentoPedido').html(dados.quantidaeParcelas+"X de R$ "+dados.valorParcela.toFixed(2));
+        $('#valorpedido').html("R$ "+dados.valor.toFixed(2));
+        $('#enderecoPedido').html(dados.endereco);
+        dados.itens.forEach(item => {criarLinha(item);});
+    }).fail(function (err)  {
+        gerarMessageBox(2, "Seu token expirou!!", "Ok");
     });
 }
 
