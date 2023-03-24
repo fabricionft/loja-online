@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<PedidoModel, Long> {
 
     @Query(value = "select * from pedidos where codigo_cliente = ?", nativeQuery = true)
-    public List<PedidoModel> buscarPedidosPorID(Long codigo);
+    public List<PedidoModel> buscarListaPorId(Long codigo);
 
     @Query(value = "select * from pedidos where codigo = ?", nativeQuery = true)
-    public PedidoModel buscarPedidoPorID(Long codigo);
+    public Optional<PedidoModel> buscarPorId(Long codigo);
 }

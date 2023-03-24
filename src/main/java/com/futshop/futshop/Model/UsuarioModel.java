@@ -21,8 +21,6 @@ public class UsuarioModel implements UserDetails {
 
     private Boolean admin = false;
     private String role = "ROLE_USER";
-    private String token;
-
     private String nome;
     private String dataNascimento;
     private String cpf;

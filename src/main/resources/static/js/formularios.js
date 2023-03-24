@@ -41,7 +41,8 @@ function fazerLogin(){
             method: "POST",
             url: "usuarios/email/"+$('#email').val().trim()+"/senha/"+$('#senha').val().trim(),
             success: function (dados){
-                preencherUsuario(dados);
+                localStorage.setItem('token', dados.token);
+                buscarDadosUsuario(dados.codigo);
             }
         }).fail(function(xhr, status, errorThrown){
             gerarMessageBox(2, xhr.responseText, "Tentar novamente");
@@ -49,10 +50,25 @@ function fazerLogin(){
     }
 }
 
+function buscarDadosUsuario(codigo){
+    $.ajax({
+        method: "GET",
+        url: "/usuarios/"+codigo,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
+        }
+    }).done(function (dados) {
+        console.log(dados);
+        preencherUsuario(dados);
+    }).fail(function (err)  {
+        gerarMessageBox(2, "Sem autoização: Seu token expirou ou não existe!!", "Ok");
+    });
+}
+
+
 function preencherUsuario(dados){
     localStorage.setItem('logado', 'logado');
     localStorage.setItem('codigo', dados.codigo);
-    localStorage.setItem('token', dados.token);
     localStorage.setItem('nome', dados.nome.split(" ")[0]);
     localStorage.setItem('quantidadeItens', dados.quantidadeItens);
     let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
@@ -184,10 +200,9 @@ function alterarSenha(){
                 xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
             }
         }).done(function (dados) {
-            if(dados) gerarMessageBox(1, "Senha alterada com sucesso!!", "Prosseguir");
-            else gerarMessageBox(2, "Senha atual incorreta", "Tentar novamente");
+            gerarMessageBox(1, dados, "Prosseguir");
         }).fail(function (err)  {
-            gerarMessageBox(2, "Seu token expirou!!", "Ok");
+            gerarMessageBox(2, err.responseText, "Tentar novamente");
         });
     }
 }

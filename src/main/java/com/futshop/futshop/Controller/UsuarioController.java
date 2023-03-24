@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.rmi.AlreadyBoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,8 +60,8 @@ public class UsuarioController {
     @PostMapping(path = "/email/{email}/senha/{senha}")
     public ResponseEntity<?> fazerLogin(@PathVariable String email,
                                         @PathVariable String senha){
-        UsuarioModel usuario = service.fazerLogin(email, senha);
-        return  new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.OK);
+        //UsuarioModel usuario = service.fazerLogin(email, senha);
+        return  new ResponseEntity<>(service.fazerLogin(email, senha), HttpStatus.OK);
     }
 
     @PutMapping(path = "/tipoUsuario/{codigo}/{senha}")

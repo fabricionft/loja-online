@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository <ProdutoModel, Long> {
 
     @Query(value = "select * from produto where codigo = ?", nativeQuery = true)
-    public ProdutoModel buscarPorID(Long codigo);
+    public Optional<ProdutoModel> buscarPorID(Long codigo);
 
     //Pesquisar
     @Query(value = "select * from produto  where descricao like %?%", nativeQuery = true)

@@ -1,18 +1,14 @@
 package com.futshop.futshop.Services;
 
+import com.futshop.futshop.Exceptions.RequestException;
 import com.futshop.futshop.Model.*;
 import com.futshop.futshop.Repository.PedidoRepository;
-import com.futshop.futshop.Repository.ProdutoRepository;
-import com.futshop.futshop.Repository.UsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class PedidoService {
@@ -21,13 +17,14 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private ProdutoService produtoService;
 
     @Autowired
     private ModelMapper modelMapper;
+
 
     private CarrinhoModelPedido converterEmCarrinhoPedido(CarrinhoModelUsuario carrinho){
         return modelMapper.map(carrinho, CarrinhoModelPedido.class);
@@ -37,23 +34,24 @@ public class PedidoService {
         return pedidoRepository.findAll();
     }
 
-    public List<PedidoModel> buscarPedidosPorIdDoCliente(Long codigoCliente){
-        return pedidoRepository.buscarPedidosPorID(codigoCliente);
+    public List<PedidoModel> buscarListaDePedidosPorIdDoCliente(Long codigoCliente){
+        UsuarioModel usuario = usuarioService.isUserByCode(codigoCliente);
+        return pedidoRepository.buscarListaPorId(usuario.getCodigo());
     }
 
     public PedidoModel buscarPedidoPorIdDoPedido(Long codigo){
-        return pedidoRepository.buscarPedidoPorID(codigo);
+        return isOrderByCode(codigo);
     }
 
     public PedidoModel fazerPedido( Long codigoCLiente, String formaPagamento, Integer quantidadeParcelas){
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigoCLiente);
+        UsuarioModel usuario = usuarioService.isUserByCode(codigoCLiente);
         PedidoModel pedido = new PedidoModel();
         Random rd = new Random();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy   HH:mm:ss");
         Calendar calendar = Calendar.getInstance();
 
-        if(verificarEstoque(usuario.getCodigo())){
-            reduzirEstoque(usuario.getCodigo());
+        if(verificarEstoque(usuario.getItens())){
+            reduzirEstoque(usuario.getItens());
 
             //Dados pedido
             pedido.setNumero(rd.nextLong(900000000)+100000000);
@@ -82,43 +80,37 @@ public class PedidoService {
             pedido.setValor(usuario.getValorTotalItens());
 
             usuario.getItens().clear();
-            usuario.setQuantidadeItens(0);
-            usuario.setValorTotalItens(0.0);
-            usuarioRepository.save(usuario);
+            usuarioService.atualizarUsuario(usuario);
 
             return pedidoRepository.save(pedido);
         }
         else return null;
     }
 
-    private void reduzirEstoque(Long codigo){
-        List<ProdutoModel> produtos = produtoRepository.findAll();
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
-
-        for(CarrinhoModelUsuario item: usuario.getItens()){
-            for(ProdutoModel produto: produtos){
-                if(item.getCodigo().equals(produto.getCodigo()) && item.getQuantidade() <= produto.getQuantidadeEstoque()){
-                    produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - item.getQuantidade());
-                    produtoRepository.save(produto);
-                }
-            }
-        }
-    }
-    private boolean verificarEstoque(Long codigo){
-        List<ProdutoModel> produtos = produtoRepository.findAll();
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
-
-        for(CarrinhoModelUsuario item: usuario.getItens()){
-            for(ProdutoModel produto: produtos){
-                if(item.getQuantidade() > produto.getQuantidadeEstoque()) return false;
+    private boolean verificarEstoque(List<CarrinhoModelUsuario> itens){
+        for(CarrinhoModelUsuario item: itens){
+            for(ProdutoModel produto: produtoService.listarProdutos()){
+                if(item.getQuantidade() > produto.getQuantidadeEstoque())
+                    throw new RequestException("Algum(ns) do(s) item(ns) selecionados não possuem quantidade suficiente em estoque!");
             }
         }
         return true;
     }
 
+    private void reduzirEstoque(List<CarrinhoModelUsuario> itens){
+        for(CarrinhoModelUsuario item: itens){
+            for(ProdutoModel produto: produtoService.listarProdutos()){
+                if(item.getCodigo().equals(produto.getCodigo()) && item.getQuantidade() <= produto.getQuantidadeEstoque()){
+                    produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - item.getQuantidade());
+                    produtoService.atualizarProduto(produto);
+                }
+            }
+        }
+    }
+
     public PedidoModel mudarStatusPedido(Long codigo, Integer acao, String motivo){
-        List<ProdutoModel> produtos = produtoRepository.findAll();
-        PedidoModel pedido = pedidoRepository.buscarPedidoPorID(codigo);
+        List<ProdutoModel> produtos = produtoService.listarProdutos();
+        PedidoModel pedido = isOrderByCode(codigo);
 
         if(acao.equals(1)) pedido.setStatus("Pedido confirmado");
         if(acao.equals(2)) {
@@ -133,5 +125,12 @@ public class PedidoService {
             }
         }
         return pedidoRepository.save(pedido);
+    }
+
+    //Validações
+    public PedidoModel isOrderByCode(Long codigo){
+        Optional<PedidoModel> pedido = pedidoRepository.buscarPorId(codigo);
+        if(pedido.isEmpty()) throw new RequestException("Pedido inexistente");
+        else return  pedido.get();
     }
 }

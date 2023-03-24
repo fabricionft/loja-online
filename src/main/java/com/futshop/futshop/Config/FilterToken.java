@@ -1,5 +1,6 @@
 package com.futshop.futshop.Config;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.futshop.futshop.Repository.UsuarioRepository;
 import com.futshop.futshop.Services.TokenService;
 import jakarta.servlet.FilterChain;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.rmi.AlreadyBoundException;
 
 @Component
 public class FilterToken extends OncePerRequestFilter {
@@ -35,17 +35,17 @@ public class FilterToken extends OncePerRequestFilter {
         try {
             if (authorization != null) {
                 token = authorization.replace("Bearer ", "");
+
                 var subject = tokenService.getSubject(token);
 
-                var usuario = usuarioRepository.buscarPorLogin(subject);
+                var usuario = usuarioRepository.buscarPorEmail(subject).get();
 
                 var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-        catch (com.auth0.jwt.exceptions.TokenExpiredException e){
-            response.setStatus(403);
+        catch (TokenExpiredException e){
         }
 
         filterChain.doFilter(request, response);

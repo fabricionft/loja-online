@@ -1,8 +1,9 @@
 package com.futshop.futshop.Services;
 
-import com.futshop.futshop.Exceptions.UsuarioException;
+import com.futshop.futshop.DTO.Response.LoginDto;
+import com.futshop.futshop.Exceptions.RequestException;
+import com.futshop.futshop.Model.CarrinhoModelUsuario;
 import com.futshop.futshop.Model.UsuarioModel;
-import com.futshop.futshop.Repository.ProdutoRepository;
 import com.futshop.futshop.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,9 +19,6 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private ProdutoRepository produtoRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -34,22 +32,35 @@ public class UsuarioService {
         return isUserByCode(codigo);
     }
 
-    public UsuarioModel salvarUsuario(UsuarioModel usuario) {
+    public  UsuarioModel salvarUsuario(UsuarioModel usuario) {
         for(UsuarioModel user: usuarioRepository.findAll()){
-            if(usuario.getEmail().equals(user.getEmail())) throw new UsuarioException("O email digitado já foi cadastrado, por favor digite outro!");
+            if(usuario.getEmail().equals(user.getEmail())) throw new RequestException("O email digitado já foi cadastrado, por favor digite outro!");
         }
 
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
-    public UsuarioModel fazerLogin(String email, String senha){
-        if(validarSenha(email, senha)){
-            UsuarioModel usuario = usuarioRepository.buscarPorLogin(email);
-            usuario.setToken(tokenService.gerarToken(usuario));
-            return  usuarioRepository.save(usuario);
+    public UsuarioModel atualizarUsuario(UsuarioModel usuario){
+        Integer quantiadeTotal = 0;
+        Double valorTotal = 0.0;
+
+        for(CarrinhoModelUsuario itens: usuario.getItens()){
+            quantiadeTotal += itens.getQuantidade();
+            valorTotal += itens.getPrecoFinal();
         }
-        throw new UsuarioException("Credenciais incorretas");
+
+        usuario.setQuantidadeItens(quantiadeTotal);
+        usuario.setValorTotalItens(valorTotal);
+        return  usuarioRepository.save(usuario);
+    }
+
+    public LoginDto fazerLogin(String email, String senha){
+        if(validarSenha(email, senha)){
+            UsuarioModel usuario = usuarioRepository.buscarPorEmail(email).get();
+            return new LoginDto(usuario.getCodigo(), tokenService.gerarToken(usuario));
+        }
+        throw new RequestException("Credenciais incorretas");
     }
 
     public UsuarioModel alterarTipoDeUsuario(Long codigo, String senha){
@@ -60,7 +71,7 @@ public class UsuarioService {
             usuario.setRole("ROLE_ADMIN");
             return  usuarioRepository.save(usuario);
         }
-        throw  new UsuarioException("Senha de auetnticação incorreta!");
+        throw  new RequestException("Senha de auetnticação incorreta!");
 
     }
 
@@ -78,14 +89,14 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public boolean alterarSenha(Long codigo, String senhaAtual, String senhaNova){
+    public String alterarSenha(Long codigo, String senhaAtual, String senhaNova){
         UsuarioModel usuario = isUserByCode(codigo);
 
         if(validarSenha(usuario.getEmail(), senhaAtual)){
             usuario.setSenha(senhaNova);
-            return true;
+            return "Senha alterada com sucesso!";
         }
-        else return false;
+        throw new RequestException("Senha atual incorreta");
     }
 
     public String excluirTodosUsuarios(){
@@ -106,16 +117,15 @@ public class UsuarioService {
         return valid;
     }
 
-    private UsuarioModel isUserByCode(Long codigo){
-        Optional<UsuarioModel> usuario = usuarioRepository.buscarOPTPorID(codigo);
-        if(usuario.isEmpty()) throw new UsuarioException("Usuário inexistente");
+    public UsuarioModel isUserByCode(Long codigo){
+        Optional<UsuarioModel> usuario = usuarioRepository.buscarPorId(codigo);
+        if(usuario.isEmpty()) throw new RequestException("Usuário inexistente");
         else return usuario.get();
     }
 
     private UsuarioModel isUserByEmail(String email){
-        Optional<UsuarioModel> usuario = usuarioRepository.buscarOPTPorEmail(email);
-        if(usuario.isEmpty()) throw new UsuarioException("Usuário inexistente");
+        Optional<UsuarioModel> usuario = usuarioRepository.buscarPorEmail(email);
+        if(usuario.isEmpty()) throw new RequestException("Usuário inexistente");
         else return usuario.get();
     }
-
 }

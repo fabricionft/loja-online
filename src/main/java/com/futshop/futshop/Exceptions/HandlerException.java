@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
+public class HandlerException extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(UsuarioException.class)
-    public ResponseEntity usuarioInexistente(Exception e){
+    @ExceptionHandler(RequestException.class)
+    public ResponseEntity tratarRequestExceptions(Exception e){
         return new ResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }

@@ -1,5 +1,6 @@
 package com.futshop.futshop.Services;
 
+import com.futshop.futshop.Exceptions.RequestException;
 import com.futshop.futshop.Model.ProdutoModel;
 import com.futshop.futshop.Repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,40 +14,41 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdutoService {
 
     @Autowired
-    private ProdutoRepository repository;
+    private ProdutoRepository produtoRepository;
 
 
     public List<ProdutoModel> listarProdutos(){
-        return repository.findAll();
+        return produtoRepository.findAll();
     }
 
     public List<ProdutoModel> filtrarPorTipo(@PathVariable String tipo){
-        return repository.buscarPorTipo(tipo);
+        return produtoRepository.buscarPorTipo(tipo);
     }
 
     public List<ProdutoModel> ordenarPromocaoEmOrdemDecrescente(){
-        return repository.promocaoDecrescente();
+        return produtoRepository.promocaoDecrescente();
     }
 
     public List<ProdutoModel> ordenarValorEmOrdemCrescente(){
-        return repository.valorCrescente();
+        return produtoRepository.valorCrescente();
     }
 
     public List<ProdutoModel> ordenarValorEmOrdemDecrescente(){
-        return repository.valorDecrescente();
+        return produtoRepository.valorDecrescente();
     }
 
     public List<ProdutoModel> buscarPorDescricao(String descricao){
-        return repository.buscarPorDescricao(descricao);
+        return produtoRepository.buscarPorDescricao(descricao);
     }
 
     public ProdutoModel buscarProdutoPorID(Long codigo){
-        return repository.buscarPorID(codigo);
+        return isProductByCode(codigo);
     }
 
     public ProdutoModel salvarProduto(ProdutoModel produto) {
@@ -55,18 +57,22 @@ public class ProdutoService {
 
         produto.setValorComDesconto(produto.getValorBase() - produto.getValorBase() * produto.getPromocao() / 100);
         produto.setDataPostagem(formatter.format(calendar.getTime()));
-        return repository.save(produto);
+        return produtoRepository.save(produto);
+    }
+
+    public ProdutoModel atualizarProduto(ProdutoModel produto){
+        return  produtoRepository.save(produto);
     }
 
     public void salvarImagem(Long codigo, MultipartFile imagem){
         if(! imagem.isEmpty()){
-            ProdutoModel produto = repository.buscarPorID(codigo);
+            ProdutoModel produto = isProductByCode(codigo);
             String nomeImagem = imagem.getOriginalFilename();
             produto.setImagem("uploads/"+nomeImagem);
-            repository.save(produto);
+            produtoRepository.save(produto);
 
             try{
-                String caminho = "C:\\Users\\fabri\\OneDrive\\Área de Trabalho\\FUTSHOP\\loja-online-main\\src\\main\\resources\\static\\uploads";
+                String caminho = "C:\\Users\\fabri\\OneDrive\\Área de Trabalho\\FUTSHOP\\futshop\\src\\main\\resources\\static\\uploads";
                 File diretorio = new File(caminho);
                 if(! diretorio.exists()) diretorio.mkdirs();
 
@@ -82,12 +88,19 @@ public class ProdutoService {
     }
 
     public String deletarProdutoPorID(Long codigo){
-        repository.deleteById(codigo);
+        produtoRepository.deleteById(codigo);
         return "Produto deletado com sucesso!!";
     }
 
     public String deletarTodosProdutos(){
-        repository.deleteAll();
+        produtoRepository.deleteAll();
         return "Todos produtos deletados com sucesso!!";
+    }
+
+    //Validações
+    public ProdutoModel isProductByCode(Long codigo){
+        Optional<ProdutoModel> produto = produtoRepository.buscarPorID(codigo);
+        if(produto.isEmpty()) throw new RequestException("Produto inexistente");
+        else return produto.get();
     }
 }

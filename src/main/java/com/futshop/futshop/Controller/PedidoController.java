@@ -23,7 +23,7 @@ public class PedidoController {
 
     @GetMapping(path = "/cliente/{codigoCliente}")
     public List<PedidoModel> buscarPedidosPorIdDoCliente(@PathVariable Long codigoCliente){
-        return  service.buscarPedidosPorIdDoCliente(codigoCliente);
+        return  service.buscarListaDePedidosPorIdDoCliente(codigoCliente);
     }
 
     @GetMapping(path = "pedido/{codigo}")

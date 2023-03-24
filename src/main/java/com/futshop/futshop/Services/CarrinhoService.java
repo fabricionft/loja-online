@@ -3,8 +3,6 @@ package com.futshop.futshop.Services;
 import com.futshop.futshop.Model.CarrinhoModelUsuario;
 import com.futshop.futshop.Model.ProdutoModel;
 import com.futshop.futshop.Model.UsuarioModel;
-import com.futshop.futshop.Repository.ProdutoRepository;
-import com.futshop.futshop.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +10,19 @@ import org.springframework.stereotype.Service;
 public class CarrinhoService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private ProdutoService produtoService;
+
 
     public UsuarioModel listarItensUsuario(Long codigo) {
-        return usuarioRepository.buscarPorID(codigo);
+        return usuarioService.isUserByCode(codigo);
     }
 
-    public UsuarioModel adcionarItem(Long codigo, Long codigoUser){
-        ProdutoModel produto = produtoRepository.buscarPorID(codigo);
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigoUser);
+    public UsuarioModel adcionarItem(Long codigoProd, Long codigoUser){
+        ProdutoModel produto = produtoService.isProductByCode(codigoProd);
+        UsuarioModel usuario = usuarioService.isUserByCode(codigoUser);
         CarrinhoModelUsuario itens = new CarrinhoModelUsuario();
 
         if(produto.getQuantidadeEstoque() > 0){
@@ -48,14 +47,13 @@ public class CarrinhoService {
             }
         }
 
-        calc(usuario);
-        produtoRepository.save(produto);
-        return usuarioRepository.save(usuario);
+        produtoService.atualizarProduto(produto);
+        return usuarioService.atualizarUsuario(usuario);
     }
 
-    public UsuarioModel alterarQuantidadeItem(Long codigoProd, Long codigoUSer, Integer acao){
-        ProdutoModel produto = produtoRepository.buscarPorID(codigoProd);
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigoUSer);
+    public UsuarioModel alterarQuantidadeItem(Long codigoProd, Long codigoUser, Integer acao){
+        ProdutoModel produto = produtoService.isProductByCode(codigoProd);
+        UsuarioModel usuario = usuarioService.isUserByCode(codigoUser);
 
         for(CarrinhoModelUsuario item: usuario.getItens()){
             if(item.getCodigo().equals(codigoProd) && acao == 1 && produto.getQuantidadeEstoque() > 0) {
@@ -63,38 +61,36 @@ public class CarrinhoService {
                 break;
             }
             if(item.getCodigo().equals(codigoProd) && acao == 2){
-                subtracao(produto, item, codigoUSer);
+                subtracao(produto, item, codigoUser);
                 break;
             }
         }
 
-        calc(usuario);
-        produtoRepository.save(produto);
-        return usuarioRepository.save(usuario);
+        produtoService.atualizarProduto(produto);
+        return usuarioService.atualizarUsuario(usuario);
     }
 
     public UsuarioModel excluirItem(Long codigoProd, Long codigoUser){
-        ProdutoModel produto = produtoRepository.buscarPorID(codigoProd);
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigoUser);
+        ProdutoModel produto = produtoService.isProductByCode(codigoProd);
+        UsuarioModel usuario = usuarioService.isUserByCode(codigoUser);
+
 
         for(int i = 0; i <= usuario.getItens().size(); i++){
             if(usuario.getItens().get(i).getCodigo().equals(codigoProd)){
-                //produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + usuario.getItens().get(i).getQuantidade());
                 usuario.getItens().remove(i);
                 break;
             }
         }
 
-        calc(usuario);
-        produtoRepository.save(produto);
-        return usuarioRepository.save(usuario);
+        produtoService.atualizarProduto(produto);
+        return usuarioService.atualizarUsuario(usuario);
     }
 
     public UsuarioModel excluirItens(Long codigo){
-        UsuarioModel usuario = usuarioRepository.buscarPorID(codigo);
+        UsuarioModel usuario = usuarioService.isUserByCode(codigo);
         usuario.getItens().clear();
-        calc(usuario);
-        return usuarioRepository.save(usuario);
+
+        return usuarioService.atualizarUsuario(usuario);
     }
 
     //Soma quantidade de cada item
@@ -112,20 +108,5 @@ public class CarrinhoService {
             item.setQuantidade(item.getQuantidade() - 1);
             item.setPrecoFinal(item.getPrecoUnitario() * item.getQuantidade());
         }
-    }
-
-    //calcula a quantidade de todos os itens
-    public void calc(UsuarioModel usuario){
-        Integer quantiadeTotal = 0;
-        Double valorTotal = 0.0;
-
-        for(CarrinhoModelUsuario itens: usuario.getItens()){
-            quantiadeTotal += itens.getQuantidade();
-            valorTotal += itens.getPrecoFinal();
-        }
-
-        usuario.setQuantidadeItens(quantiadeTotal);
-        usuario.setValorTotalItens(valorTotal);
-        usuarioRepository.save(usuario);
     }
 }

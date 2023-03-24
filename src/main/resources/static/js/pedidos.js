@@ -45,20 +45,17 @@ function confirmarPedido(){
 
     if(tipoPagamento != "escolha" && quantidadeParcelas != "escolha"){
         $.ajax({
-             method: "POST",
+            method: "POST",
             url: "pedidos/cliente/"+localStorage.getItem('codigo')+"/formaPagamento/"+tipoPagamento+"/quantidadeParcelas/"+quantidadeParcelas,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
             }
         }).done(function (dados) {
-            if(dados.numero == null) gerarMessageBox(2, "Pedido não autorizado. Algum(ns) item(ns) do carrinho estão sem unidades sufioientes no estoque!!", "Prosseguir");
-            else{
-                 renderizarQuantidade(0);
-                 renderizarFormResumoPedido(2);
-                 gerarMessageBox(1, "Pedido realizado com sucesso. Dentre 1-3 dias úteis o dono da página aceitará ou recusará seu pedido, caso aceite, entrará em contato lhe enviando a cobrança no formato de pagamento escolhido!!", "Prosseguir");
-            }
-        }).fail(function (err)  {
-            gerarMessageBox(2, "Seu token expirou!!", "Ok");
+           renderizarQuantidade(0);
+           renderizarFormResumoPedido(2);
+           gerarMessageBox(1, "Pedido realizado com sucesso. Dentre 1-3 dias úteis o dono da página aceitará ou recusará seu pedido, caso aceite, entrará em contato lhe enviando a cobrança no formato de pagamento escolhido!!", "Prosseguir");
+    }).fail(function (err)  {
+            gerarMessageBox(2, err.responseText, "Ok");
         });
     }
     else gerarMessageBox(2, "Por favor selecione o tipo de pagamento e a quantidade de parcelas desejada!", "Tentar novamente");

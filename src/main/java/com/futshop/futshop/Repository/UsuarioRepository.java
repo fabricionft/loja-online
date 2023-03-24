@@ -11,14 +11,9 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<UsuarioModel, Long> {
 
     @Query(value = "select * from usuarios where codigo = ?", nativeQuery = true)
-    public UsuarioModel buscarPorID(Long codigo);
-
-    @Query(value = "select * from usuarios where codigo = ?", nativeQuery = true)
-    public Optional<UsuarioModel> buscarOPTPorID(Long codigo);
+    public Optional<UsuarioModel> buscarPorId(Long codigo);
 
     @Query(value = "select * from usuarios where email = ?", nativeQuery = true)
-    public Optional<UsuarioModel> buscarOPTPorEmail(String email);
+    public Optional<UsuarioModel> buscarPorEmail(String email);
 
-    @Query(value = "select * from usuarios where email = ?", nativeQuery = true)
-    public UsuarioModel buscarPorLogin(String login);
 }

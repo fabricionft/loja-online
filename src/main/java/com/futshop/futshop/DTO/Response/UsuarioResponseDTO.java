@@ -12,7 +12,6 @@ public class UsuarioResponseDTO {
 
     private Long codigo;
     private Boolean admin;
-    private String token;
     private String nome;
     private String dataNascimento;
     private String cpf;
