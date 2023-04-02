@@ -46,9 +46,9 @@ public class UsuarioController {
         return converterListaEmDTO(service.listarUsuarios());
     }
 
-    @GetMapping(path = "/{codigo}")
-    public ResponseEntity<?> buscarUsuarioPorID(@PathVariable Long codigo){
-        return new ResponseEntity<>(converterEmDTO(service.buscarUsuarioPorID(codigo)), HttpStatus.OK);
+    @GetMapping(path = "/{email}")
+    public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email){
+        return new ResponseEntity<>(converterEmDTO(service.buscarUsuarioPorEmail(email)), HttpStatus.OK);
     }
 
     @PostMapping
@@ -60,7 +60,6 @@ public class UsuarioController {
     @PostMapping(path = "/email/{email}/senha/{senha}")
     public ResponseEntity<?> fazerLogin(@PathVariable String email,
                                         @PathVariable String senha){
-        //UsuarioModel usuario = service.fazerLogin(email, senha);
         return  new ResponseEntity<>(service.fazerLogin(email, senha), HttpStatus.OK);
     }
 

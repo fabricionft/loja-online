@@ -21,7 +21,7 @@ function renderizarDetalhamento(acao, codigo){
             exibirDetalhe();
             preencherDetalhamento(dados)
         }).fail(function (err)  {
-            gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
+            tratarErro(err);
         });
 
     }
@@ -43,7 +43,7 @@ function alterarStatusPedido(codigo, acao){
         gerarMessageBox("rgb(214, 253, 226)", "Pedido "+verbo+" com sucesso!!", "Ok");
         listarPedidos();
     }).fail(function (err)  {
-        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 

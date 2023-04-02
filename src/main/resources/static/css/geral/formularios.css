@@ -1,5 +1,5 @@
-/*---------- Container Cadastro ---------*/
-.container-cadastro{
+/*Container formulários*/
+.container-formulario{
     width: 100%;
     height: 100%;
     background: var(--preto-sobreposicao);
@@ -11,11 +11,13 @@
     z-index: -1;
 }
 
-.container-cadastro.ativo{
+.container-formulario.ativo{
     opacity: 1;
     z-index: 3;
 }
 
+
+/*---------- Formulário Cadastro ---------*/
 .form-cadastro{
     width: 610px;
     height: 375px;
@@ -155,23 +157,6 @@
 
 
 /* ----------- Form Login ------------------ */
-.container-login{
-    width: 100%;
-    height: 100%;
-    background: var(--preto-sobreposicao);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    opacity: 0;
-    z-index: -1;
-}
-
-.container-login.ativo{
-    opacity: 1;
-    z-index: 3;
-}
-
 .form-login{
     width: 275px;
     height: 220px;
@@ -213,23 +198,6 @@
 }
 
 /*Trocar senha*/
-.container-trocar-senha{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    background: var(--preto-sobreposicao);
-    opacity: 0;
-    z-index: -1;
-}
-
-.container-trocar-senha.ativo{
-    opacity: 1;
-    z-index: 3;
-}
-
 .form-trocar-senha{
     width: 300px;
     display: flex;
@@ -295,7 +263,7 @@
         margin-left: 82%;
     }
 
-    .container-cadastro, .container-login{
+    .container-formulario{
         flex-direction: column;
     }
 

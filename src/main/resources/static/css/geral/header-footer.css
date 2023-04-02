@@ -127,9 +127,9 @@
     margin: 15px 0;
 }
 
-.texto, .texto-1{color: var(--branco-escuro);}
+.texto-footer, .texto-footer-1{color: var(--branco-escuro);}
 
-.texto-1{cursor: pointer;}
+.texto-footer-1{cursor: pointer;}
 
 .div-imgs{
     width: 100%;

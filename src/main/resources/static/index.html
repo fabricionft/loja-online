@@ -33,11 +33,12 @@
      <div class="sobreposicao-menu"></div>
      <nav class="container-menu">
          <div class="menu-login">
-             <p class="p-login-cadastro" id="login">Faça<a onclick="renderizarFormLogin(1)" class="a-login-cadastro">
+             <p class="p-login-cadastro" name="sessao">Faça<a onclick="renderizarFormulario('login')" class="a-login-cadastro">
                  Login </a>ou
-                 <br> se <a onclick="renderizarFormCadastro(1)" class="a-login-cadastro">Cadastre</a>
+                 <br> se <a onclick="renderizarFormulario('cadastro')" class="a-login-cadastro">Cadastre</a>
              </p>
-             <p class="p-login-sair" id="sair"><a class="a-login-cadastro" onclick="sair()">Sair</a></p>
+
+             <p class="p-login-sair" name="sessao"><a class="a-login-cadastro" onclick="sair()">Sair</a></p>
          </div>
 
          <header class="header-menu">FutShop</header>
@@ -143,235 +144,245 @@
             <div class="div-info">
                 <div class="info">
                     <header class="titulo">FutShop</header>
-                    <p class="texto">Somos uma loja vendedora de camisas tailandesas 1.1, buscando sempre trazer o melhor.
+                    <p class="texto-footer">Somos uma loja vendedora de camisas tailandesas 1.1, buscando sempre trazer o melhor.
                         para nossos clientes</p>
                 </div>
 
                 <div class="info">
                     <header class="titulo">Contatos</header>
-                    <p class="texto">19 982544396</p>
-                    <p class="texto">19 984597236</p>
-                    <p class="texto">fafa@gmail.com</p>
+                    <p class="texto-footer">19 982544396</p>
+                    <p class="texto-footer">19 984597236</p>
+                    <p class="texto-footer">fafa@gmail.com</p>
                 </div>
 
                 <div class="info">
                     <header class="titulo">Seções</header>
-                    <a class="texto-1" href="index.html">Home</a>
-                    <a class="texto-1" onclick="abrirMeusDados()">Meus dados</a>
-                    <a class="texto-1" href="carrinho.html">Carrinho</a>
+                    <a class="texto-footer-1" href="index.html">Home</a>
+                    <a class="texto-footer-1" onclick="abrirMeusDados()">Meus dados</a>
+                    <a class="texto-footer-1" onclick="abrirMeusPedidos()">Meus Pedidos</a>
+                    <a class="texto-footer-1" href="carrinho.html">Carrinho</a>
                 </div>
 
                 <div class="info">
                     <header class="titulo">Dúvidas</header>
-                    <p class="texto-1">Como criar conta</p>
-                    <p class="texto-1">Como mudar senha</p>
-                    <p class="texto-1">Como recuperar senha</p>
-                    <p class="texto-1">Como fazer pedido</p>
+                    <p class="texto-footer-1">Como criar conta</p>
+                    <p class="texto-footer-1">Como mudar senha</p>
+                    <p class="texto-footer-1">Como recuperar senha</p>
+                    <p class="texto-footer-1">Como fazer pedido</p>
                 </div>
             </div>
+
             <div class="div-redes">
                 <header class="titulo-1">Redes</header>
                 <div class="div-imgs">
-                    <img src="icon/github-icon.png" class="icon">
-                    <img src="icon/instagram.png" class="icon">
-                    <img src="icon/linkedin.png" class="icon">
-                    <img src="icon/youtube.png" class="icon">
+                    <a href="https://github.com/fabricionft">
+                        <img src="icon/github-icon.png" class="icon">
+                    </a>
+
+                    <a href="https://www.instagram.com/fabricio_nft/">
+                        <img src="icon/instagram.png" class="icon">
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/fabricionft/">
+                        <img src="icon/linkedin.png" class="icon">
+                    </a>
+
+                    <a href="https://www.youtube.com/@fabricionft">
+                        <img src="icon/youtube.png" class="icon">
+                    </a>
                 </div>
             </div>
         </footer>
     </main>
 
-    <!--Form cadastro-->
-    <div class="container-cadastro" id="containerCadastro">
-        <img src="icon/esconder.png" class="icon-esconder" onclick="renderizarFormCadastro(2)">
+     <!--Formulários-->
+     <div class="container-formulario" id="containerFormulario">
+         <img src="icon/esconder.png" class="icon-esconder" onclick="fecharFormulario()">
 
-        <div class="form-cadastro">
-            <!--Passo 1-->
-            <form class="step" id="step-1">
-                <div class="cadastro-titulo">
-                    <h1 class="cadastro-titulo-texto">Dados pessoais</h1>
-                    <button type="reset" class="btn-limpar"><img src="icon/lixo.png" width="20px"></button>
-                </div>
+         <div class="form-cadastro" id="cadastro" name="formulario">
+             <!--Passo 1-->
+             <form class="step" id="step-1">
+                 <div class="cadastro-titulo">
+                     <h1 class="cadastro-titulo-texto">Dados pessoais</h1>
+                     <button type="reset" class="btn-limpar"><img src="icon/lixo.png" width="20px"></button>
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">Nome completo</label>
-                    <input class="input-form-cadastro-1" type="text"
-                           id="nome" placeholder="Digite seu nome completo" name="input-step-1">
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">Nome completo</label>
+                     <input class="input-form-cadastro-1" type="text"
+                            id="nome" placeholder="Digite seu nome completo" name="input-step-1">
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">Data nascimento</label>
-                    <div class="margem-data-nascimento">
-                        <select class="input-form-cadastro-5" id="mesDataNascimento" onchange="gerarDias()">
-                            <option value="escolha">Mês</option>
-                            <option value="01">Jan</option>
-                            <option value="02">Fev</option>
-                            <option value="03">Mar</option>
-                            <option value="04">Abr</option>
-                            <option value="05">Maio</option>
-                            <option value="06">Jun</option>
-                            <option value="07">Jul</option>
-                            <option value="08">Ago</option>
-                            <option value="09">Set</option>
-                            <option value="10">Out</option>
-                            <option value="11">Nov</option>
-                            <option value="12">Dez</option>
-                        </select>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">Data nascimento</label>
+                     <div class="margem-data-nascimento">
+                         <select class="input-form-cadastro-5" id="mesDataNascimento" onchange="gerarDias()">
+                             <option value="escolha">Mês</option>
+                             <option value="01">Jan</option>
+                             <option value="02">Fev</option>
+                             <option value="03">Mar</option>
+                             <option value="04">Abr</option>
+                             <option value="05">Maio</option>
+                             <option value="06">Jun</option>
+                             <option value="07">Jul</option>
+                             <option value="08">Ago</option>
+                             <option value="09">Set</option>
+                             <option value="10">Out</option>
+                             <option value="11">Nov</option>
+                             <option value="12">Dez</option>
+                         </select>
 
-                        <select class="input-form-cadastro-5" id="diaDataNascimento">
-                            <option value="escolha">Dia</option>
-                        </select>
+                         <select class="input-form-cadastro-5" id="diaDataNascimento">
+                             <option value="escolha">Dia</option>
+                         </select>
 
-                        <select class="input-form-cadastro-5" id="anoDataNascimento">
-                            <option value="escolha">Ano</option>
-                        </select>
-                    </div>
-                </div>
+                         <select class="input-form-cadastro-5" id="anoDataNascimento">
+                             <option value="escolha">Ano</option>
+                         </select>
+                     </div>
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">CPF</label>
-                    <input class="input-form-cadastro-2" type="text"
-                           maxlength="11" id="cpf" placeholder="Digite apenas digitos" name="input-step-1">
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">CPF</label>
+                     <input class="input-form-cadastro-2" type="text"
+                            maxlength="11" id="cpf" placeholder="Digite apenas digitos" name="input-step-1">
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">Email</label>
-                    <input class="input-form-cadastro-1" type="text"
-                           id="emailCadastro" placeholder="Digite seu email" name="input-step-1">
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">Email</label>
+                     <input class="input-form-cadastro-1" type="text"
+                            id="emailCadastro" placeholder="Digite seu email" name="input-step-1">
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">Senha</label>
-                    <div class="linha-senha-cadastro">
-                        <input class="input-form-cadastro-senha" type="password"
-                               id="senhaCadastro" placeholder="Defina sua senha" name="input-step-1">
-                        <img src="icon/olho.png" class="icon-input" id="trocarInputCadastro">
-                    </div>
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">Senha</label>
+                     <div class="linha-senha-cadastro">
+                         <input class="input-form-cadastro-senha" type="password"
+                                id="senhaCadastro" placeholder="Defina sua senha" name="input-step-1">
+                         <img src="icon/olho.png" class="icon-input" id="trocarInputCadastro">
+                     </div>
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">Celular</label>
-                    <input class="input-form-cadastro-2" type="text"
-                           id="celular" placeholder="Digite apenas digitos" maxlength="11">
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">Celular</label>
+                     <input class="input-form-cadastro-2" type="text"
+                            id="celular" placeholder="Digite apenas digitos" maxlength="11">
+                 </div>
 
-                <footer class="footer-form-cadastro">
-                    <button type="button" class="btn-cadastro" id="next">Avançar</button>
-                </footer>
-            </form>
+                 <footer class="footer-form-cadastro">
+                     <button type="button" class="btn-cadastro" id="next">Avançar</button>
+                 </footer>
+             </form>
 
-            <!--Passo 2-->
-            <form class="step" id="step-2">
-                <div class="cadastro-titulo">
-                    <h1 class="cadastro-titulo-texto">Dados de endereço</h1>
-                    <button type="reset" class="btn-limpar"><img src="icon/lixo.png" width="20px"></button>
-                </div>
+             <!--Passo 2-->
+             <form class="step" id="step-2">
+                 <div class="cadastro-titulo">
+                     <h1 class="cadastro-titulo-texto">Dados de endereço</h1>
+                     <button type="reset" class="btn-limpar"><img src="icon/lixo.png" width="20px"></button>
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">CEP</label>
-                    <div class="linha-cep">
-                        <input class="input-form-cadastro-4" type="text" height="100%"
-                               id="cep" maxlength="8" placeholder="Digite apenas digitos" name="input-step-2">
-                        <button class="btn-cep" type="button" onclick="buscarEnderecoPorCEP()">Buscar</button>
-                    </div>
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">CEP</label>
+                     <div class="linha-cep">
+                         <input class="input-form-cadastro-4" type="text" height="100%"
+                                id="cep" maxlength="8" placeholder="Digite apenas digitos" name="input-step-2">
+                         <button class="btn-cep" type="button" onclick="buscarEnderecoPorCEP()">Buscar</button>
+                     </div>
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">Estado</label>
-                    <select id="estado" class="input-form-cadastro-3" name="input-step-2">
-                        <option value="escolha">Escolha</option>
-                        <option value="AC">Acre</option>
-                        <option value="AL">Alagoas</option>
-                        <option value="AP">Amapá</option>
-                        <option value="AM">Amazonas</option>
-                        <option value="BA">Bahia</option>
-                        <option value="CE">Ceará</option>
-                        <option value="DF">Distrito Federal</option>
-                        <option value="ES">Espírito Santo</option>
-                        <option value="GO">Goiás</option>
-                        <option value="MA">Maranhão</option>
-                        <option value="MT">Mato Grosso</option>
-                        <option value="MS">Mato Grosso do Sul</option>
-                        <option value="MG">Minas Gerais</option>
-                        <option value="PA">Pará</option>
-                        <option value="PB">Paraíba</option>
-                        <option value="PR">Paraná</option>
-                        <option value="PE">Pernambuco</option>
-                        <option value="PI">Piauí</option>
-                        <option value="RJ">Rio de Janeiro</option>
-                        <option value="RN">Rio Grande do Norte</option>
-                        <option value="RS">Rio Grande do Sul</option>
-                        <option value="RO">Rondônia</option>
-                        <option value="RR">Roraima</option>
-                        <option value="SC">Santa Catarina</option>
-                        <option value="SP">São Paulo</option>
-                        <option value="SE">Sergipe</option>
-                        <option value="TO">Tocantins</option>
-                        <option value="EX">Estrangeiro</option>
-                    </select>
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">Estado</label>
+                     <select id="estado" class="input-form-cadastro-3" name="input-step-2">
+                         <option value="escolha">Escolha</option>
+                         <option value="AC">Acre</option>
+                         <option value="AL">Alagoas</option>
+                         <option value="AP">Amapá</option>
+                         <option value="AM">Amazonas</option>
+                         <option value="BA">Bahia</option>
+                         <option value="CE">Ceará</option>
+                         <option value="DF">Distrito Federal</option>
+                         <option value="ES">Espírito Santo</option>
+                         <option value="GO">Goiás</option>
+                         <option value="MA">Maranhão</option>
+                         <option value="MT">Mato Grosso</option>
+                         <option value="MS">Mato Grosso do Sul</option>
+                         <option value="MG">Minas Gerais</option>
+                         <option value="PA">Pará</option>
+                         <option value="PB">Paraíba</option>
+                         <option value="PR">Paraná</option>
+                         <option value="PE">Pernambuco</option>
+                         <option value="PI">Piauí</option>
+                         <option value="RJ">Rio de Janeiro</option>
+                         <option value="RN">Rio Grande do Norte</option>
+                         <option value="RS">Rio Grande do Sul</option>
+                         <option value="RO">Rondônia</option>
+                         <option value="RR">Roraima</option>
+                         <option value="SC">Santa Catarina</option>
+                         <option value="SP">São Paulo</option>
+                         <option value="SE">Sergipe</option>
+                         <option value="TO">Tocantins</option>
+                         <option value="EX">Estrangeiro</option>
+                     </select>
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">Cidade</label>
-                    <input class="input-form-cadastro-2" type="text"
-                           id="cidade" placeholder="Digite o nome de sua cidade" name="input-step-2">
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">Cidade</label>
+                     <input class="input-form-cadastro-2" type="text"
+                            id="cidade" placeholder="Digite o nome de sua cidade" name="input-step-2">
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">Bairro</label>
-                    <input class="input-form-cadastro-2" type="text"
-                           id="bairro" placeholder="Digite o nome do seu bairro" name="input-step-2">
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">Bairro</label>
+                     <input class="input-form-cadastro-2" type="text"
+                            id="bairro" placeholder="Digite o nome do seu bairro" name="input-step-2">
+                 </div>
 
-                <div class="divisor">
-                    <label class="label-form-cadastro">Rua</label>
-                    <input class="input-form-cadastro-1" type="text"
-                           id="rua" placeholder="Digite o nome de sua rua" name="input-step-2">
-                </div>
+                 <div class="divisor">
+                     <label class="label-form-cadastro">Rua</label>
+                     <input class="input-form-cadastro-1" type="text"
+                            id="rua" placeholder="Digite o nome de sua rua" name="input-step-2">
+                 </div>
 
-                <div class="divisor-1">
-                    <label class="label-form-cadastro">Número</label>
-                    <input class="input-form-cadastro-3" type="text"
-                           id="numero" placeholder="XXX" name="input-step-2" maxlength="6">
-                </div>
+                 <div class="divisor-1">
+                     <label class="label-form-cadastro">Número</label>
+                     <input class="input-form-cadastro-3" type="text"
+                            id="numero" placeholder="XXX" name="input-step-2" maxlength="6">
+                 </div>
 
-                <div class="divisor-2">
-                    <label class="label-form-cadastro">Complemento</label>
-                    <input class="input-form-cadastro-2" type="text"
-                           id="complemento" placeholder="Ex: Casa B">
-                </div>
+                 <div class="divisor-2">
+                     <label class="label-form-cadastro">Complemento</label>
+                     <input class="input-form-cadastro-2" type="text"
+                            id="complemento" placeholder="Ex: Casa B">
+                 </div>
 
-                <footer class="footer-form-cadastro">
-                    <button type="button" class="btn-voltar" id="back">Voltar</button>
-                    <button type="button" class="btn-cadastro" onclick="cadastrarUsuario()">Cadastrar</button>
-                </footer>
-            </form>
-        </div>
-    </div>
+                 <footer class="footer-form-cadastro">
+                     <button type="button" class="btn-voltar" id="back">Voltar</button>
+                     <button type="button" class="btn-cadastro" onclick="cadastrarUsuario()">Cadastrar</button>
+                 </footer>
+             </form>
+         </div>
 
-    <!--Form login-->
-    <div class="container-login" id="containerLogin">
-        <img src="icon/esconder.png" class="icon-esconder" onclick="renderizarFormLogin(2)">
-        <form class="form-login">
-            <div class="div-form-login">
-                <div class="linha-login">
-                    <input class="input-form-login" type="email" placeholder="Email"
-                    id="email">
-                    <img src="icon/user.png" class="icon-input">
-                </div>
-                <div class="linha-login">
-                    <input class="input-form-login" type="password"
-                           placeholder="Senha" id="senha">
-                    <img src="icon/olho.png" class="icon-input" id="trocarInputLogin">
-                </div>
-            </div>
-            <footer class="footer-form-login">
-                <button type="button" class="btn-login" onclick="fazerLogin()">Login</button>
-            </footer>
-        </form>
-    </div>
+         <!--Login-->
+         <form class="form-login" id="login" name="formulario">
+             <div class="div-form-login">
+                 <div class="linha-login">
+                     <input class="input-form-login" type="email"
+                            placeholder="Email" id="email" name="inputLogin">
+                     <img src="icon/user.png" class="icon-input">
+                 </div>
+                 <div class="linha-login">
+                     <input class="input-form-login" type="password"
+                            placeholder="Senha" id="senha" name="inputLogin">
+                     <img src="icon/olho.png" class="icon-input" id="trocarInputLogin">
+                 </div>
+             </div>
+             <footer class="footer-form-login">
+                 <button type="button" class="btn-login" id="btnLogin" onclick="fazerLogin()" disabled>Login</button>
+             </footer>
+         </form>
+     </div>
 
-     <!--Message Box-->
+    <!--Message Box-->
      <div class="esconderMessageBox" id="esconder">
          <div class="message-box" id="mensagem">
              <div class="texto-message-box" id="textoMensagem"></div>

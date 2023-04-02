@@ -16,7 +16,7 @@ function listarPedidos(){
            if(item.status == localStorage.getItem('filtro'))criaLinha(item)
        });
     }).fail(function (err)  {
-        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 

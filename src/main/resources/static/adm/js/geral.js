@@ -8,6 +8,11 @@ function destravarTela() {
     document.body.scroll = "yes";
 }
 
+function tratarErro(err){
+    if(err.status == 403) gerarMessageBox(2, "Sem autorização:<br> Seu token expirou ou não existe!! Para conseguir um novo deslogue e faça login novamente!", "Ok");
+    else gerarMessageBox(2, err.responseJSON.mensagem, "Ok");
+}
+
 function gerarMessageBox(cor, mensagem, textoBtn, acesso){
     $('#esconder').addClass('ativo')
     $('#mensagem').css("transform", "translateY(250px)");
@@ -15,9 +20,6 @@ function gerarMessageBox(cor, mensagem, textoBtn, acesso){
 
     $('#textoMensagem').html(mensagem);
     $('#btnMessage').html(textoBtn);
-
-    if(acesso) $('#btnMessage').hide();
-    else $('#aMessage').hide();
 
     travarTela();
 }
@@ -28,20 +30,4 @@ function fecharMessageBox(){
     $('#mensagem'). css("transform", "translateY(-250px)");
 
     if($('#btnMessage').html() == "Ok") location.reload();
-    if($('#btnMessage').html() == "Prosseguir") location.href="menuGestao.html";
-}
-
-function ir(){
-$('#pagina').html('<h1>Ola</h1>');
-    //console.log("Oi")
-    /*$.ajax({
-        method: "GET",
-        url: "/gestaoProdutos",
-        success: function (dados){
-            console.log(dados)
-            $('#pagina').html(dados);
-        }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao listar: " +xhr.responseText);
-    });*/
 }

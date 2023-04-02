@@ -1,67 +1,54 @@
-//Form cadastro
-function renderizarFormCadastro(acao){
-    if(acao == 1){
-        $('#containerCadastro').addClass('ativo');
-        travarTela();
+function renderizarFormulario(formulario){
+    fecharFormulario();
+    travarTela();
+    if(formulario == "resumoPedido"){
+        if($('#totalCarrinho').html() > 0){
+            $('#containerFormulario').addClass('ativo');
+            $("#"+formulario).show();
+             $('#enderecoPedido').html(localStorage.getItem('endereco'));
+        }
+        else gerarMessageBox(2, "É necessário ter ao menos um item no carrinho para fazer um pedido!", "Ok");
     }
-    if(acao == 2){
-        $('#containerCadastro').removeClass('ativo');
-        destravarTela();
-    }
-}
-
-//Form login
-function renderizarFormLogin(acao){
-    if(acao == 1){
-        $('#containerLogin').addClass('ativo');
-        travarTela();
-    }
-    if(acao == 2){
-        $('#containerLogin').removeClass('ativo');
-        destravarTela();
+    else{
+        $('#containerFormulario').addClass('ativo');
+        $("#"+formulario).show();
     }
 }
 
-//Form trocar senha
-function renderizarFormTrocarSenha(acao){
-    if(acao == 1){
-        $('#containerTrocarSenha').addClass('ativo');
-        travarTela();
-    }
-    if(acao == 2){
-        $('#containerTrocarSenha').removeClass('ativo');
-        destravarTela();
-    }
+function fecharFormulario(){
+    $('#containerFormulario').removeClass('ativo');
+    $("[name='formulario']").hide();
+    destravarTela();
 }
+
+$("[name='inputLogin']").keyup(function(){
+    ($('#email').val().length && $('#senha').val().length) ? $('#btnLogin').removeAttr("disabled") : $('#btnLogin').attr('disabled', "disabled");
+});
 
 function fazerLogin(){
-    if(!$('#email').val().length || !$('#senha').val().length) gerarMessageBox(2, "Por favor preencha os campos corretamente!!", "Tentar novamente");
-    else{
-        $.ajax({
-            method: "POST",
-            url: "usuarios/email/"+$('#email').val().trim()+"/senha/"+$('#senha').val().trim(),
-            success: function (dados){
-                localStorage.setItem('token', dados.token);
-                buscarDadosUsuario(dados.codigo);
-            }
-        }).fail(function(xhr, status, errorThrown){
-            gerarMessageBox(2, xhr.responseText, "Tentar novamente");
-        });
-    }
+    $.ajax({
+        method: "POST",
+        url: "usuarios/email/"+$('#email').val().trim()+"/senha/"+$('#senha').val().trim(),
+        success: function (dados){
+            localStorage.setItem('token', dados);
+            buscarDadosUsuario($('#email').val().trim());
+        }
+    }).fail(function(err){
+        gerarMessageBox(2, err.responseJSON.mensagem, "Tentar novamente");
+    });
 }
 
-function buscarDadosUsuario(codigo){
+function buscarDadosUsuario(email){
     $.ajax({
         method: "GET",
-        url: "/usuarios/"+codigo,
+        url: "/usuarios/"+email,
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
     }).done(function (dados) {
-        console.log(dados);
         preencherUsuario(dados);
     }).fail(function (err)  {
-        gerarMessageBox(2, "Sem autoização: Seu token expirou ou não existe!!", "Ok");
+        tratarErro(err);
     });
 }
 
@@ -69,10 +56,12 @@ function buscarDadosUsuario(codigo){
 function preencherUsuario(dados){
     localStorage.setItem('logado', 'logado');
     localStorage.setItem('codigo', dados.codigo);
+    localStorage.setItem('usuario', dados.email);
     localStorage.setItem('nome', dados.nome.split(" ")[0]);
     localStorage.setItem('quantidadeItens', dados.quantidadeItens);
     let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
     localStorage.setItem('endereco', endereco);
+
     gerarMessageBox(1, "Usuário logado com sucesso", "Prosseguir");
 }
 
@@ -103,8 +92,8 @@ function buscarEnderecoPorCEP(){
                     $('#rua').val(dados.logradouro);
                 }
             }
-        }).fail(function(xhr, status, errorThrown){
-            alert("Erro ao sallet: " +xhr.responseText);
+        }).fail(function(err){
+            alert("Erro ao buscra CEP: " +err.responseText);
         });
     }
 }
@@ -135,8 +124,8 @@ function cadastrarUsuario(){
             success: function (dados){
                 gerarMessageBox(1, "Cadastro concluído com sucesso!!", "Prosseguir", true);
             }
-        }).fail(function(xhr, status, errorThrown){
-            gerarMessageBox(2, xhr.responseText, "Tentar novamente");
+        }).fail(function(err){
+            gerarMessageBox(2, err.responseJSON.mensagem, "Tentar novamente");
         });
     }
 }
@@ -158,7 +147,7 @@ function preencherEndereco(){
         $('#numero').val(dados.numero);
         $('#complemento').val(dados.complemento);
     }).fail(function (err)  {
-        gerarMessageBox(2, "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 
@@ -186,7 +175,7 @@ function alterarEndereco(){
             localStorage.setItem('endereco', endereco);
             gerarMessageBox(1, "Endereço alterado com sucesso!!", "Prosseguir");
         }).fail(function (err)  {
-            gerarMessageBox(2, "Seu token expirou!!", "Ok");
+            tratarErro(err);
         });
     }
 }
@@ -202,7 +191,7 @@ function alterarSenha(){
         }).done(function (dados) {
             gerarMessageBox(1, dados, "Prosseguir");
         }).fail(function (err)  {
-            gerarMessageBox(2, err.responseText, "Tentar novamente");
+            tratarErro(err);
         });
     }
 }

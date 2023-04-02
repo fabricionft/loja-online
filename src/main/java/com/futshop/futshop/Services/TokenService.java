@@ -18,6 +18,7 @@ public class TokenService {
                 .withSubject(usuario.getEmail())
                 .withExpiresAt(LocalDateTime.now()
                         .plusHours(1)
+                        //.plusSeconds(20)
                         .toInstant(ZoneOffset.of("-03:00"))
                 ).sign(Algorithm.HMAC256("pretinha"));
     }

@@ -1,6 +1,5 @@
 package com.futshop.futshop.Services;
 
-import com.futshop.futshop.DTO.Response.LoginDto;
 import com.futshop.futshop.Exceptions.RequestException;
 import com.futshop.futshop.Model.CarrinhoModelUsuario;
 import com.futshop.futshop.Model.UsuarioModel;
@@ -28,14 +27,13 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public UsuarioModel buscarUsuarioPorID(Long codigo){
-        return isUserByCode(codigo);
+    public UsuarioModel buscarUsuarioPorEmail(String email){
+        return isUserByEmail(email);
     }
 
     public  UsuarioModel salvarUsuario(UsuarioModel usuario) {
-        for(UsuarioModel user: usuarioRepository.findAll()){
+        for(UsuarioModel user: usuarioRepository.findAll())
             if(usuario.getEmail().equals(user.getEmail())) throw new RequestException("O email digitado já foi cadastrado, por favor digite outro!");
-        }
 
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
@@ -55,11 +53,10 @@ public class UsuarioService {
         return  usuarioRepository.save(usuario);
     }
 
-    public LoginDto fazerLogin(String email, String senha){
-        if(validarSenha(email, senha)){
-            UsuarioModel usuario = usuarioRepository.buscarPorEmail(email).get();
-            return new LoginDto(usuario.getCodigo(), tokenService.gerarToken(usuario));
-        }
+    public String fazerLogin(String email, String senha){
+        System.out.println("Email: "+email+
+        "Senha: "+senha);
+        if(validarSenha(email, senha)) return tokenService.gerarToken(isUserByEmail(email));
         throw new RequestException("Credenciais incorretas");
     }
 

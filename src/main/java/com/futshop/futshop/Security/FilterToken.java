@@ -1,4 +1,4 @@
-package com.futshop.futshop.Config;
+package com.futshop.futshop.Security;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.futshop.futshop.Repository.UsuarioRepository;

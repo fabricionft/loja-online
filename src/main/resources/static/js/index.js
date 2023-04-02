@@ -1,12 +1,5 @@
 window.onload = () => {
-    if(verificarLogin()){
-        document.getElementById('login').style.display="none";
-        document.getElementById('sair').style.display="initial";
-    }
-    else{
-        document.getElementById('sair').style.display="none";
-        document.getElementById('login').style.display="initial";
-    }
+    (!verificarLogin()) ? $("[name='sessao']").hide().first().show() : $("[name='sessao']").hide().last().show();
     renderizarQuantidade(localStorage.getItem('quantidadeItens'));
     listarProdutos();
 }

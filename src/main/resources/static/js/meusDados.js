@@ -1,15 +1,12 @@
 window.onload = () => {
-    if(verificarLogin()){
-        listarDados()
-        $("#estadoUSuario").html("Olá "+localStorage.getItem('nome'))
-    }
-    else $("#estadoUSuario").html("Faça login");
+    alterarSessao();
+    if(verificarLogin()) listarDados();
 }
 
 function listarDados(){
     $.ajax({
         method: "GET",
-        url: "/usuarios/"+localStorage.getItem('codigo'),
+        url: "/usuarios/"+localStorage.getItem('usuario'),
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
@@ -28,6 +25,6 @@ function listarDados(){
         $("#numeroExibir").html(dados.numero);
         $("#complementoExibir").html(dados.complemento);
     }).fail(function (err)  {
-        gerarMessageBox(2, "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }

@@ -9,8 +9,8 @@ function listarProdutos(){
        success: function (dados){
            dados.forEach(item => criaLinha(item));
        }
-    }).fail(function(xhr, status, errorThrown){
-       alert("Erro ao listar: " +xhr.responseText);
+    }).fail(function(err){
+       alert("Erro ao listar: " +err.responseJSON.message);
     });
 }
 
@@ -60,15 +60,8 @@ function renderizarFormProdutos(opc){
     }
 }
 
-let data = new FormData();
-document.getElementById("upload").onchange = function(e){
-    if(e.target.files != null && e.target.files.length != 0){
-        var arquivo = e.target.files[0];
-        data.append("imagem", arquivo)
-    }
-}
-
 function salvar(){
+    let imagem = ($('#imagemEsconder').val().length) ? $('#imagemEsconder').val() : "nulo";
     $.ajax({
         method: "POST",
         url: "/produtos",
@@ -77,6 +70,7 @@ function salvar(){
             codigo: $('#codigoProduto').val(),
             nomeProduto: $('#nomeProduto').val(),
             descricao: $('#descricaoProduto').val(),
+            imagem: imagem,
             promocao: $('#promocaoProduto').val(),
             quantidadeEstoque: $('#quantidadeProduto').val(),
             tamanho: $('#tamanhoProduto').val(),
@@ -88,11 +82,22 @@ function salvar(){
             xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
     }).done(function (dados) {
-        if($("#upload")[0].files.length) salvarImagem(dados.codigo)
+        if($("#upload")[0].files.length){
+            console.log("A")
+            salvarImagem(dados.codigo)
+        }
         else gerarMessageBox("rgb(214, 253, 226)", "Produto salvo com sucesso!!", "Ok");
     }).fail(function (err)  {
-        gerarMessageBox("rgb(253, 214, 214)", err.responseText, "Ok");
+        tratarErro(err);
     });
+}
+
+let data = new FormData();
+document.getElementById("upload").onchange = function(e){
+    if(e.target.files != null && e.target.files.length != 0){
+        var arquivo = e.target.files[0];
+        data.append("imagem", arquivo)
+    }
 }
 
 function salvarImagem(codigo){
@@ -109,7 +114,7 @@ function salvarImagem(codigo){
     }).done(function (response) {
         gerarMessageBox("rgb(214, 253, 226)", "Produto salvo com sucesso!!", "Ok");
     }).fail(function (err)  {
-        gerarMessageBox("rgb(253, 214, 214)", err.responseText, "Ok");
+        tratarErro(err);
     });
 }
 
@@ -132,7 +137,7 @@ function editar(codigo){
         $('#tamanhoProduto').val(dados.tamanho);
         $('#valorProduto').val(dados.valorBase);
     }).fail(function (err)  {
-        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 
@@ -146,7 +151,7 @@ function excluir(codigo){
     }).done(function (response) {
         gerarMessageBox("rgb(214, 253, 226)", "Produto deletado com sucesso!!", "Ok");
     }).fail(function (err)  {
-        gerarMessageBox("rgb(253, 214, 214)", "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 
@@ -159,8 +164,8 @@ function pesquisar(){
         success: function (dados){
             dados.forEach(item => criaLinha(item))
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao listar: " +xhr.responseText);
+    }).fail(function(err){
+        alert("Erro ao listar: " +err.responseJSON.message);
     });
 }
 

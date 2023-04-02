@@ -2,7 +2,7 @@
     /*Tons de branco*/
     --fundo: rgb(241, 245, 247);
     --branco: #fff;
-    --branco-escuro: rgb(230, 230, 230);;
+    --branco-escuro: rgb(230, 230, 230);
 
     /*Tons de roxo*/;
     --roxo: rgb(93, 60, 201);
@@ -15,7 +15,6 @@
     --verde: #00a000;
     --verde-escuro: green;
     --verde-claro: rgb(3, 208, 71);
-
 
     /*Tons de preto*/
     --preto: #000;

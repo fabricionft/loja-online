@@ -1,24 +1,7 @@
 window.onload = () =>{
-    if(verificarLogin()){
-        listarPedidos();
-        $("#estadoUSuario").html("Olá "+localStorage.getItem('nome'))
-    }
-    else $("#estadoUSuario").html("Faça login");
+    alterarSessao();
     renderizarQuantidade(localStorage.getItem('quantidadeItens'));
-}
-
-function renderizarFormResumoPedido(acao){
-    if(acao == 1 && $('#totalCarrinho').html() > 0){
-        $('#esconderPedido').addClass('ativo');
-        $('#enderecoPedido').html(localStorage.getItem('endereco'));
-        travarTela();
-    }
-    else if(acao == 2){
-        $('#esconderPedido').removeClass('ativo');
-        $('.select-pedido').val("escolha");
-        destravarTela();
-    }
-    else gerarMessageBox(2, "É necessário ter ao menos um item no carrinho para fazer um pedido!", "Ok");
+    if(verificarLogin()) listarPedidos();
 }
 
 function gerarParcelas(){
@@ -52,10 +35,9 @@ function confirmarPedido(){
             }
         }).done(function (dados) {
            renderizarQuantidade(0);
-           renderizarFormResumoPedido(2);
            gerarMessageBox(1, "Pedido realizado com sucesso. Dentre 1-3 dias úteis o dono da página aceitará ou recusará seu pedido, caso aceite, entrará em contato lhe enviando a cobrança no formato de pagamento escolhido!!", "Prosseguir");
-    }).fail(function (err)  {
-            gerarMessageBox(2, err.responseText, "Ok");
+        }).fail(function (err)  {
+                tratarErro(err);
         });
     }
     else gerarMessageBox(2, "Por favor selecione o tipo de pagamento e a quantidade de parcelas desejada!", "Tentar novamente");
@@ -73,12 +55,12 @@ function listarPedidos(){
 
         let listaStatus = document.getElementsByName('statusPedido');
         for(i = 0; i < listaStatus.length; i++){
-            if(listaStatus[i].innerHTML == "Aguardando confirmação") listaStatus[i].style.color="orange"
-            else if(listaStatus[i].innerHTML == "Pedido confirmado") listaStatus[i].style.color="green"
-            else listaStatus[i].style.color="red"
+            if(listaStatus[i].innerHTML == "Aguardando confirmação") listaStatus[i].style.color="orange";
+            else if(listaStatus[i].innerHTML == "Pedido confirmado") listaStatus[i].style.color="green";
+            else listaStatus[i].style.color="red";
         }
     }).fail(function (err)  {
-        gerarMessageBox(2, "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 

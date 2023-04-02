@@ -1,11 +1,7 @@
 window.onload = () => {
-    if(verificarLogin()){
-        listarItens();
-        $("#estadoUSuario").html("Olá "+localStorage.getItem('nome'))
-    }
-    else $("#estadoUSuario").html("Faça login");
-
+    alterarSessao();
     renderizarQuantidade(localStorage.getItem('quantidadeItens'));
+    if(verificarLogin()) listarItens();
 }
 
 function listarItens(){
@@ -22,7 +18,7 @@ function listarItens(){
         });
         $('#totalCarrinho').html(" "+dados.valorTotalItens.toFixed(2));
     }).fail(function (err)  {
-        gerarMessageBox(2, "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 
@@ -35,9 +31,9 @@ function adcionaItens(id){
                 xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
             }
         }).done(function (dados) {
-             renderizarQuantidade(dados.quantidadeItens);
+            renderizarQuantidade(dados.quantidadeItens);
         }).fail(function (err)  {
-            gerarMessageBox(2, "Seu token expirou!!", "Ok");
+            tratarErro(err);
         });
     }
     else gerarMessageBox(2, "É necessário fazer login para adcionar um item ao carrinho!!", "Ok");
@@ -61,7 +57,7 @@ function alterar(codigo, acao){
          $('#totalCarrinho').html(" "+dados.valorTotalItens.toFixed(2));
          renderizarQuantidade(dados.quantidadeItens);
     }).fail(function (err)  {
-        gerarMessageBox(2, "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 
@@ -76,7 +72,7 @@ function excluir(){
         listarItens();
         renderizarQuantidade(dados.quantidadeItens);
     }).fail(function (err)  {
-        gerarMessageBox(2, "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 

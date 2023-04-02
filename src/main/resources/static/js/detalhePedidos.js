@@ -1,10 +1,7 @@
 window.onload = () =>{
-    if(verificarLogin()){
-        listarDados();
-        $("#estadoUSuario").html("Olá "+localStorage.getItem('nome'))
-    }
-    else $("#estadoUSuario").html("Faça login");
+    alterarSessao();
     renderizarQuantidade(localStorage.getItem('quantidadeItens'));
+    if(verificarLogin()) listarDados();
 }
 
 function listarDados(){
@@ -35,7 +32,7 @@ function listarDados(){
         $('#enderecoPedido').html(dados.endereco);
         dados.itens.forEach(item => {criarLinha(item);});
     }).fail(function (err)  {
-        gerarMessageBox(2, "Seu token expirou!!", "Ok");
+        tratarErro(err);
     });
 }
 

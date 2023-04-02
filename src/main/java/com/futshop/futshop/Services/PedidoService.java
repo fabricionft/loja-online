@@ -43,7 +43,7 @@ public class PedidoService {
         return isOrderByCode(codigo);
     }
 
-    public PedidoModel fazerPedido( Long codigoCLiente, String formaPagamento, Integer quantidadeParcelas){
+    public PedidoModel fazerPedido(Long codigoCLiente, String formaPagamento, Integer quantidadeParcelas){
         UsuarioModel usuario = usuarioService.isUserByCode(codigoCLiente);
         PedidoModel pedido = new PedidoModel();
         Random rd = new Random();

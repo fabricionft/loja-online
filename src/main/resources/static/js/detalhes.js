@@ -1,6 +1,5 @@
 window.onload = () => {
-    if(verificarLogin()) $("#estadoUSuario").html("Olá "+localStorage.getItem('nome'))
-    else $("#estadoUSuario").html("Faça login");
+    alterarSessao();
     mostrarProduto();
     renderizarQuantidade(localStorage.getItem('quantidadeItens'));
 }
@@ -17,8 +16,8 @@ function mostrarProduto(){
            $("#valorBase").html("R$"+dados.valorBase.toFixed(2));
            $("#valorComDesconto").html("R$"+dados.valorComDesconto.toFixed(2));
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao exibir produto" +xhr.responseText);
+    }).fail(function(err){
+        alert("Erro ao exibir produto" +err.responseJSON.message);
     });
 }
 

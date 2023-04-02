@@ -1,13 +1,17 @@
 function verificarLogin(){
     if(localStorage.getItem('logado') == 'logado') return true;
+    else return false;
 }
 
-function renderizarQuantidade(quantidade){
-    if(verificarLogin()){
-        localStorage.setItem('quantidadeItens', quantidade);
-        $('#quantidade-carrinho').html(localStorage.getItem('quantidadeItens'));
-    }
-    else $('#quantidade-carrinho').html("0");
+function renderizarQuantidade(valor){
+    localStorage.setItem('quantidadeItens', valor);
+    let quantidade = (verificarLogin()) ? localStorage.getItem('quantidadeItens') : 0;
+    $('#quantidade-carrinho').html(quantidade);
+}
+
+function alterarSessao(){
+    let mensagem = (verificarLogin()) ? "Olá "+localStorage.getItem('nome') : "Faça login";
+    $("#estadoUSuario").html(mensagem);
 }
 
 function abrirMeusDados(){
@@ -30,6 +34,11 @@ function destravarTela() {
     document.body.scroll = "yes";
 }
 
+function tratarErro(err){
+    if(err.status == 403) gerarMessageBox(2, "Sem autorização:<br> Seu token expirou ou não existe!! Para conseguir um novo deslogue e faça login novamente!", "Ok");
+    else gerarMessageBox(2, err.responseJSON.mensagem, "Ok");
+}
+
 function gerarMessageBox(cor, mensagem, textoBtn, acesso){
     let corDeFundo = (cor == 1) ? "rgb(214, 253, 226)" : "rgb(253, 214, 214)";
 
@@ -39,11 +48,6 @@ function gerarMessageBox(cor, mensagem, textoBtn, acesso){
 
     $('#textoMensagem').html(mensagem);
     $('#btnMessage').html(textoBtn);
-
-    if(acesso){
-        renderizarFormCadastro(2);
-        renderizarFormLogin(2);
-    }
 
     travarTela();
 }
