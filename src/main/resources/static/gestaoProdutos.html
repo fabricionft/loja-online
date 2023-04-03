@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos</title>
+
+    <link rel="stylesheet" href="css/ambos/messageBox.css">
+    <link rel="stylesheet" href="css/adm/geral/layout.css">
+    <link rel="stylesheet" href="css/ambos/variaveis-templates.css">
+
+    <link rel="stylesheet" href="css/adm/especifico/gestaoProdutos.css">
+    <link rel="stylesheet" href="css/adm/especifico/formularioProdutos.css">
+
+    <script
+        src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous" defer>
+    </script>
+    <script src="js/ambos/geral.js" defer></script>
+    <script src="js/adm/produtos.js" defer></script>
+</head>
+<body>
+    <header class="cabecalho-menu-gestao">
+        <a href="menuGestao.html">
+            <img src="icon/direito-removebg-preview.png" class="icon-cabecalho">
+        </a>
+    </header>
+
+    <main class="conteudo">
+       <div class="container-produtos" id="containerProdutos">
+            <div class="tabela-produtos" id="tabelaProdutos">
+                <header class="cabecalho-tabela-produtos">
+                    <button class="btn-novo" onclick="renderizarFormProdutos(1)">Novo</button>
+
+                    <div class="linha-pesquisar-produto">
+                        <input type="text" class="input-pesquisar" id="pesquisarProduto">
+                        <img src="icon/lupa.png" class="img-pesquisar" onclick="pesquisar()">
+                    </div>
+                </header>
+
+                <div class="linha-tabela-produtos">
+                    <div class="coluna-principal-1">
+                        <p class="texto-tabela-produtos-principal">Nome</p>
+                    </div>
+
+                    <div class="coluna-principal-2">
+                        <p class="texto-tabela-produtos-principal">Descrição</p>
+                    </div>
+
+                    <div class="coluna-principal-3">
+                        <p class="texto-tabela-produtos-principal">Valor</p>
+                    </div>
+
+                    <div class="coluna-principal-4">
+                        <p class="texto-tabela-produtos-principal">Quantidade</p>
+                    </div>
+
+                    <div class="coluna-principal-5">
+                        <p class="texto-tabela-produtos-principal">Tamanho</p>
+                    </div>
+
+                    <div class="coluna-principal-6">
+                        <p class="texto-tabela-produtos-principal">Tipo</p>
+                    </div>
+
+                    <div class="coluna-principal-7">
+                        <p class="texto-tabela-produtos-principal">Ações</p>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </main>
+
+    <div class="container-cadastro-produto" id="containerCadastroProdutos">
+        <img src="icon/esconder.png" class="icon-esconder" onclick="renderizarFormProdutos(2)">
+        <form class="formCadastro" enctype="multipart/form-data">
+            <header class="divisor-titulo">
+                <h1 class="titulo-form-produtos">Produtos</h1>
+                <input type="text" class="input-esconder" id="imagemEsconder">
+            </header>
+
+            <div class="inputs-formulario">
+        
+                <div class="divisor-4">
+                    <label class="texto-form-produtos">ID</label>
+                    <input type="text" class="input-form-produtos" id="codigoProduto" readonly>
+                </div>
+
+                <div class="divisor-5">
+                    <label class="texto-form-produtos">Nome</label>
+                    <input type="text" class="input-form-produtos" id="nomeProduto">
+                </div>
+        
+                <div class="divisor-2">
+                    <label class="texto-form-produtos">Descrição</label>
+                    <textarea class="text-area-form-produtos" id="descricaoProduto" cols="30" rows="3"></textarea>
+                </div>
+    
+                <div class="divisor-3">
+                    <label class="texto-form-produtos">Imagem</label>
+                    <button type="button" class="btn-img">
+                        <label for="upload" class="imagem-texto">Escolha a imagem</label>
+                    </button>
+                    <input type="file" class="input-img" id="upload" multiple>
+                </div>
+
+                <div class="divisor-3">
+                    <label class="texto-form-produtos">Tipo</label>
+                    <select class="input-form-produtos" id="tipoProduto">
+                        <option value="escolha">Escolha</option>
+                        <option value="Premier League">Premier League</option>
+                        <option value="La Liga">La Liga</option>
+                        <option value="Brasileirão">Brasileirão</option>
+                        <option value="Ligue 1">Ligue 1</option>
+                        <option value="serie A">Serie A</option>
+                        <option value="seleções">Seleções</option>
+                    </select>
+                </div>
+    
+                <div class="divisor-3">
+                    <label class="texto-form-produtos">Desconto (%)</label>
+                    <input type="number" class="input-form-produtos" id="promocaoProduto" min="0" max="100">
+                </div>
+    
+                <div class="divisor-3">
+                    <label class="texto-form-produtos">Qtd estoque</label>
+                    <input type="number" class="input-form-produtos" id="quantidadeProduto">
+                </div>
+    
+                <div class="divisor-3">
+                    <label class="texto-form-produtos">Tamanho</label>
+                    <select class="input-form-produtos" id="tamanhoProduto">
+                        <option value="P">P</option>
+                        <option value="M">M</option>
+                        <option value="G">G</option>
+                        <option value="GG">GG</option>
+                        <option value="2GG">2GG</option>
+                    </select>
+                </div>
+    
+                <div class="divisor-3">
+                    <label class="texto-form-produtos">Valor</label>
+                    <input type="number" class="input-form-produtos" id="valorProduto">
+                </div>
+            </div>
+    
+            <div class="divisor-btn">
+                <button class="btn-limpar" type="reset">Limpar</button>
+                <button type="button" class="btn-cadastrar" onclick="salvar()">Salvar</button>
+            </div>
+        </form>
+    </div>
+
+    <!--Message Box-->
+    <div class="esconderMessageBox" id="esconder">
+        <div class="message-box" id="mensagem">
+            <div class="texto-message-box" id="textoMensagem"></div>
+            <footer class="footer-message-box" id="btnMensagem">
+                <button class="btn-message-box" id="btnMessage" onclick="fecharMessageBox()">Ok</button>
+            </footer>
+        </div>
+    </div>
+    
+</body>
+</html>

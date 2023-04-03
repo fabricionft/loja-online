@@ -54,8 +54,6 @@ public class UsuarioService {
     }
 
     public String fazerLogin(String email, String senha){
-        System.out.println("Email: "+email+
-        "Senha: "+senha);
         if(validarSenha(email, senha)) return tokenService.gerarToken(isUserByEmail(email));
         throw new RequestException("Credenciais incorretas");
     }
