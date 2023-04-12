@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin</title>
 
-    <link rel="stylesheet" href="css/especifico/loginAdmin.css">
-    <link rel="stylesheet" href="css/geral/messageBox.css">
-    <link rel="stylesheet" href="css/geral/variaveis-templates.css">
+    <link rel="stylesheet" href="css/ambos/messageBox.css">
+    <link rel="stylesheet" href="css/ambos/variaveis-templates.css">
+    <link rel="stylesheet" href="css/adm/especifico/loginAdmin.css">
 
     <script
             src="https://code.jquery.com/jquery-3.6.1.min.js"
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
             crossorigin="anonymous" defer>
     </script>
-    <script src="js/geral.js" defer></script>
-    <script src="js/formularios.js" defer></script>
+    <script src="js/ambos/geral.js" defer></script>
+    <script src="js/adm/login.js" defer></script>
 </head>
 </head>
 <body>
@@ -24,13 +24,13 @@
         <div class="margem-form-login-admin">
             <div class="divisor-inputs">
                 <input type="text" class="input-login-admin"
-                       id="email" placeholder="Email">
+                       id="email" placeholder="Email" name="inputLogin">
                 <input type="password" class="input-login-admin"
-                       id="senha" placeholder="Senha">
+                       id="senha" placeholder="Senha" name="inputLogin">
             </div>
 
             <div class="divisor-btns">
-                <button type="button" class="btn-login-admin" onclick="fazerLoginComoAdmin()">Login</button>
+                <button type="button" class="btn-login-admin" id="btnLogin" onclick="fazerLogin()">Login</button>
             </div>
         </div>
     </form>

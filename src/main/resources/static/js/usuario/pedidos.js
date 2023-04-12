@@ -1,7 +1,7 @@
 window.onload = () =>{
     alterarSessao();
     renderizarQuantidade(localStorage.getItem('quantidadeItens'));
-    if(verificarLogin()) listarPedidos();
+    if(verificarAutorizacao()) listarPedidos();
 }
 
 function gerarParcelas(){

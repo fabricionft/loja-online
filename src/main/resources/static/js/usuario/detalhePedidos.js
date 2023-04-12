@@ -1,7 +1,7 @@
 window.onload = () =>{
     alterarSessao();
     renderizarQuantidade(localStorage.getItem('quantidadeItens'));
-    if(verificarLogin()) listarDados();
+    if(verificarAutorizacao()) listarDados();
 }
 
 function listarDados(){

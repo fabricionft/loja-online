@@ -1,5 +1,5 @@
 window.onload = () =>{
-    listarPedidos();
+    if(verificarAutorizacaoAdmin()) listarPedidos();
     localStorage.setItem('filtro', "Aguardando confirmação")
 }
 

@@ -1,5 +1,5 @@
 window.onload = () =>{
-    listarProdutos();
+    if(verificarAutorizacaoAdmin()) listarProdutos();
 }
 
 function listarProdutos(){

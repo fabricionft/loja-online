@@ -30,7 +30,7 @@ function fazerLogin(){
         method: "POST",
         url: "usuarios/email/"+$('#email').val().trim()+"/senha/"+$('#senha').val().trim(),
         success: function (dados){
-            localStorage.setItem('token', dados);
+            localStorage.setItem('token', dados.token);
             buscarDadosUsuario($('#email').val().trim());
         }
     }).fail(function(err){
@@ -52,7 +52,6 @@ function buscarDadosUsuario(email){
     });
 }
 
-
 function preencherUsuario(dados){
     localStorage.setItem('logado', 'logado');
     localStorage.setItem('codigo', dados.codigo);
@@ -62,9 +61,8 @@ function preencherUsuario(dados){
     let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
     localStorage.setItem('endereco', endereco);
 
-    gerarMessageBox(1, "Usuário logado com sucesso", "Prosseguir");
+    gerarMessageBox(1, "Usuário logado com sucesso. Seu token de autenticação expira em 60 minutos", "Prosseguir");
 }
-
 
 function sair(){
     localStorage.logado="";

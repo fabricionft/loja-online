@@ -1,5 +1,6 @@
 package com.futshop.futshop.Services;
 
+import com.futshop.futshop.DTO.Response.LoginResponseDTO;
 import com.futshop.futshop.Exceptions.RequestException;
 import com.futshop.futshop.Model.CarrinhoModelUsuario;
 import com.futshop.futshop.Model.UsuarioModel;
@@ -53,8 +54,12 @@ public class UsuarioService {
         return  usuarioRepository.save(usuario);
     }
 
-    public String fazerLogin(String email, String senha){
-        if(validarSenha(email, senha)) return tokenService.gerarToken(isUserByEmail(email));
+    public LoginResponseDTO fazerLogin(String email, String senha){
+        if(validarSenha(email, senha)){
+            UsuarioModel usuario = isUserByEmail(email);
+            LoginResponseDTO loginResponse = new LoginResponseDTO(tokenService.gerarToken(usuario), usuario.getAdmin());
+            return loginResponse;
+        }
         throw new RequestException("Credenciais incorretas");
     }
 

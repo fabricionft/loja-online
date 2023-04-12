@@ -1,6 +1,6 @@
 window.onload = () => {
     alterarSessao();
-    if(verificarLogin()) listarDados();
+    if(verificarAutorizacao()) listarDados();
 }
 
 function listarDados(){
