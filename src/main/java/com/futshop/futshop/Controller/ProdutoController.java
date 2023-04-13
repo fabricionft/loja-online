@@ -1,9 +1,9 @@
-package com.futshop.futshop.Controller;
+package com.futshop.futshop.controller;
 
-import com.futshop.futshop.DTO.Request.ProdutoRequestDTO;
-import com.futshop.futshop.DTO.Response.ProdutoResponseDTO;
-import com.futshop.futshop.Model.ProdutoModel;
-import com.futshop.futshop.Services.ProdutoService;
+import com.futshop.futshop.dto.request.ProdutoRequestDTO;
+import com.futshop.futshop.dto.response.ProdutoResponseDTO;
+import com.futshop.futshop.model.ProdutoModel;
+import com.futshop.futshop.service.ProdutoService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

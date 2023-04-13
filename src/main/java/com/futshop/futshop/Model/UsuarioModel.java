@@ -1,4 +1,4 @@
-package com.futshop.futshop.Model;
+package com.futshop.futshop.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,7 +37,7 @@ public class UsuarioModel implements UserDetails {
     @Column(length = 80, nullable = false)
     private String email;
 
-    @Column(length = 40, nullable = false)
+    @Column(nullable = false)
     private String senha;
 
     @Column(length = 15, nullable = false)

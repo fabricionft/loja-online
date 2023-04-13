@@ -1,6 +1,6 @@
 window.onload = () =>{
     if(verificarAutorizacaoAdmin()) listarPedidos();
-    localStorage.setItem('filtro', "Aguardando confirmação")
+    localStorage.setItem('filtro', "Aguardando confirmação");
 }
 
 function listarPedidos(){
@@ -13,7 +13,7 @@ function listarPedidos(){
     }).done(function (dados) {
        while($("[name='linha']").length) $('#linha').remove();
        dados.slice().reverse().forEach(item => {
-           if(item.status == localStorage.getItem('filtro'))criaLinha(item)
+           if(item.status == localStorage.getItem('filtro'))criaLinha(item);
        });
     }).fail(function (err)  {
         tratarErro(err);

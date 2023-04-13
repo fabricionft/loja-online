@@ -30,38 +30,23 @@ function fazerLogin(){
         method: "POST",
         url: "usuarios/email/"+$('#email').val().trim()+"/senha/"+$('#senha').val().trim(),
         success: function (dados){
-            localStorage.setItem('token', dados.token);
-            buscarDadosUsuario($('#email').val().trim());
+            preencherUsuario(dados);
+            gerarMessageBox(1, "Usuário logado com sucesso. Seu token de autenticação expira em 60 minutos", "Prosseguir");
         }
     }).fail(function(err){
-        gerarMessageBox(2, err.responseJSON.mensagem, "Tentar novamente");
-    });
-}
-
-function buscarDadosUsuario(email){
-    $.ajax({
-        method: "GET",
-        url: "/usuarios/"+email,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
-        }
-    }).done(function (dados) {
-        preencherUsuario(dados);
-    }).fail(function (err)  {
-        tratarErro(err);
+        gerarMessageBox(2, err.responseJSON.message, "Tentar novamente");
     });
 }
 
 function preencherUsuario(dados){
     localStorage.setItem('logado', 'logado');
     localStorage.setItem('codigo', dados.codigo);
+    localStorage.setItem('token', dados.token);
     localStorage.setItem('usuario', dados.email);
     localStorage.setItem('nome', dados.nome.split(" ")[0]);
     localStorage.setItem('quantidadeItens', dados.quantidadeItens);
     let endereco = dados.cep+", "+dados.cidade+" - "+dados.estado+", "+dados.bairro+", "+dados.rua+", "+dados.numero+", "+dados.complemento;
     localStorage.setItem('endereco', endereco);
-
-    gerarMessageBox(1, "Usuário logado com sucesso. Seu token de autenticação expira em 60 minutos", "Prosseguir");
 }
 
 function sair(){
@@ -91,7 +76,7 @@ function buscarEnderecoPorCEP(){
                 }
             }
         }).fail(function(err){
-            alert("Erro ao buscra CEP: " +err.responseText);
+            tratarErro(err);
         });
     }
 }
@@ -123,7 +108,7 @@ function cadastrarUsuario(){
                 gerarMessageBox(1, "Cadastro concluído com sucesso!!", "Prosseguir", true);
             }
         }).fail(function(err){
-            gerarMessageBox(2, err.responseJSON.mensagem, "Tentar novamente");
+            gerarMessageBox(2, err.responseJSON.message, "Tentar novamente");
         });
     }
 }
@@ -137,7 +122,6 @@ function preencherEndereco(){
             xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
         }
     }).done(function (dados) {
-        console.log("Dados: "+dados)
         $('#cep').val(dados.cep);
         $('#estado').val(dados.estado);
         $('#cidade').val(dados.cidade);
@@ -183,7 +167,7 @@ function alterarSenha(){
     if(validarCamposDeSenha()){
         $.ajax({
             method: "PUT",
-            url: "/usuarios/1/senhaAtual/"+$('#senhaAtual').val()+"/senhaNova/"+$('#senhaNova').val(),
+            url: "/usuarios/"+localStorage.getItem('codigo')+"/senhaAtual/"+$('#senhaAtual').val()+"/senhaNova/"+$('#senhaNova').val(),
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", 'Bearer '+ localStorage.getItem('token'));
             }

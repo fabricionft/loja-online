@@ -1,4 +1,4 @@
-package com.futshop.futshop.Config;
+package com.futshop.futshop.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

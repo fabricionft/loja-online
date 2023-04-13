@@ -1,9 +1,8 @@
-package com.futshop.futshop.Services;
+package com.futshop.futshop.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.futshop.futshop.Model.UsuarioModel;
+import com.futshop.futshop.model.UsuarioModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

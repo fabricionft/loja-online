@@ -1,4 +1,4 @@
-package com.futshop.futshop.DTO.Request;
+package com.futshop.futshop.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

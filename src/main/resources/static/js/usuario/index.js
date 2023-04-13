@@ -13,46 +13,34 @@ function listarProdutos(){
                 if (item.quantidadeEstoque > 0) adcionaProduto(item, "section-produto");
             });
         }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao listar produtos" +xhr.responseText);
+    }).fail(function(err){
+        tratarErro(err);
     });
 }
 
 function buscar(caminho, valor){
-    if(!valor.length) location.reload();
-    $.ajax({
-        method: "GET",
-        url: "/produtos/"+caminho+valor,
-        success: function (dados){
-            limparPesquisa();
-            dados.forEach(item => {
-                if (item.quantidadeEstoque > 0) adcionaProduto(item, "section-pesquisa");
-            });
-            $('#titulo-pesquisa').append(
-                '<button onclick="location.reload()" class="btn-limpar-pesquisa" id="btnLimparPesquisa">Limpar pesquisa</button>'
-            );
-            if (!dados.length){
-                $('#section-pesquisa').append(
-                    '<p class="texto-titulo-section" id="aviso">Sem resultados para sua pesquisa!!</p>'
+    if(valor.length){
+        $.ajax({
+            method: "GET",
+            url: "/produtos/"+caminho+valor,
+            success: function (dados){
+                limparPesquisa();
+                dados.forEach(item => {
+                    if (item.quantidadeEstoque > 0) adcionaProduto(item, "section-pesquisa");
+                });
+                $('#titulo-pesquisa').append(
+                    '<button onclick="location.reload()" class="btn-limpar-pesquisa" id="btnLimparPesquisa">Limpar pesquisa</button>'
                 );
+                if(!dados.length){
+                   $('#section-pesquisa').append(
+                       '<p class="texto-titulo-section" id="aviso">Sem resultados para sua pesquisa!!</p>'
+                   );
+                }
             }
-        }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao listar produtos" +xhr.responseText);
-    });
-}
-
-function testar(){
-    $.ajax({
-        method: "GET",
-        url: "/produtos/pegar/IMG_20220903_192946_214.jpg",
-        success: function (dados){
-            console.log(dados);
-            $('#imgT').attr('src', "data:image/jpg;base64, "+dados)
-        }
-    }).fail(function(xhr, status, errorThrown){
-        alert("Erro ao listar produtos" +xhr.responseText);
-    });
+        }).fail(function(err){
+            tratarErro(err);
+        });
+    }else location.reload();
 }
 
 function adcionaProduto(dados, local){
@@ -89,5 +77,5 @@ function limparPesquisa(){
 }
 
 function pegarId(id){
-    localStorage.setItem('codigoProduto', id)
+    localStorage.setItem('codigoProduto', id);
 }

@@ -1,4 +1,4 @@
-package com.futshop.futshop.Exceptions;
+package com.futshop.futshop.exceptions;
 
 
 import lombok.AllArgsConstructor;
@@ -13,8 +13,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageExceptionHandler {
-    private Date data;
+    private Date timestamp;
     private Integer status;
-    private String erro;
-    private String mensagem;
+    private String error;
+    private String message;
 }

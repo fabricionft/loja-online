@@ -32,7 +32,7 @@ function adcionaItens(id){
             }
         }).done(function (dados) {
             renderizarQuantidade(dados.quantidadeItens);
-        }).fail(function (err)  {
+        }).fail(function (err) {
             tratarErro(err);
         });
     }
@@ -81,7 +81,7 @@ function listaItens(dados){
         '<tr class="linha-carrinho" name="linha" id="linhaCarrinho">'+
             '<td class="coluna-1">'+
                 '<div class="img-carrinho"><img src="'+dados.imagem+'" class="imgs-carrinho"></div>'+
-                '<div class="desc-carrinho">'+dados.descricaoProduto+' - '+dados.tamanho+'</div>'+
+                '<div class="desc-carrinho"><p>'+dados.descricaoProduto+' - '+dados.tamanho+'</p></div>'+
             '</td>'+
             '<td class="coluna-2">'+
                 '<p class="texto-quantidade-carrinho" id="quantidadeItens-'+dados.codigo+'">'+dados.quantidade+'</p>'+

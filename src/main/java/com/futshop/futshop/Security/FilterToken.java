@@ -1,8 +1,8 @@
-package com.futshop.futshop.Security;
+package com.futshop.futshop.security;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.futshop.futshop.Repository.UsuarioRepository;
-import com.futshop.futshop.Services.TokenService;
+import com.futshop.futshop.repository.UsuarioRepository;
+import com.futshop.futshop.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

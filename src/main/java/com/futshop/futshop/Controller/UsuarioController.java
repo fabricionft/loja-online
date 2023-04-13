@@ -1,9 +1,12 @@
-package com.futshop.futshop.Controller;
+package com.futshop.futshop.controller;
 
-import com.futshop.futshop.DTO.Request.UsuarioRequestDTO;
-import com.futshop.futshop.DTO.Response.UsuarioResponseDTO;
-import com.futshop.futshop.Model.UsuarioModel;
-import com.futshop.futshop.Services.UsuarioService;
+import com.futshop.futshop.dto.request.EnderecoRequestDTO;
+import com.futshop.futshop.dto.request.UsuarioRequestDTO;
+import com.futshop.futshop.dto.response.LoginResponseDTO;
+import com.futshop.futshop.dto.response.UsuarioResponseDTO;
+import com.futshop.futshop.model.UsuarioModel;
+import com.futshop.futshop.service.TokenService;
+import com.futshop.futshop.service.UsuarioService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +22,10 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService service;
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -40,39 +46,43 @@ public class UsuarioController {
         return listaUsuarioDTO;
     }
 
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<UsuarioResponseDTO> listarUsuarios(){
-        return converterListaEmDTO(service.listarUsuarios());
+    public ResponseEntity<?> listarUsuarios(){
+        return new ResponseEntity<>(converterListaEmDTO(usuarioService.listarUsuarios()), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{email}")
     public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email){
-        return new ResponseEntity<>(converterEmDTO(service.buscarUsuarioPorEmail(email)), HttpStatus.OK);
+        return new ResponseEntity<>(converterEmDTO(usuarioService.buscarUsuarioPorEmail(email)), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> salvarUsuario(@RequestBody UsuarioRequestDTO usuarioDTO){
-        UsuarioModel usuario = service.salvarUsuario(converterEmEntidade(usuarioDTO));
+    public ResponseEntity<?> salvarUsuario(@RequestBody UsuarioRequestDTO usuarioRequest){
+        UsuarioModel usuario = usuarioService.salvarUsuario(converterEmEntidade(usuarioRequest));
         return new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/email/{email}/senha/{senha}")
     public ResponseEntity<?> fazerLogin(@PathVariable String email,
                                         @PathVariable String senha){
-        return  new ResponseEntity<>(service.fazerLogin(email, senha), HttpStatus.OK);
+        UsuarioModel usuario = usuarioService.fazerLogin(email, senha);
+        LoginResponseDTO loginResponse = modelMapper.map(usuario, LoginResponseDTO.class);
+        loginResponse.setToken(tokenService.gerarToken(usuario));
+        return  new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 
     @PutMapping(path = "/tipoUsuario/{codigo}/{senha}")
     public ResponseEntity<?> alterarTipodoUsuario(@PathVariable Long codigo,
                                                   @PathVariable String senha){
-        return new ResponseEntity<>(service.alterarTipoDeUsuario(codigo, senha), HttpStatus.OK);
+        return new ResponseEntity<>(converterEmDTO(usuarioService.alterarTipoDeUsuario(codigo, senha)), HttpStatus.OK);
     }
 
     @PutMapping(path = "/{codigo}")
     public ResponseEntity<?> alterarEndereco(@PathVariable Long codigo,
-                                             @RequestBody UsuarioRequestDTO endereco){
-        UsuarioModel usuario = service.alterarEndereco(codigo, converterEmEntidade(endereco));
+                                             @RequestBody EnderecoRequestDTO endereco){
+        UsuarioModel usuario = usuarioService.alterarEndereco(codigo, endereco);
         return new ResponseEntity<>(converterEmDTO(usuario), HttpStatus.CREATED);
     }
 
@@ -80,19 +90,18 @@ public class UsuarioController {
     public ResponseEntity<?> alterarSenha(@PathVariable Long codigo,
                                           @PathVariable String senhaAtual,
                                           @PathVariable String senhaNova){
-        return  new ResponseEntity<>(service.alterarSenha(codigo, senhaAtual, senhaNova), HttpStatus.OK);
+        return  new ResponseEntity<>(usuarioService.alterarSenha(codigo, senhaAtual, senhaNova), HttpStatus.OK);
     }
-
 
     @DeleteMapping(path = "/usuario/{codigo}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> excluirUsuario(@PathVariable Long codigo){
-       return new ResponseEntity<>(service.excluirUsuarioPorID(codigo), HttpStatus.OK);
+       return new ResponseEntity<>(usuarioService.excluirUsuarioPorID(codigo), HttpStatus.OK);
     }
 
     @DeleteMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> excluirTodosUsuarios(){
-        return  new ResponseEntity<>(service.excluirTodosUsuarios(), HttpStatus.OK);
+        return  new ResponseEntity<>(usuarioService.excluirTodosUsuarios(), HttpStatus.OK);
     }
 }

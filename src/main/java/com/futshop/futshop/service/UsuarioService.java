@@ -1,11 +1,12 @@
-package com.futshop.futshop.Services;
+package com.futshop.futshop.service;
 
-import com.futshop.futshop.DTO.Response.LoginResponseDTO;
-import com.futshop.futshop.Exceptions.RequestException;
-import com.futshop.futshop.Model.CarrinhoModelUsuario;
-import com.futshop.futshop.Model.UsuarioModel;
-import com.futshop.futshop.Repository.UsuarioRepository;
+import com.futshop.futshop.dto.request.EnderecoRequestDTO;
+import com.futshop.futshop.exceptions.RequestException;
+import com.futshop.futshop.model.CarrinhoModelUsuario;
+import com.futshop.futshop.model.UsuarioModel;
+import com.futshop.futshop.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,9 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private TokenService tokenService;
+    @Value("${senha.sistema}")
+    private String senhaSistema;
+
 
     public List<UsuarioModel> listarUsuarios(){
         return usuarioRepository.findAll();
@@ -33,9 +35,8 @@ public class UsuarioService {
     }
 
     public  UsuarioModel salvarUsuario(UsuarioModel usuario) {
-        for(UsuarioModel user: usuarioRepository.findAll())
-            if(usuario.getEmail().equals(user.getEmail())) throw new RequestException("O email digitado já foi cadastrado, por favor digite outro!");
-
+        if(usuarioRepository.buscarPorEmail(usuario.getEmail()).isPresent())
+            throw new RequestException("O email digitado já foi cadastrado, por favor digite outro!");
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
@@ -54,28 +55,22 @@ public class UsuarioService {
         return  usuarioRepository.save(usuario);
     }
 
-    public LoginResponseDTO fazerLogin(String email, String senha){
-        if(validarSenha(email, senha)){
-            UsuarioModel usuario = isUserByEmail(email);
-            LoginResponseDTO loginResponse = new LoginResponseDTO(tokenService.gerarToken(usuario), usuario.getAdmin());
-            return loginResponse;
-        }
-        throw new RequestException("Credenciais incorretas");
+    public UsuarioModel fazerLogin(String email, String senha){
+        if(validarSenha(email, senha)) return isUserByEmail(email);
+        else throw new RequestException("Credenciais incorretas");
     }
 
     public UsuarioModel alterarTipoDeUsuario(Long codigo, String senha){
         UsuarioModel usuario = isUserByCode(codigo);
-
-        if(passwordEncoder.matches(senha, "$2a$10$KrjoAbn9LLaIZIRiQ21uGuErs5aKmAeuIqPaApWxKJ0IeEbssFDRm")){
+        if(passwordEncoder.matches(senha, senhaSistema)){
             usuario.setAdmin(true);
             usuario.setRole("ROLE_ADMIN");
             return  usuarioRepository.save(usuario);
         }
-        throw  new RequestException("Senha de auetnticação incorreta!");
-
+        throw  new RequestException("Senha do sistema incorreta!");
     }
 
-    public UsuarioModel alterarEndereco(Long codigo, UsuarioModel endereco){
+    public UsuarioModel alterarEndereco(Long codigo, EnderecoRequestDTO endereco){
         UsuarioModel usuario = isUserByCode(codigo);
 
         usuario.setCep(endereco.getCep());
@@ -91,7 +86,6 @@ public class UsuarioService {
 
     public String alterarSenha(Long codigo, String senhaAtual, String senhaNova){
         UsuarioModel usuario = isUserByCode(codigo);
-
         if(validarSenha(usuario.getEmail(), senhaAtual)){
             usuario.setSenha(senhaNova);
             return "Senha alterada com sucesso!";
@@ -100,21 +94,18 @@ public class UsuarioService {
     }
 
     public String excluirTodosUsuarios(){
-        List<UsuarioModel> usuario = usuarioRepository.findAll();
         usuarioRepository.deleteAll();
         return "Usuários deletados com sucesso!!";
     }
 
     public String excluirUsuarioPorID(Long codigo){
-        isUserByCode(codigo);
-        usuarioRepository.deleteById(codigo);
+        usuarioRepository.deleteById(isUserByCode(codigo).getCodigo());
         return "Usuário deletado com sucesso!!";
     }
 
     //Validações
     private Boolean validarSenha(String email,String senha){
-        boolean valid = passwordEncoder.matches(senha, isUserByEmail(email).getSenha());
-        return valid;
+       return   passwordEncoder.matches(senha, isUserByEmail(email).getSenha());
     }
 
     public UsuarioModel isUserByCode(Long codigo){

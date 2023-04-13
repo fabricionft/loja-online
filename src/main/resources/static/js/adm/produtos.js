@@ -96,7 +96,7 @@ let data = new FormData();
 document.getElementById("upload").onchange = function(e){
     if(e.target.files != null && e.target.files.length != 0){
         var arquivo = e.target.files[0];
-        data.append("imagem", arquivo)
+        data.append("imagem", arquivo);
     }
 }
 

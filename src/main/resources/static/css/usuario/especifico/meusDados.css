@@ -55,16 +55,15 @@
 
 /*Part titulo*/
 .icon-perfil{
-    width: 125px;
-    margin: 30px 0;
+    width: 110px;
+    margin: 20px 0;
 }
 
 .nome-usuario{
     font: 20px helvetica;
-    color: white;
-    text-transform: uppercase;
+    color: var(--branco);
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 /*Parte dados*/

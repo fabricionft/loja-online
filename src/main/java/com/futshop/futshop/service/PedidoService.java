@@ -1,8 +1,8 @@
-package com.futshop.futshop.Services;
+package com.futshop.futshop.service;
 
-import com.futshop.futshop.Exceptions.RequestException;
-import com.futshop.futshop.Model.*;
-import com.futshop.futshop.Repository.PedidoRepository;
+import com.futshop.futshop.exceptions.RequestException;
+import com.futshop.futshop.model.*;
+import com.futshop.futshop.repository.PedidoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,43 +45,41 @@ public class PedidoService {
 
     public PedidoModel fazerPedido(Long codigoCLiente, String formaPagamento, Integer quantidadeParcelas){
         UsuarioModel usuario = usuarioService.isUserByCode(codigoCLiente);
-        PedidoModel pedido = new PedidoModel();
         Random rd = new Random();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy   HH:mm:ss");
         Calendar calendar = Calendar.getInstance();
 
         if(verificarEstoque(usuario.getItens())){
-            reduzirEstoque(usuario.getItens());
+            String endereco = usuario.getCep()+", "+usuario.getEstado()+", "+usuario.getCidade() +", "+usuario.getBairro()+", "+usuario.getRua()+", "+usuario.getNumero()+", "+usuario.getComplemento();
 
-            //Dados pedido
-            pedido.setNumero(rd.nextLong(900000000)+100000000);
-            pedido.setData(formatter.format(calendar.getTime()));
-            pedido.setPagamento(formaPagamento);
-            pedido.setQuantidaeParcelas(quantidadeParcelas);
-            pedido.setValorParcela(usuario.getValorTotalItens() / quantidadeParcelas);
-
-            //Dados Usuários
-            pedido.setCodigoCliente(usuario.getCodigo());
-            pedido.setCpfCliente(usuario.getCpf());
-            pedido.setNomeCliente(usuario.getNome());
-            pedido.setEmail(usuario.getEmail());
-            pedido.setCelular(usuario.getCelular());
-            pedido.setEndereco(usuario.getCep()+", "+usuario.getEstado()+", "+usuario.getCidade() +", "+usuario.getBairro()
-                    +", "+usuario.getRua()+", "+usuario.getNumero()+", "+usuario.getComplemento());
-
-            //Dados itens
-            List<CarrinhoModelPedido> lista = new ArrayList<>();
+            List<CarrinhoModelPedido> listaItens = new ArrayList<>();
             for(CarrinhoModelUsuario item: usuario.getItens()){
-                lista.add(converterEmCarrinhoPedido(item));
+                listaItens.add(converterEmCarrinhoPedido(item));
             }
 
-            pedido.setItens(lista);
-            pedido.setQuantidadeItens(usuario.getQuantidadeItens());
-            pedido.setValor(usuario.getValorTotalItens());
+            PedidoModel pedido = new PedidoModel(
+         null,
+                usuario.getCodigo(),
+         rd.nextLong(900000000)+100000000,
+                formatter.format(calendar.getTime()),
+          "Aguardando confirmação",
+    null,
+                formaPagamento,
+                quantidadeParcelas,
+                (usuario.getValorTotalItens() / quantidadeParcelas),
+                usuario.getNome(),
+                usuario.getCpf(),
+                usuario.getCelular(),
+                usuario.getEmail(),
+                endereco,
+                listaItens,
+                usuario.getQuantidadeItens(),
+                usuario.getValorTotalItens()
+            );
 
+            reduzirEstoque(usuario.getItens());
             usuario.getItens().clear();
             usuarioService.atualizarUsuario(usuario);
-
             return pedidoRepository.save(pedido);
         }
         else return null;

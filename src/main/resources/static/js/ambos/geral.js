@@ -56,7 +56,7 @@ function deslogar(){
 
 function tratarErro(err){
     if(err.status == 403) gerarMessageBox(2, "Sem autorização:<br><br> Seu token de autenticação expirou ou não existe!! Por motivos de segurança você será deslogado e redirecionado para a página inicial!", "Entendido");
-    else gerarMessageBox(2, err.responseJSON.mensagem, "Ok");
+    else gerarMessageBox(2, err.responseJSON.message, "Ok");
 }
 
 function gerarMessageBox(cor, mensagem, textoBtn){

@@ -87,6 +87,6 @@ function criarPedido(dados){
 }
 
 function pegarIdPedido(id){
-    localStorage.setItem('codigoPedido', id)
+    localStorage.setItem('codigoPedido', id);
     location.href="detalhePedido.html";
 }

@@ -1,8 +1,8 @@
-package com.futshop.futshop.Services;
+package com.futshop.futshop.service;
 
-import com.futshop.futshop.Exceptions.RequestException;
-import com.futshop.futshop.Model.ProdutoModel;
-import com.futshop.futshop.Repository.ProdutoRepository;
+import com.futshop.futshop.exceptions.RequestException;
+import com.futshop.futshop.model.ProdutoModel;
+import com.futshop.futshop.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -88,7 +88,7 @@ public class ProdutoService {
     }
 
     public String deletarProdutoPorID(Long codigo){
-        produtoRepository.deleteById(codigo);
+        produtoRepository.deleteById(isProductByCode(codigo).getCodigo());
         return "Produto deletado com sucesso!!";
     }
 

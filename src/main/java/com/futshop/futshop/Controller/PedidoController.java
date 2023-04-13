@@ -1,48 +1,48 @@
-package com.futshop.futshop.Controller;
+package com.futshop.futshop.controller;
 
-import com.futshop.futshop.Model.PedidoModel;
-import com.futshop.futshop.Services.PedidoService;
+import com.futshop.futshop.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
 
     @Autowired
-    private PedidoService service;
+    private PedidoService pedidoService;
+
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    List<PedidoModel> listarPedidos(){
-        return service.listarPedidos();
+    public ResponseEntity<?> listarPedidos(){
+        return new ResponseEntity<>(pedidoService.listarPedidos(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/cliente/{codigoCliente}")
-    public List<PedidoModel> buscarPedidosPorIdDoCliente(@PathVariable Long codigoCliente){
-        return  service.buscarListaDePedidosPorIdDoCliente(codigoCliente);
+    public ResponseEntity<?> buscarPedidosPorIdDoCliente(@PathVariable Long codigoCliente){
+        return new ResponseEntity<>(pedidoService.buscarListaDePedidosPorIdDoCliente(codigoCliente), HttpStatus.OK);
     }
 
     @GetMapping(path = "pedido/{codigo}")
-    public PedidoModel buscarPedidoPorIdDoPedido(@PathVariable Long codigo){
-        return  service.buscarPedidoPorIdDoPedido(codigo);
+    public ResponseEntity<?> buscarPedidoPorIdDoPedido(@PathVariable Long codigo){
+        return new ResponseEntity<>(pedidoService.buscarPedidoPorIdDoPedido(codigo), HttpStatus.OK);
     }
 
     @PostMapping(path = "/cliente/{codigoCLiente}/formaPagamento/{formaPagamento}/quantidadeParcelas/{quantidadeParcelas}")
-    public PedidoModel fazerPedido(@PathVariable Long codigoCLiente,
-                                   @PathVariable String formaPagamento,
-                                   @PathVariable Integer quantidadeParcelas){
-        return  service.fazerPedido(codigoCLiente, formaPagamento, quantidadeParcelas);
+    public ResponseEntity<?> fazerPedido(@PathVariable Long codigoCLiente,
+                                         @PathVariable String formaPagamento,
+                                         @PathVariable Integer quantidadeParcelas){
+        return new ResponseEntity<>(pedidoService.fazerPedido(codigoCLiente, formaPagamento, quantidadeParcelas), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/pedido/{codigo}/acao/{acao}/motivo/{motivo}")
     @PreAuthorize("hasRole('ADMIN')")
-    public PedidoModel alterarStatusPedido(@PathVariable Long codigo,
-                                   @PathVariable Integer acao,
-                                   @PathVariable String motivo){
-        return service.mudarStatusPedido(codigo, acao, motivo);
+    public ResponseEntity<?> alterarStatusPedido(@PathVariable Long codigo,
+                                                 @PathVariable Integer acao,
+                                                 @PathVariable String motivo){
+        return new ResponseEntity<>(pedidoService.mudarStatusPedido(codigo, acao, motivo), HttpStatus.OK);
     }
 }

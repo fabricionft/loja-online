@@ -1,6 +1,6 @@
-package com.futshop.futshop.DTO.Response;
+package com.futshop.futshop.dto.response;
 
-import com.futshop.futshop.Model.CarrinhoModelUsuario;
+import com.futshop.futshop.model.CarrinhoModelUsuario;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class UsuarioResponseDTO {
-
     private Long codigo;
     private Boolean admin;
     private String nome;

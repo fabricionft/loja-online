@@ -1,4 +1,4 @@
-package com.futshop.futshop.DTO.Response;
+package com.futshop.futshop.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;

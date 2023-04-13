@@ -1,4 +1,4 @@
-package com.futshop.futshop.Exceptions;
+package com.futshop.futshop.exceptions;
 
 public class RequestException extends  RuntimeException{
 

@@ -1,6 +1,6 @@
-package com.futshop.futshop.Repository;
+package com.futshop.futshop.repository;
 
-import com.futshop.futshop.Model.PedidoModel;
+import com.futshop.futshop.model.PedidoModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
