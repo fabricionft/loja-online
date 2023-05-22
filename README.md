@@ -58,7 +58,7 @@ https://youtu.be/ljKxzoam1VA
 <br><br>
 
 <h2>Link site :zap:</h2>
-[https://youtu.be/ljKxzoam1VA](https://futshop-nft.up.railway.app/)
+https://futshop-nft.up.railway.app/
 <br><br>
 
 <h2>Autor :raising_hand:</h2>
