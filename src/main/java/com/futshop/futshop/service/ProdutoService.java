@@ -72,7 +72,7 @@ public class ProdutoService {
             produtoRepository.save(produto);
 
             try{
-                String caminho = "C:\\Users\\fabri\\OneDrive\\Área de Trabalho\\FUTSHOP\\futshop\\src\\main\\resources\\static\\uploads";
+                String caminho = "C:\\Users\\fabri\\OneDrive\\Área de Trabalho\\PROJETOS\\COMPLETOS\\API\\loja-online-main\\src\\main\\resources\\static\\uploads";
                 File diretorio = new File(caminho);
                 if(! diretorio.exists()) diretorio.mkdirs();
 
