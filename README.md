@@ -8,19 +8,19 @@ Até o momento este é meu projeto mais bem trabalhado. Assim como os anteriores
 <h2>Mecânica de funcionamento do site :hammer: </h2> 
 
 <strong>1</strong> - O cliente cria sua conta passando seus dados de contato e endereço;<br>
-<img src="camisa.png" width="300px">
+<img src="assets/camisa.png" width="300px">
 
 <strong>2</strong> - Com sua conta criada, o cliente loga e adquire a possibilidade de adicionar/remover itens do seu carrinho;<br>
-<img src="carrinho.png" width="300px">
+<img src="assets/carrinho.png" width="300px">
 
 <strong>3</strong> - Com ao menos um item no carrinho, o cliente ganha direito a fazer um pedido, passando a forma de pagamento e o parcelamento;<br><br>
-<img src="form.png" width="300px">
+<img src="assets/form.png" width="300px">
 
 <strong>4</strong> - Com um pedido confirmado, o mesmo é gerado, salvo e exibido instantaneamente no menu administrativo;<br>
-<img src="pedido.png" width="300px">
+<img src="assets/pedido.png" width="300px">
 
 <strong>5</strong> - O administrador ao receber o pedido, pode aceitá-lo ou recusá-lo. Caso aceite, ele deverá através de algum dos dados de comunicação do cliente estabelecer contato com o mesmo, para lhe passar a cobrança selecionada. Caso rejeite, deverá devolver uma mensagem explicando o motivo.<br>
-<img src="pedido-adm.png" width="500px">
+<img src="assets/pedido-adm.png" width="500px">
 <br><br>
  
 <h2>Ações de um usuário comum</h2> 
@@ -63,5 +63,5 @@ https://youtu.be/ljKxzoam1VA
 
 <h2>Autor :raising_hand:</h2>
 
-| [<img src="perfil.jpg" width=115><br><sub>Fabrício Ferreira Tavares</sub>](https://github.com/fabricionft) | 
+| [<img src="assets/perfil.jpg" width=115><br><sub>Fabrício Ferreira Tavares</sub>](https://github.com/fabricionft) | 
 | :---: | 
