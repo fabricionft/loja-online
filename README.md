@@ -1,16 +1,32 @@
-# Futshop 🛒
+<h1 align="center">Futshop 🛒</h1>
 <img src="assets/inicial.png" width="100%$">
 
 <h2>Sobre o projeto 🔎</h2>
-Futshop é um site de vendas de produtos, criado com o intuito de facilitar a vida de pequenos vendedores, de forma que assim não precisem se preocupar com a frequente atualização dos dados de seu estoque ou a coleta de informações do cliente (informações de contato e envio).Até o momento este é meu projeto mais bem trabalhado.
+Futshop é um site de vendas de produtos, criado com o intuito de facilitar a vida de pequenos vendedores, de forma que assim não precisem se preocupar com a frequente atualização dos dados de seu estoque ou a coleta de informações do cliente (informações de contato e envio). Até o momento este é meu projeto mais bem trabalhado, tanto no back, como no front.
 <br><br>
 
 <h2>Tecnologias utilizadas 💻</h2>
-* Java (Spring Boot/Spring Security/Spring Data)<br>
-* Javascript + JQuery<br>
-* HTML + CSS<br>
-* Banco de dados MySQL
-<br><br>
+<ul>
+  <li>Java + Spring Boot;</li>
+  <li>Javascript + JQuery;</li>
+  <li>HTML + CSSS;</li>
+  <li>Banco de dados MySQL.</li>
+</ul>
+<br>
+
+<h2>Dependências Maven utilizadas ♦️</h2>
+<ul>
+  <li>Spring Web;</li>
+  <li>Spring Data JPA;</li>
+  <li>Spring Security;</li>
+  <li>MySQL Driver;</li>
+  <li>Lombok;</li>
+  <li>DevTools;</li>
+  <li>Java JWT;</li>
+  <li>Validation;</li>
+  <li>ModelMapper.</li>
+</ul>
+<br>
  
 <h2>Mecânica de funcionamento do site :hammer: </h2> 
 
@@ -31,27 +47,32 @@ Futshop é um site de vendas de produtos, criado com o intuito de facilitar a vi
 <br><br>
  
 <h2>Ações de um usuário comum</h2> 
-* Gerar carrinhos e pedidos. <br>
-* Visualizar e editar dados pessoais. <br>
-* Visualizar todos seus pedidos e seus detalhamentos. 
-<br><br>
+<ul>
+  <li>Gerar carrinhos e pedidos;</li>
+  <li>Visualizar e editar dados pessoais;</li>
+  <li>Visualizar todos seus pedidos e seus detalhamentos. </li>
+</ul>
+<br>
  
 <h2>Ações de um usuário administrador</h2>
-* Manipular os produtos do site (adição, edição e exclusão) e os pedidos dos clientes (confirmação ou rejeição). 
-<br><br>
+<ul>
+  <li>Manipular os produtos do site (adição, edição e exclusão) e os pedidos dos clientes (confirmação ou rejeição). </li>
+</ul>
+<br>
  
 <h2>Segurança do site :lock:</h2> 
-O projeto possui um sistema de tokens JWT, o que faz com que somente usuários logados possam acessar certas rotas e métodos, e somente usuários administradores possam acessar/controlar o menu administrativo. 
+O projeto possui um sistema de tokens JWT, o que faz com que somente usuários logados possam acessar certas rotas e métodos, e somente usuários administradores possam acessar/controlar o menu administrativo. Além disso, o sitestema também conta com conceitos de DTO's e criptografia, para uma maior proteção às suas entidades.
 <br><br>
 
-<h2>Passo a passo para rodar em seu PC </h2>
-* Possua uma JDK 17 ou superior instalada em seu PC;<br>
-* Baixe ou clone o projeto em seu PC;<br>
-* Configure algum banco de dados MySQL, seja ele local ou de algum serviço externo (recomendo os do site RailWay) dentro do applications.properties. Para isso você precisa do 
-host, nome, porta, usuario e senha do banco de dados;<br>
-* Dê build ou compile no projeto usando alguma IDE (recomendo Intelij), para baixar todas as dependências;<br>
-* Por fim, dê start na classe principal do projeto (FutshopApplication) e pronto, ele já funcionará.
-<br><br>
+<h2>Passo a passo para rodar em seu PC</h2>
+<ul>
+  <li>Possua uma JDK 17 ou superior instalada em seu PC;</li>
+  <li> Baixe ou clone o projeto em seu PC;</li>
+  <li>Configure algum banco de dados MySQL, seja ele local ou de algum serviço externo (recomendo os do site RailWay) dentro do applications.properties. Para isso     você precisa   do host, nome, porta, usuario e senha do banco de dados;</li>
+  <li>Dê build ou compile no projeto usando alguma IDE (recomendo Intelij), para baixar todas as dependências;</li>
+  <li>Por fim, dê start na classe principal do projeto (FutshopApplication) e pronto, ele já funcionará.</li>
+</ul>
+<br>
  
 <h2>Link video 📺</h2>
 https://youtu.be/ljKxzoam1VA
