@@ -1,8 +1,7 @@
 # Futshop
 
 <h2>Sobre o projeto 🔎</h2>
-Futshop é um site de vendas de produtos, criado com o intuito de facilitar a vida de pequenos vendedores, de forma que assim não precisem se preocupar com a frequente atualização dos dados de seu estoque ou a coleta de informações do cliente (informações de contato e envio) 
-Até o momento este é meu projeto mais bem trabalhado. Assim como os anteriores, este foi desenvolvido à partir da trindade HTML, CSS, Javascript junto ao jQuery, no front-end, Spring Boot, no back-end e o banco de dados MySQL. 
+Futshop é um site de vendas de produtos, criado com o intuito de facilitar a vida de pequenos vendedores, de forma que assim não precisem se preocupar com a frequente atualização dos dados de seu estoque ou a coleta de informações do cliente (informações de contato e envio).Até o momento este é meu projeto mais bem trabalhado.
 <br><br>
 
 <h2>Tecnologias utilizadas 💻</h2>
